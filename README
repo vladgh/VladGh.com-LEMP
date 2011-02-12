@@ -4,7 +4,7 @@ All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-
 HOW TO:
 
 - Make sure you have Git installed on your Ubuntu System:
-$ sudo apt-get install git
+$ sudo apt-get install git-core
 
 - Clone this repository:
 $ git clone git://github.com/vladgh/VladGh.com---LEMP.git

@@ -13,9 +13,11 @@ HOW TO:
 - Make sure you have Git installed on your Ubuntu System:
 $ sudo apt-get install git-core screen
 
-- Clone this repository:
+- Clone this repository, and get the latest stable version of this script:
 $ git clone git://github.com/vladgh/VladGh.com-LEMP.git
 $ cd VladGh.com-LEMP
+$ git checkout 1.0
+
 
 - Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with "$ screen -rad"
 $ sudo screen sh install.sh

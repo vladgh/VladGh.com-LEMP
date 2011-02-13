@@ -97,7 +97,7 @@ mkdir -p /etc/php5/conf.d /var/log/php5-fpm
 
 cp -f php.ini-production /etc/php5/php.ini
 cp $CUR_DIR/conf_files/php-fpm.conf /etc/php5/php-fpm.conf
-cp $CUR_DIR/init_files/php-fpm /etc/init.d/php5-fpm
+cp $CUR_DIR/init_files/php5-fpm /etc/init.d/php5-fpm
 chmod +x /etc/init.d/php5-fpm
 update-rc.d -f php5-fpm defaults
 

@@ -26,6 +26,9 @@ apt-get -y install htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-
 ### Install PHP Libs
 apt-get -y install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick
 
+### Install MySQL
+apt-get -y install mysql-server mysql-client
+
 ### Download the packages
 mkdir /var/www
 mkdir $CUR_DIR/lemp_sources

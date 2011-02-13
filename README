@@ -1,4 +1,5 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
+
   - NginX 0.9.4
   - PHP 5.3.5
   - APC 3.1.7
@@ -17,7 +18,6 @@ $ sudo apt-get install git-core screen
 $ git clone git://github.com/vladgh/VladGh.com-LEMP.git
 $ cd VladGh.com-LEMP
 $ git checkout 1.0
-
 
 - Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with "$ screen -rad"
 $ sudo screen sh install.sh

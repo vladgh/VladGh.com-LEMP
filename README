@@ -4,14 +4,14 @@ All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-
 HOW TO:
 
 - Make sure you have Git installed on your Ubuntu System:
-$ sudo apt-get install git-core
+$ sudo apt-get install git-core screen
 
 - Clone this repository:
 $ git clone git://github.com/vladgh/VladGh.com---LEMP.git
 $ cd VladGh.com---LEMP
 
-- Run the installer
-$ sudo sh install.sh
+- Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with "$ screen -rad"
+$ sudo screen sh install.sh
 
 DISCLAIMER:
 All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms.

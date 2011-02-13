@@ -14,8 +14,8 @@ HOW TO:
 $ sudo apt-get install git-core screen
 
 - Clone this repository:
-$ git clone git://github.com/vladgh/VladGh.com---LEMP.git
-$ cd VladGh.com---LEMP
+$ git clone git://github.com/vladgh/VladGh.com-LEMP.git
+$ cd VladGh.com-LEMP
 
 - Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with "$ screen -rad"
 $ sudo screen sh install.sh

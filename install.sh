@@ -1,5 +1,5 @@
 #!/bin/bash
-### Ubuntu LEMP Install Script VGH
+### Ubuntu LEMP Install Script --- VladGh.com
 
 ###################
 ### DISCLAIMER: ###
@@ -17,7 +17,7 @@ SUHOSIN_VER="0.9.32.1"
 
 CUR_DIR=$(pwd)
 
-### Become ROOT
+### Update the system
 apt-get -y update
 
 ### Install Dependencies
@@ -42,6 +42,7 @@ tar xzvf php-$PHP_VER.tar.gz
 tar xzvf APC-$APC_VER.tgz
 tar zxvf suhosin-$SUHOSIN_VER.tar.gz
 
+### Compile PHP
 cd php-$PHP_VER
 ./buildconf --force
 ./configure \
@@ -151,6 +152,7 @@ make install
 echo '; Suhosin Extension
 extension = suhosin.so' > /etc/php5/conf.d/suhosin.ini
 
+### Compile NginX
 cd ../nginx-$NGINX_VER/
 
 apt-get -y install geoip-database libgeoip-dev

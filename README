@@ -9,4 +9,4 @@ $ sudo apt-get install git-core
 - Clone this repository:
 $ git clone git://github.com/vladgh/VladGh.com---LEMP.git
 $ cd VladGh.com---LEMP
-$ sh install.sh
+$ sudo sh install.sh

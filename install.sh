@@ -19,20 +19,20 @@ apt-get -y install htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-
 apt-get -y install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick
 
 ### Download the packages
-mkdir /var/www && \
-mkdir $CUR_DIR/lemp_sources && \
-cd $CUR_DIR/lemp_sources && \
-wget http://nginx.org/download/nginx-$NGINX_VER.tar.gz && \
-wget http://us2.php.net/distributions/php-$PHP_VER.tar.gz && \
-wget http://pecl.php.net/get/APC-$APC_VER.tgz && \
-wget http://download.suhosin.org/suhosin-$SUHOSIN_VER.tar.gz && \
-tar zxvf nginx-$NGINX_VER.tar.gz && \
-tar xzvf php-$PHP_VER.tar.gz && \
-tar xzvf APC-$APC_VER.tgz && \
+mkdir /var/www
+mkdir $CUR_DIR/lemp_sources
+cd $CUR_DIR/lemp_sources
+wget http://nginx.org/download/nginx-$NGINX_VER.tar.gz
+wget http://us2.php.net/distributions/php-$PHP_VER.tar.gz
+wget http://pecl.php.net/get/APC-$APC_VER.tgz
+wget http://download.suhosin.org/suhosin-$SUHOSIN_VER.tar.gz
+tar zxvf nginx-$NGINX_VER.tar.gz
+tar xzvf php-$PHP_VER.tar.gz
+tar xzvf APC-$APC_VER.tgz
 tar zxvf suhosin-$SUHOSIN_VER.tar.gz
 
-cd php-$PHP_VER && \
-./buildconf --force && \
+cd php-$PHP_VER
+./buildconf --force
 ./configure \
   --prefix=/opt/php5 \
   --with-config-file-path=/etc/php5 \
@@ -74,8 +74,9 @@ cd php-$PHP_VER && \
   --enable-dba \
   --enable-sysvsem \
   --enable-sysvshm \
-  --enable-sysvmsg && \
-make && make install
+  --enable-sysvmsg
+make
+make install
 
 echo '
 if [ -d "/opt/php5/bin" ] && [ -d "/opt/php5/sbin" ]; then
@@ -108,10 +109,10 @@ echo '/var/log/php5-fpm/*.log {
   endscript
 }' > /etc/logrotate.d/php5-fpm
 
-cd ../APC-$APC_VER && \
-/opt/php5/bin/phpize -clean && \
-./configure --enable-apc --with-php-config=/opt/php5/bin/php-config --with-libdir=/opt/php5/lib/php  && \
-make && \
+cd ../APC-$APC_VER
+/opt/php5/bin/phpize -clean
+./configure --enable-apc --with-php-config=/opt/php5/bin/php-config --with-libdir=/opt/php5/lib/php
+make
 make install
 
 echo 'extension = apc.so
@@ -131,9 +132,9 @@ apc.enable_cli=1
 
 cd ../suhosin-$SUHOSIN_VER
 
-/opt/php5/bin/phpize -clean && \
-./configure --with-php-config=/opt/php5/bin/php-config --with-libdir=/opt/php5/lib/php && \
-make && \
+/opt/php5/bin/phpize -clean
+./configure --with-php-config=/opt/php5/bin/php-config --with-libdir=/opt/php5/lib/php
+make
 make install
 
 echo '; Suhosin Extension
@@ -155,8 +156,8 @@ apt-get -y install geoip-database libgeoip-dev
     --with-http_geoip_module \
     --without-mail_pop3_module \
     --without-mail_imap_module \
-    --without-mail_smtp_module && \
-make && \
+    --without-mail_smtp_module
+make
 make install
 
 cp $CUR_DIR/init_files/nginx /etc/init.d/nginx
@@ -181,4 +182,5 @@ echo '/var/log/nginx/*.log {
   endscript
 }' > /etc/logrotate.d/nginx
 
-/etc/init.d/php5-fpm restart && /etc/init.d/nginx restart
+/etc/init.d/php5-fpm restart
+/etc/init.d/nginx restart

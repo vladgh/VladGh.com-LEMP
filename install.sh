@@ -1,6 +1,14 @@
 #!/bin/bash
 ### Ubuntu LEMP Install Script VGH
 
+###################
+### DISCLAIMER: ###
+###################
+#All content provided here including the scripts is provided without
+#any warranty. You use it at your own risk. I can not be held responsible
+#for any damage that may occur because of it. By using the scripts I
+#provide here you accept this terms.
+
 ### Program Versions:
 NGINX_VER="0.9.4"
 PHP_VER="5.3.5"

@@ -10,7 +10,7 @@
 #provide here you accept this terms.
 
 ### Program Versions:
-NGINX_VER="0.9.4"
+NGINX_VER="0.9.5"
 PHP_VER="5.3.5"
 APC_VER="3.1.7"
 SUHOSIN_VER="0.9.32.1"

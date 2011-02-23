@@ -22,7 +22,11 @@ $ git checkout 1.0
 - Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with "$ screen -rad"
 $ sudo screen sh install.sh
 
-- After the installer is finished (this will take a long time depending on your server specifications), you can go to your servers address and you will see the PHP info page. Also, if you go to http://IP.ADDRESS/apc.php you will find the APC Cache information page.
+- After the installer is finished (this will take a long time depending on your server specifications), you can go to your servers address and you will see the PHP info page.
+Also, if you go to:
+- http://example.com/apc.php you will find the APC Cache information page;
+- http://example.com/nginx_status for the NginX statistics;
+- http://example.com/status?html for the FPM statistics. 
 
 DISCLAIMER:
 All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms.

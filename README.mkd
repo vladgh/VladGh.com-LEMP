@@ -9,26 +9,27 @@ All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-
 It's highly recommended to run this installer on a fresh installed system.
 This is tested with Ubuntu 10.04 and 10.10, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
 
-# HOW TO:
+# HOW TO: #
 
 Make sure you have Git installed on your Ubuntu System:
     sudo apt-get install git-core screen
 
-- Clone this repository, and get the latest stable version of this script:
-$ git clone git://github.com/vladgh/VladGh.com-LEMP.git
-$ cd VladGh.com-LEMP
-$ git checkout 1.0
+Clone this repository, and get the latest stable version of this script:
+    git clone git://github.com/vladgh/VladGh.com-LEMP.git
+    cd VladGh.com-LEMP
+    git checkout 1.0
 
-- Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with "$ screen -rad"
-$ sudo screen sh install.sh
+Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with `screen -rad`
+    sudo screen sh install.sh
 
-- After the installer is finished (this will take a long time depending on your server specifications), you can go to your servers address and you will see the PHP info page.
+After the installer is finished (this will take a long time depending on your server specifications), you can go to your servers address and you will see the PHP info page.
 Also, if you go to:
-- http://example.com/apc.php you will find the APC Cache information page;
-- http://example.com/nginx_status for the NginX statistics;
-- http://example.com/status?html for the FPM statistics. 
 
-If you want to report an issue you can use the tracker available at https://github.com/vladgh/VladGh.com-LEMP/issues.
+  * **http://example.com/apc.php** you will find the APC Cache information page;
+  * **http://example.com/nginx_status** for the NginX statistics;
+  * **http://example.com/status?html** for the FPM statistics. 
 
-DISCLAIMER:
-All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms.
+### If you want to report an issue you can use the tracker available at [https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ###
+
+# DISCLAIMER: #
+** All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms. **

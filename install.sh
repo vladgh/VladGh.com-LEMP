@@ -28,7 +28,7 @@ exec 3>&1 4>&2
 trap 'exec 2>&4 1>&3' 0 1 2 3
 exec 1>$LOG_FILE 2>&1
 # Traps CTRL-C
-trap "echo '\nCancelled by user' >&3; echo '\nCancelled by user'; exit 1" 2
+trap "echo -e '\nCancelled by user' >&3; echo -e '\nCancelled by user'; exit 1" 2
 
 clear
 echo "=========================================================================" >&3
@@ -46,7 +46,7 @@ echo "Do you want to continue[Y/n]:" >&3
 read  continue_install
 case  $continue_install  in
   'n'|'N'|'No'|'no') 
-  echo "\nCancelled."
+  echo -e "\nCancelled." >&3
   exit 1
   ;;
   *)
@@ -96,7 +96,8 @@ if [ -d "$CUR_DIR/lemp_sources/nginx-$NGINX_VER" ] && [ -d "$CUR_DIR/lemp_source
 else
   echo 'Error: Download was unsuccessful.' >&3
   echo "Check the install.log for errors." >&3
-  read -n 1 -p "Press any key to exit..." >&3
+  echo 'Press any key to exit...' >&3
+  read -n 1
   exit 1   
 fi
 
@@ -219,12 +220,15 @@ extension = suhosin.so' > /etc/php5/conf.d/suhosin.ini
 
 ### Check PHP installation
 if [ -e "/opt/php5/bin/php" ] ; then
+  echo "=========================================================================" >&3
   echo 'PHP was successfully installed.' >&3
   /opt/php5/bin/php -v >&3
+  echo "=========================================================================" >&3
 else
   echo 'Error: PHP installation was unsuccessful.' >&3
   echo "Check the install.log for errors." >&3
-  read -n 1 -p "Press any key to exit..." >&3
+  echo 'Press any key to exit...' >&3
+  read -n 1
   exit 1
 fi
 
@@ -276,26 +280,37 @@ echo '/var/log/nginx/*.log {
 
 ### Check NginX installation
 if [ -e "/opt/nginx/sbin/nginx" ] ; then
+  echo "=========================================================================" >&3
   echo 'NginX was successfully installed.' >&3
   /opt/nginx/sbin/nginx -v >&3
+  echo "=========================================================================" >&3
 else
   echo 'Error: NginX installation was unsuccessful.' >&3
   echo "Check the install.log for errors." >&3
-  read -n 1 -p "Press any key to exit..." >&3
+  echo 'Press any key to exit...' >&3
+  read -n 1
   exit 1
 fi
 
 echo 'Restarting servers...' >&3
-/etc/init.d/php5-fpm restart
-/etc/init.d/nginx restart
+pkill nginx
+pkill php-fpm
+/etc/init.d/php5-fpm start
+/etc/init.d/nginx start
+
+sleep 5
 
 ### Final check
 if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
+  echo "=========================================================================" >&3
   echo 'NginX, PHP, APC and Suhosin were successfully installed.' >&3
-  read -n 1 -p "Press any key to exit..." >&3
-  exit
+  echo 'Press any key to exit...' >&3
+  read -n 1
+  exit 0
 else
+  echo "=========================================================================" >&3
   echo "Errors encountered. Check the install.log." >&3
-  read -n 1 -p "Press any key to exit..." >&3
+  echo 'Press any key to exit...' >&3
+  read -n 1
   exit 1
 fi

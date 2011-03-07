@@ -95,7 +95,9 @@ if [ -d "$CUR_DIR/lemp_sources/nginx-$NGINX_VER" ] && [ -d "$CUR_DIR/lemp_source
   echo 'NginX, PHP, APC and Suhosin download and extraction successful.' >&3
 else
   echo 'Error: Download was unsuccessful.' >&3
-  exit 1
+  echo "Check the install.log for errors." >&3
+  read -n 1 -p "Press any key to exit..." >&3
+  exit 1   
 fi
 
 ### Compile PHP
@@ -216,19 +218,19 @@ echo '; Suhosin Extension
 extension = suhosin.so' > /etc/php5/conf.d/suhosin.ini
 
 ### Check PHP installation
-if [ -d "/opt/php5/bin/php" ] ; then
+if [ -e "/opt/php5/bin/php" ] ; then
   echo 'PHP was successfully installed.' >&3
   /opt/php5/bin/php -v >&3
 else
   echo 'Error: PHP installation was unsuccessful.' >&3
+  echo "Check the install.log for errors." >&3
+  read -n 1 -p "Press any key to exit..." >&3
   exit 1
 fi
 
 ### Installing NginX
 echo 'Installing NginX...' >&3
 cd ../nginx-$NGINX_VER/
-
-apt-get -y install geoip-database libgeoip-dev
 
 ./configure --prefix=/opt/nginx \
     --conf-path=/etc/nginx/nginx.conf \
@@ -239,7 +241,6 @@ apt-get -y install geoip-database libgeoip-dev
     --with-http_stub_status_module \
     --with-http_ssl_module \
     --with-http_realip_module \
-    --with-http_geoip_module \
     --without-mail_pop3_module \
     --without-mail_imap_module \
     --without-mail_smtp_module
@@ -271,13 +272,27 @@ echo '/var/log/nginx/*.log {
 }' > /etc/logrotate.d/nginx
 
 ### Check NginX installation
-if [ -d "/opt/nginx/sbin/nginx" ] ; then
+if [ -e "/opt/nginx/sbin/nginx" ] ; then
   echo 'NginX was successfully installed.' >&3
   /opt/nginx/sbin/nginx -v >&3
 else
   echo 'Error: NginX installation was unsuccessful.' >&3
+  echo "Check the install.log for errors." >&3
+  read -n 1 -p "Press any key to exit..." >&3
   exit 1
 fi
 
+echo 'Restarting servers...' >&3
 /etc/init.d/php5-fpm restart
 /etc/init.d/nginx restart
+
+### Final check
+if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
+  echo 'NginX, PHP, APC and Suhosin were successfully installed.' >&3
+  read -n 1 -p "Press any key to exit..." >&3
+  exit
+else
+  echo "Errors encountered. Check the install.log." >&3
+  read -n 1 -p "Press any key to exit..." >&3
+  exit 1
+fi

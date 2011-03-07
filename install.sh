@@ -252,6 +252,9 @@ cp $CUR_DIR/init_files/nginx /etc/init.d/nginx
 chmod +x /etc/init.d/nginx
 update-rc.d -f nginx defaults
 cp $CUR_DIR/conf_files/nginx.conf /etc/nginx/nginx.conf
+mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
+cp $CUR_DIR/conf_files/example.com /etc/nginx/sites-available/example.com
+ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/example.com
 
 cp $CUR_DIR/web_files/* /var/www
 

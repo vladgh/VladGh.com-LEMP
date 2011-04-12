@@ -1,6 +1,6 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 
-  * NginX 0.8.54
+  * NginX 1.0.0 stable
   * PHP 5.3.6
   * APC 3.1.7
   * Suhosin Extension 0.9.32.1
@@ -17,7 +17,7 @@ Make sure you have Git installed on your Ubuntu System:
 Clone this repository, and get the latest stable version of this script:
     git clone git://github.com/vladgh/VladGh.com-LEMP.git
     cd VladGh.com-LEMP
-    git checkout 2.1
+    git checkout 2.2
 
 Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with `screen -rad`
     sudo screen bash install.sh
@@ -35,6 +35,10 @@ Also, if you go to:
 ** All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms. **
 
 ## Release Notes: ##
+
+### 2.2 ###
+
+  * Upgraded NginX to the latest 1.0.0 stable
 
 ### 2.1 ###
 

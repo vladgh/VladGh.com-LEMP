@@ -12,15 +12,18 @@ This is tested with Ubuntu 10.04 and 10.10, both 32 bits and 64 bits, on officia
 # HOW TO: #
 
 Make sure you have Git installed on your Ubuntu System:
-    `sudo apt-get install git-core screen`
+
+    sudo apt-get install git-core screen
 
 Clone this repository, and get the latest stable version of this script:
-    `git clone git://github.com/vladgh/VladGh.com-LEMP.git
+
+    git clone git://github.com/vladgh/VladGh.com-LEMP.git
     cd VladGh.com-LEMP
-    git checkout 2.2`
+    git checkout 2.2
 
 Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with `screen -rad`
-    `sudo screen bash install.sh`
+
+    sudo screen bash install.sh
 
 After the installer is finished (this will take a long time depending on your server specifications), you can go to your servers address and you will see the PHP info page.
 Also, if you go to:

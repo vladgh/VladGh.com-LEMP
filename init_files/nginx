@@ -12,11 +12,10 @@
 # Import init-functions
 . /lib/lsb/init-functions
 
-### Add NginX to PATH
-PATH=$PATH:/opt/nginx/sbin
+INSTALL_DIR="/opt/nginx"
 
 ### Location of nginx binary. Change path as neccessary
-DAEMON=/opt/nginx/sbin/nginx
+DAEMON="$INSTALL_DIR/sbin/nginx"
 ### Location of configuration file. Change path as neccessary
 CONFIG_FILE=/etc/nginx/nginx.conf
 

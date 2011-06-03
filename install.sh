@@ -14,7 +14,335 @@ NGINX_VER="1.0.3"
 PHP_VER="5.3.6"
 APC_VER="3.1.9"
 SUHOSIN_VER="0.9.32.1"
+
+### Directories
+DSTDIR="/opt"
+WEBDIR="/var/www"
+SRCDIR=`dirname $(readlink -f $0)`
+TMPDIR="$SRCDIR/sources"
+
+### Log file
 LOG_FILE="install.log"
+
+### Essential Packages
+ESSENTIAL_PACKAGES="htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev libcompress-zlib-perl m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev lynx make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc"
+
+### PHP Libraries
+PHP_LIBRARIES="install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick"
+
+function progress() {
+# Simple progress indicator at the end of line (followed by "Done" when command is completed)
+	while ps |grep $!; do
+		echo -en "\b-" >&3; sleep 1
+		echo -en "\b\\" >&3; sleep 1
+		echo -en "\b|" >&3; sleep 1
+		echo -en "\b/" >&3; sleep 1
+	done
+	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
+}
+
+function prepare_system() {
+	# Upgrading APT-GET
+	echo "Updating apt-get..." >&3
+	apt-get -y update & progress
+
+	# Install essential packages for Ubuntu
+	echo "Installing dependencies..." >&3
+	apt-get -y install $ESSENTIAL_PACKAGES & progress
+
+	# Install all PHP Libraries
+	echo "Installing the PHP libraries..." >&3
+	apt-get -y $PHP_LIBRARIES & progress
+	
+	# Create temporary folder for the sources
+	mkdir $TMPDIR
+}
+
+function check_download () {
+# Simple function to check if the download and extraction finished successfully.
+	if [ -e "$2" ] ; then
+		echo  -e '\E[47;34m'"$1 download and extraction was successful." >&3
+		tput sgr0 >&3
+	else
+		echo "Error: $1 Download was unsuccessful." >&3
+		echo "Check the install.log for errors." >&3
+		echo "Press any key to exit..." >&3
+		read -n 1
+		exit 1   
+	fi
+}
+
+function install_mysql() {
+# Installing MySQL server (this is escaped in order to be able to type the password in the initial dialog)
+	echo "Installing the MySQL..." >&3
+	apt-get -y install mysql-server mysql-client >&3
+}
+
+function install_php() {
+	echo "Downloading and extracting PHP-$PHP_VER..." >&3
+	cd $TMPDIR
+	wget "http://us2.php.net/distributions/php-$PHP_VER.tar.gz" & progress
+	tar xzvf php-$PHP_VER.tar.gz
+	check_download "PHP5" "$TMPDIR/php-$PHP_VER.tar.gz"
+	
+	### Fix Ubuntu 11.04 LIB PATH ###
+	[ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
+	[ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so
+	[ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
+	[ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
+	##################################
+	
+	cd $TMPDIR/php-$PHP_VER
+	./buildconf --force
+	echo "Configuring PHP (Please be patient, this will take a while...)" >&3
+	./configure \
+--prefix=$DSTDIR/php5 \
+--with-config-file-path=/etc/php5 \
+--with-config-file-scan-dir=/etc/php5/conf.d \
+--with-curl \
+--with-pear \
+--with-gd \
+--with-jpeg-dir \
+--with-png-dir \
+--with-zlib \
+--with-xpm-dir \
+--with-freetype-dir \
+--with-t1lib \
+--with-mcrypt \
+--with-mhash \
+--with-mysql \
+--with-mysqli \
+--with-pdo-mysql \
+--with-openssl \
+--with-xmlrpc \
+--with-xsl \
+--with-bz2 \
+--with-gettext \
+--with-fpm-user=www-data \
+--with-fpm-group=www-data \
+--disable-debug \
+--enable-fpm \
+--enable-exif \
+--enable-wddx \
+--enable-zip \
+--enable-bcmath \
+--enable-calendar \
+--enable-ftp \
+--enable-mbstring \
+--enable-soap \
+--enable-sockets \
+--enable-sqlite-utf8 \
+--enable-shmop \
+--enable-dba \
+--enable-sysvsem \
+--enable-sysvshm \
+--enable-sysvmsg & progress
+	
+	echo "Compiling PHP (Please be patient, this will take a while...)" >&3
+	make & progress
+	echo "Installing PHP..." >&3
+	make install & progress
+	
+	echo 'Setting up PHP...' >&3
+	sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"$DSTDIR/php5\"~" $SRCDIR/init_files/php5-fpm
+	mkdir -p /etc/php5/conf.d /var/log/php5-fpm
+	cp -f php.ini-production /etc/php5/php.ini
+	cp $SRCDIR/conf_files/php-fpm.conf /etc/php5/php-fpm.conf
+	cp $SRCDIR/init_files/php5-fpm /etc/init.d/php5-fpm
+	chmod +x /etc/init.d/php5-fpm
+	update-rc.d -f php5-fpm defaults
+	chown -R www-data:www-data /var/log/php5-fpm
+
+	echo 'Creating logrotate script...' >&3
+	echo '/var/log/php5-fpm/*.log {
+weekly
+missingok
+rotate 52
+compress
+delaycompress
+notifempty
+create 640 www-data www-data
+sharedscripts
+postrotate
+	[ ! -f /var/run/php5-fpm.pid ] || kill -USR1 `cat /var/run/php5-fpm.pid`
+endscript
+}' > /etc/logrotate.d/php5-fpm
+	
+	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
+}
+
+function install_apc() {
+	echo "Downloading and extracting APC-$APC_VER..." >&3
+	cd $TMPDIR
+	wget "http://pecl.php.net/get/APC-$APC_VER.tgz" & progress
+	tar xzvf APC-$APC_VER.tgz
+	check_download "APC" "$TMPDIR/APC-$APC_VER.tgz"
+
+	cd $TMPDIR/APC-$APC_VER
+
+	echo 'Configuring APC...' >&3
+	$DSTDIR/php5/bin/phpize -clean
+	./configure --enable-apc --with-php-config=$DSTDIR/php5/bin/php-config --with-libdir=$DSTDIR/php5/lib/php & progress
+
+	echo 'Compiling APC...' >&3
+	make & progress
+	
+	echo 'Installing APC...' >&3
+	make install
+	
+	echo 'extension = apc.so
+apc.enabled = 1
+apc.shm_size = 128M
+apc.shm_segments=1
+apc.write_lock = 1
+apc.rfc1867 = On
+apc.ttl=7200
+apc.user_ttl=7200
+apc.num_files_hint=1024
+apc.mmap_file_mask=/tmp/apc.XXXXXX
+apc.enable_cli=1
+; Optional, for "[apc-warning] Potential cache slam averted for key... errors"
+; apc.slam_defense = Off
+' > /etc/php5/conf.d/apc.ini
+	
+	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
+}
+
+function install_suhosin() {
+	echo "Downloading and extracting Suhosin-$SUHOSIN_VER..." >&3
+	cd $TMPDIR
+	wget "http://download.suhosin.org/suhosin-$SUHOSIN_VER.tar.gz" & progress
+	tar zxvf suhosin-$SUHOSIN_VER.tar.gz
+	check_download "Suhosin" "$TMPDIR/suhosin-$SUHOSIN_VER.tar.gz"
+	
+	cd $TMPDIR/suhosin-$SUHOSIN_VER
+	
+	echo 'Configuring Suhosin...' >&3
+	$DSTDIR/php5/bin/phpize -clean	
+	./configure --with-php-config=$DSTDIR/php5/bin/php-config --with-libdir=$DSTDIR/php5/lib/php & progress
+
+	echo 'Compiling Suhosin...' >&3
+	make & progress
+	
+	echo 'Installing Suhosin...' >&3
+	make install
+		
+	echo '; Suhosin Extension
+extension = suhosin.so' > /etc/php5/conf.d/suhosin.ini
+
+	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
+}
+
+function check_php () {
+	if [ -e "$DSTDIR/php5/bin/php" ] && [ $($DSTDIR/php5/bin/php -m | grep apc) ] && [ $($DSTDIR/php5/bin/php -m | grep suhosin) ] ; then
+		echo "=========================================================================" >&3
+		echo 'PHP with APC and Suhosin was successfully installed.' >&3
+		$DSTDIR/php5/bin/php -v >&3
+		echo "=========================================================================" >&3
+	else
+		echo 'Error: PHP installation was unsuccessful.' >&3
+		echo "Check the install.log for errors." >&3
+		echo 'Press any key to exit...' >&3
+		read -n 1
+		exit 1
+	fi
+}
+
+function install_nginx() {
+	echo "Downloading and extracting nginx-$NGINX_VER..." >&3
+	mkdir $WEBDIR;
+	cd $TMPDIR
+	wget "http://nginx.org/download/nginx-$NGINX_VER.tar.gz" & progress
+	tar zxvf nginx-$NGINX_VER.tar.gz
+	check_download "NginX" "$TMPDIR/nginx-$NGINX_VER.tar.gz"
+	
+	cd $TMPDIR/nginx-$NGINX_VER/
+	
+	echo 'Configuring NginX...' >&3
+	./configure --prefix=$DSTDIR/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--http-log-path=/var/log/nginx/access.log \
+--error-log-path=/var/log/nginx/error.log \
+--pid-path=/var/run/nginx.pid \
+--lock-path=/var/lock/nginx.lock \
+--with-http_stub_status_module \
+--with-http_ssl_module \
+--with-http_realip_module \
+--without-mail_pop3_module \
+--without-mail_imap_module \
+--without-mail_smtp_module & progress
+		
+	echo 'Compiling NginX...' >&3
+	make & progress
+	
+	echo 'Installing NginX...' >&3
+	make install
+	
+	sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"$DSTDIR/nginx\"~" $SRCDIR/init_files/nginx
+	
+	cp $SRCDIR/init_files/nginx /etc/init.d/nginx
+	chmod +x /etc/init.d/nginx
+	update-rc.d -f nginx defaults
+	cp $SRCDIR/conf_files/nginx.conf /etc/nginx/nginx.conf
+	mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
+	cp $SRCDIR/conf_files/default /etc/nginx/sites-available/default
+	ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+	cp $SRCDIR/ext/nxensite $DSTDIR/nginx/sbin/nxensite
+	cp $SRCDIR/ext/nxdissite $DSTDIR/nginx/sbin/nxdissite
+	chmod +x $DSTDIR/nginx/sbin/*
+
+	cp $SRCDIR/web_files/* $WEBDIR
+	
+	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
+	
+	echo 'Creating logrotate script...' >&3
+	chown -R www-data:www-data /var/log/nginx
+	echo '/var/log/nginx/*.log {
+	weekly
+	missingok
+	rotate 52
+	compress
+	delaycompress
+	notifempty
+	create 640 root adm
+	sharedscripts
+	postrotate
+		[ ! -f /var/run/nginx.pid ] || kill -USR1 `cat /var/run/nginx.pid`
+	endscript
+}' > /etc/logrotate.d/nginx	
+	
+}
+
+function check_nginx () {
+	if [ -x "$DSTDIR/nginx/sbin/nginx" ] ; then
+		echo "=========================================================================" >&3
+		echo 'NginX was successfully installed.' >&3
+		$DSTDIR/nginx/sbin/nginx -v >&3
+		echo "=========================================================================" >&3
+	else
+		echo 'Error: NginX installation was unsuccessful.' >&3
+		echo "Check the install.log for errors." >&3
+		echo 'Press any key to exit...' >&3
+		read -n 1
+		exit 1
+	fi
+}
+
+function set_paths() {
+	echo 'Setting up paths...' >&3
+	export PATH="$PATH:$DSTDIR/nginx/sbin:$DSTDIR/php5/bin:$DSTDIR/php5/sbin"
+	echo "PATH=\"$PATH\"" > /etc/environment
+	source /etc/environment
+}
+
+function restart_servers() {
+	echo 'Restarting servers...' >&3
+	pkill nginx
+	pkill php-fpm
+	/etc/init.d/php5-fpm start
+	/etc/init.d/nginx start
+}
 
 # Check if you are root
 if [ $(id -u) != "0" ]; then
@@ -22,15 +350,20 @@ if [ $(id -u) != "0" ]; then
   echo "Error: Please use 'sudo'."
   exit 1
 fi
+USER=$(who mom likes | awk '{print $1}')
 
 # Logging everything to LOG_FILE 
 exec 3>&1 4>&2
 trap 'exec 2>&4 1>&3' 0 1 2 3
 exec 1>$LOG_FILE 2>&1
-# Traps CTRL-C
-trap "echo -e '\nCancelled by user' >&3; echo -e '\nCancelled by user'; exit 1" 2
 
-clear
+# Traps CTRL-C
+trap ctrl_c INT
+function ctrl_c() {
+	echo -e '\nCancelled by user' >&3; echo -e '\nCancelled by user'; kill $!; exit 1
+}
+
+clear >&3
 echo "=========================================================================" >&3
 echo "This script will install the following:" >&3
 echo "=========================================================================" >&3
@@ -52,260 +385,23 @@ case  $continue_install  in
   *)
 esac 
 
-### Get the working directory
-CUR_DIR=`dirname $(readlink -f $0)`
+prepare_system
 
-### Update the system
-echo "Updating apt-get..." >&3
-apt-get -y update
+install_mysql
 
-### Install Dependencies
-echo "Installing dependencies..." >&3
-apt-get -y install htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev libcompress-zlib-perl m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev lynx make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc
+install_php
+install_apc
+install_suhosin
+check_php
 
-### Install PHP Libs
-echo "Installing the PHP libraries..." >&3
-apt-get -y install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick
+install_nginx
+check_nginx
 
-### Install MySQL
-echo "Installing the MySQL..." >&3
-apt-get -y install mysql-server mysql-client >&3
+set_paths
+restart_servers
 
-### Download the packages
-echo "Downloading and extracting nginx-$NGINX_VER..." >&3
-mkdir /var/www
-mkdir $CUR_DIR/lemp_sources
-cd $CUR_DIR/lemp_sources
-wget http://nginx.org/download/nginx-$NGINX_VER.tar.gz
-tar zxvf nginx-$NGINX_VER.tar.gz
-
-echo "Downloading and extracting PHP-$PHP_VER..." >&3
-wget http://us2.php.net/distributions/php-$PHP_VER.tar.gz
-tar xzvf php-$PHP_VER.tar.gz
-
-echo "Downloading and extracting APC-$APC_VER..." >&3
-wget http://pecl.php.net/get/APC-$APC_VER.tgz
-tar xzvf APC-$APC_VER.tgz
-
-echo "Downloading and extracting Suhosin-$SUHOSIN_VER..." >&3
-wget http://download.suhosin.org/suhosin-$SUHOSIN_VER.tar.gz
-tar zxvf suhosin-$SUHOSIN_VER.tar.gz
-
-### Check download
-if [ -d "$CUR_DIR/lemp_sources/nginx-$NGINX_VER" ] && [ -d "$CUR_DIR/lemp_sources/php-$PHP_VER" ] && [ -d "$CUR_DIR/lemp_sources/APC-$APC_VER" ] && [ -d "$CUR_DIR/lemp_sources/suhosin-$SUHOSIN_VER" ] ; then
-  echo 'NginX, PHP, APC and Suhosin download and extraction successful.' >&3
-else
-  echo 'Error: Download was unsuccessful.' >&3
-  echo "Check the install.log for errors." >&3
-  echo 'Press any key to exit...' >&3
-  read -n 1
-  exit 1   
-fi
-
-### Compile PHP
-echo "Installing PHP (Please be patient, this will take a while...)" >&3
-
-### Temporary fix ###
-[ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
-[ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so
-[ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
-[ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
-#####################
-
-cd php-$PHP_VER
-./buildconf --force
-./configure \
-  --prefix=/opt/php5 \
-  --with-config-file-path=/etc/php5 \
-  --with-config-file-scan-dir=/etc/php5/conf.d \
-  --with-curl \
-  --with-pear \
-  --with-gd \
-  --with-jpeg-dir \
-  --with-png-dir \
-  --with-zlib \
-  --with-xpm-dir \
-  --with-freetype-dir \
-  --with-t1lib \
-  --with-mcrypt \
-  --with-mhash \
-  --with-mysql \
-  --with-mysqli \
-  --with-pdo-mysql \
-  --with-openssl \
-  --with-xmlrpc \
-  --with-xsl \
-  --with-bz2 \
-  --with-gettext \
-  --with-fpm-user=www-data \
-  --with-fpm-group=www-data \
-  --disable-debug \
-  --enable-fpm \
-  --enable-exif \
-  --enable-wddx \
-  --enable-zip \
-  --enable-bcmath \
-  --enable-calendar \
-  --enable-ftp \
-  --enable-mbstring \
-  --enable-soap \
-  --enable-sockets \
-  --enable-sqlite-utf8 \
-  --enable-shmop \
-  --enable-dba \
-  --enable-sysvsem \
-  --enable-sysvshm \
-  --enable-sysvmsg
-make
-make install
-
-echo 'Configuring PHP...' >&3
-mkdir -p /etc/php5/conf.d /var/log/php5-fpm
-cp -f php.ini-production /etc/php5/php.ini
-cp $CUR_DIR/conf_files/php-fpm.conf /etc/php5/php-fpm.conf
-cp $CUR_DIR/init_files/php5-fpm /etc/init.d/php5-fpm
-chmod +x /etc/init.d/php5-fpm
-update-rc.d -f php5-fpm defaults
-chown -R www-data:www-data /var/log/php5-fpm
-
-echo 'Creating logrotate script...' >&3
-echo '/var/log/php5-fpm/*.log {
-  weekly
-  missingok
-  rotate 52
-  compress
-  delaycompress
-  notifempty
-  create 640 www-data www-data
-  sharedscripts
-  postrotate
-    [ ! -f /var/run/php5-fpm.pid ] || kill -USR1 `cat /var/run/php5-fpm.pid`
-  endscript
-}' > /etc/logrotate.d/php5-fpm
-
-### Installing APC
-echo 'Installing APC...' >&3
-cd ../APC-$APC_VER
-/opt/php5/bin/phpize -clean
-./configure --enable-apc --with-php-config=/opt/php5/bin/php-config --with-libdir=/opt/php5/lib/php
-make
-make install
-
-echo 'extension = apc.so
-apc.enabled = 1
-apc.shm_size = 128M
-apc.shm_segments=1
-apc.write_lock = 1
-apc.rfc1867 = On
-apc.ttl=7200
-apc.user_ttl=7200
-apc.num_files_hint=1024
-apc.mmap_file_mask=/tmp/apc.XXXXXX
-apc.enable_cli=1
-; Optional, for "[apc-warning] Potential cache slam averted for key... errors"
-; apc.slam_defense = Off
-' > /etc/php5/conf.d/apc.ini
-
-### Installing Suhosin
-echo 'Installing Suhosin...' >&3
-cd ../suhosin-$SUHOSIN_VER
-
-/opt/php5/bin/phpize -clean
-./configure --with-php-config=/opt/php5/bin/php-config --with-libdir=/opt/php5/lib/php
-make
-make install
-
-echo '; Suhosin Extension
-extension = suhosin.so' > /etc/php5/conf.d/suhosin.ini
-
-### Check PHP installation
-if [ -e "/opt/php5/bin/php" ] ; then
-  echo "=========================================================================" >&3
-  echo 'PHP was successfully installed.' >&3
-  /opt/php5/bin/php -v >&3
-  echo "=========================================================================" >&3
-else
-  echo 'Error: PHP installation was unsuccessful.' >&3
-  echo "Check the install.log for errors." >&3
-  echo 'Press any key to exit...' >&3
-  read -n 1
-  exit 1
-fi
-
-### Installing NginX
-echo 'Installing NginX...' >&3
-cd ../nginx-$NGINX_VER/
-
-./configure --prefix=/opt/nginx \
-    --conf-path=/etc/nginx/nginx.conf \
-    --http-log-path=/var/log/nginx/access.log \
-    --error-log-path=/var/log/nginx/error.log \
-    --pid-path=/var/run/nginx.pid \
-    --lock-path=/var/lock/nginx.lock \
-    --with-http_stub_status_module \
-    --with-http_ssl_module \
-    --with-http_realip_module \
-    --without-mail_pop3_module \
-    --without-mail_imap_module \
-    --without-mail_smtp_module
-make
-make install
-
-echo 'Configuring NginX...' >&3
-cp $CUR_DIR/init_files/nginx /etc/init.d/nginx
-chmod +x /etc/init.d/nginx
-update-rc.d -f nginx defaults
-cp $CUR_DIR/conf_files/nginx.conf /etc/nginx/nginx.conf
-mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
-cp $CUR_DIR/conf_files/default /etc/nginx/sites-available/default
-ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
-cp $CUR_DIR/ext/nxensite /opt/nginx/sbin/nxensite
-cp $CUR_DIR/ext/nxdissite /opt/nginx/sbin/nxdissite
-chmod +x /opt/nginx/sbin/*
-
-cp $CUR_DIR/web_files/* /var/www
-
-echo 'Creating logrotate script...' >&3
-chown -R www-data:www-data /var/log/nginx
-echo '/var/log/nginx/*.log {
-  weekly
-  missingok
-  rotate 52
-  compress
-  delaycompress
-  notifempty
-  create 640 root adm
-  sharedscripts
-  postrotate
-    [ ! -f /var/run/nginx.pid ] || kill -USR1 `cat /var/run/nginx.pid`
-  endscript
-}' > /etc/logrotate.d/nginx
-
-### Check NginX installation
-if [ -e "/opt/nginx/sbin/nginx" ] ; then
-  echo "=========================================================================" >&3
-  echo 'NginX was successfully installed.' >&3
-  /opt/nginx/sbin/nginx -v >&3
-  echo "=========================================================================" >&3
-else
-  echo 'Error: NginX installation was unsuccessful.' >&3
-  echo "Check the install.log for errors." >&3
-  echo 'Press any key to exit...' >&3
-  read -n 1
-  exit 1
-fi
-
-echo 'Setting up paths...' >&3
-export PATH="$PATH:/opt/nginx/sbin:/opt/php5/bin:/opt/php5/sbin"
-echo "PATH=\"$PATH\"" > /etc/environment
-source /etc/environment
-
-echo 'Restarting servers...' >&3
-pkill nginx
-pkill php-fpm
-/etc/init.d/php5-fpm start
-/etc/init.d/nginx start
+chown -R $USER:$USER $SRCDIR
+rm -r $TMPDIR
 
 sleep 5
 

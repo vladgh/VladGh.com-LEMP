@@ -44,6 +44,10 @@ You can also use the `nxensite` and `nxdissite` commands to enable or disable si
 
 ## Release Notes: ##
 
+### 3.0 ###
+
+  * Added progress indicator and reorganized code.
+	
 ### 2.5 ###
 
   * Added nxensite and nxdissite scripts (Thanks to [dambravicius](https://github.com/dambravicius)).

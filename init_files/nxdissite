@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if ! [ $1 ]; then exit; fi
+
+# Check if you are root
+if [ $(id -u) != "0" ]; then
+  echo "Error: You must be root to run this installer."
+  echo "Error: Please use 'sudo'."
+  exit 1
+fi
+
+for site in $*; do
+
+  # Check if enabled
+  if [ -f /etc/nginx/sites-enabled/$site ]; then
+    echo "Disabling $site"
+    rm /etc/nginx/sites-enabled/$site
+  else
+    echo "$site is already disabled"
+  fi
+
+done
+
+echo "Do you want to restart Nginx? [Y/n]: "
+read answer
+case $answer in 'n'|'N'|'No'|'no') exit ;; esac
+
+/etc/init.d/nginx restart

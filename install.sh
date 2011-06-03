@@ -52,7 +52,11 @@ case  $continue_install  in
   *)
 esac 
 
-CUR_DIR=$(pwd)
+CUR_DIR=`dirname $(readlink -f $0)`
+# CUR_DIR=$(pwd)
+# I think it's better
+# In case you execute the script from your home dir like this lemp/install.sh,
+# $pwd will show /home/vlad not /home/vlad/lemp which is required in our case.
 
 ### Update the system
 echo "Updating apt-get..." >&3
@@ -267,6 +271,11 @@ cp $CUR_DIR/conf_files/nginx.conf /etc/nginx/nginx.conf
 mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
 cp $CUR_DIR/conf_files/example.com /etc/nginx/sites-available/example.com
 ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/example.com
+
+cp $CUR_DIR/init_files/nxensite /opt/nginx/sbin/nxensite
+cp $CUR_DIR/init_files/nxdissite /opt/nginx/sbin/nxdissite
+chmod +x /opt/nginx/sbin/*
+export PATH="$PATH:/opt/nginx/sbin"
 
 cp $CUR_DIR/web_files/* /var/www
 

@@ -4,7 +4,7 @@ if ! [ $1 ]; then exit; fi
 
 # Check if you are root
 if [ $(id -u) != "0" ]; then
-  echo "Error: You must be root to run this installer."
+  echo "Error: You must be root to run this command."
   echo "Error: Please use 'sudo'."
   exit 1
 fi

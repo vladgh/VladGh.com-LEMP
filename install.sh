@@ -52,11 +52,8 @@ case  $continue_install  in
   *)
 esac 
 
+### Get the working directory
 CUR_DIR=`dirname $(readlink -f $0)`
-# CUR_DIR=$(pwd)
-# I think it's better
-# In case you execute the script from your home dir like this lemp/install.sh,
-# $pwd will show /home/vlad not /home/vlad/lemp which is required in our case.
 
 ### Update the system
 echo "Updating apt-get..." >&3
@@ -163,21 +160,12 @@ make
 make install
 
 echo 'Configuring PHP...' >&3
-echo '
-if [ -d "/opt/php5/bin" ] && [ -d "/opt/php5/sbin" ]; then
-    PATH="$PATH:/opt/php5/bin:/opt/php5/sbin"
-fi' >> /etc/bash.bashrc
-
-export PATH="$PATH:/opt/php5/bin:/opt/php5/sbin"
-
 mkdir -p /etc/php5/conf.d /var/log/php5-fpm
-
 cp -f php.ini-production /etc/php5/php.ini
 cp $CUR_DIR/conf_files/php-fpm.conf /etc/php5/php-fpm.conf
 cp $CUR_DIR/init_files/php5-fpm /etc/init.d/php5-fpm
 chmod +x /etc/init.d/php5-fpm
 update-rc.d -f php5-fpm defaults
-
 chown -R www-data:www-data /var/log/php5-fpm
 
 echo 'Creating logrotate script...' >&3
@@ -269,13 +257,12 @@ chmod +x /etc/init.d/nginx
 update-rc.d -f nginx defaults
 cp $CUR_DIR/conf_files/nginx.conf /etc/nginx/nginx.conf
 mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
-cp $CUR_DIR/conf_files/example.com /etc/nginx/sites-available/example.com
-ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/example.com
+cp $CUR_DIR/conf_files/default /etc/nginx/sites-available/default
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-cp $CUR_DIR/init_files/nxensite /opt/nginx/sbin/nxensite
-cp $CUR_DIR/init_files/nxdissite /opt/nginx/sbin/nxdissite
+cp $CUR_DIR/ext/nxensite /opt/nginx/sbin/nxensite
+cp $CUR_DIR/ext/nxdissite /opt/nginx/sbin/nxdissite
 chmod +x /opt/nginx/sbin/*
-export PATH="$PATH:/opt/nginx/sbin"
 
 cp $CUR_DIR/web_files/* /var/www
 
@@ -308,6 +295,11 @@ else
   read -n 1
   exit 1
 fi
+
+echo 'Setting up paths...' >&3
+export PATH="$PATH:/opt/nginx/sbin:/opt/php5/bin:/opt/php5/sbin"
+echo "PATH=\"$PATH\"" > /etc/environment
+source /etc/environment
 
 echo 'Restarting servers...' >&3
 pkill nginx

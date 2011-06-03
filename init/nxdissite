@@ -1,0 +1,23 @@
+#!/bin/bash
+
+DSTDIR="/opt"
+
+if ! [ $1 ]; then exit; fi
+
+for site in $*; do
+
+  # check if enabled
+  if [ -f $DSTDIR/nginx/sites-enabled/$site ]; then
+    echo "Disabling $site"
+    sudo rm $DSTDIR/nginx/sites-enabled/$site
+  else
+    echo "$site is already disabled"
+  fi
+
+done
+
+echo "Do you want to restart nginx? [Y/n]: "
+read  answer
+case  $answer in 'n'|'N'|'No'|'no') exit ;; esac
+
+sudo /etc/init.d/nginx restart

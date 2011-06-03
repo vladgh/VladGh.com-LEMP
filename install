@@ -1,0 +1,200 @@
+#!/bin/bash
+
+### Versions:
+NGINX_VER="1.0.3"
+PHP_VER="5.3.6"
+APC_VER="3.1.9"
+SUHOSIN_VER="0.9.32.1"
+RUBY_VER="1.9.2-p180"
+LOG_FILE="install.log"
+
+
+ESSENTIAL_PACKAGES="build-essential mysql-server gcc cpp make perl perl-modules openssl unzip zip subversion psmisc htop vim-nox binutils flex libarchive-zip-perl libc6-dev libcompress-zlib-perl m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev autoconf2.13 gnu-standards automake libtool bison zlib1g-dev ntp ntpdate autotools-dev g++ bc "
+PHP_PACKAGES="libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick"
+
+
+PHP_SOURCES=(
+"http://lt.php.net/distributions/"
+"http://museum.php.net/php5/"
+"http://museum.php.net/php4/"
+)
+
+
+USER=$(who mom likes | awk '{print $1}')
+SRCDIR=`dirname $(readlink -f $0)`
+TMPDIR="$SRCDIR/tmp"
+DSTDIR="/opt"
+WEBDIR="/var/www/devbox"
+
+
+if [ $(id -u) != "0" ]; then
+  echo "Error: You must be root to run this installer."
+  echo "Error: Please use 'sudo'."
+  exit 1
+fi
+
+
+function download() {
+  url=$1
+  package=$(basename $url)
+  if [ -f $package ]; then return 0; fi
+  wget $url
+}
+
+function download_php() {
+  package="php-$1.tar.gz"
+  if [ -f $package ]; then return 0; fi
+  for source in ${PHP_SOURCES[*]}; do
+    wget $source$package
+    if [ -f $package ]; then
+      if [ `stat -c %s $package` -gt 10000 ]; then 
+        return 0
+      else 
+        rm $package
+      fi
+    fi
+  done
+  return 1
+}
+
+function install_nginx() {
+  nginx_ver=$1
+  if ! [ $nginx_ver ]; then nginx_ver=$NGINX_VER; fi
+  cd $TMPDIR
+  download "http://nginx.org/download/nginx-$nginx_ver.tar.gz"
+  if ! [ -f nginx-$nginx_ver.tar.gz ]; then 
+    echo "nginx $nginx_ver did not download successfully"; return 1
+  fi 
+  tar xvzf nginx-$nginx_ver.tar.gz
+  cd nginx-$nginx_ver
+  ./configure \
+    --prefix=$DSTDIR/nginx \
+    --conf-path=$DSTDIR/nginx/conf/nginx.conf \
+    --pid-path=/var/run/nginx.pid --lock-path=/var/lock/nginx.lock --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --http-client-body-temp-path=/var/lib/nginx/body --http-proxy-temp-path=/var/lib/nginx/proxy --http-fastcgi-temp-path=/var/lib/nginx/fastcgi --http-uwsgi-temp-path=/var/lib/nginx/uwsgi --http-scgi-temp-path=/var/lib/nginx/scgi --with-http_ssl_module --with-http_stub_status_module --user=www-data --group=www-data --without-mail_pop3_module --without-mail_imap_module --without-mail_smtp_module
+  make && make install
+  mkdir -p /var/lib/nginx/body /var/lib/nginx/proxy /var/lib/nginx/fastcgi /var/lib/nginx/uwsgi /var/lib/nginx/scgi
+  cp -f $SRCDIR/conf/nginx.conf /$DSTDIR/nginx/conf/nginx.conf
+  cp -f $SRCDIR/init/nginx /etc/init.d/nginx
+  chmod +x /etc/init.d/nginx
+  update-rc.d -f nginx defaults
+  cd ..; rm -rf nginx-$nginx_ver
+
+  mkdir -p $DSTDIR/nginx/sites-available $DSTDIR/nginx/sites-enabled
+  cp -f $SRCDIR/conf/default $DSTDIR/nginx/sites-available/default
+  cp -f $SRCDIR/web/* $WEBDIR/
+  ln -s $DSTDIR/nginx/sites-available/default $DSTDIR/nginx/sites-enabled/default
+  
+  cp -f $SRCDIR/init/nxensite $DSTDIR/nginx/sbin/
+  cp -f $SRCDIR/init/nxdissite $DSTDIR/nginx/sbin/
+  chmod +x $DSTDIR/nginx/sbin/*
+  ln -s $DSTDIR/nginx/sbin/nxensite  /usr/bin/
+  ln -s $DSTDIR/nginx/sbin/nxdissite /usr/bin/
+  
+}
+
+function install_php() {
+  php_ver=$1
+  if ! [ $php_ver ]; then php_ver=$PHP_VER; fi
+  cd $TMPDIR
+  download_php $php_ver || {  echo "php $php_ver did not download successfully"; return 1; }
+#  download "http://lt.php.net/distributions/php-$php_ver.tar.gz"
+#  if ! [ -f php-$php_ver.tar.gz ]; then 
+#    echo "php $php_ver did not download successfully"; return 1
+#  fi 
+  tar xvzf php-$php_ver.tar.gz
+  cd php-$php_ver
+  
+  ### Temporary fix ###
+  [ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
+  [ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so
+  [ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
+  [ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
+  #####################
+  
+  ./buildconf --force
+  ./configure \
+    --prefix=$DSTDIR/php/$php_ver \
+    --with-config-file-path=$DSTDIR/php/$php_ver/conf \
+    --with-config-file-scan-dir=$DSTDIR/php/$php_ver/conf/conf.d \
+    --with-curl --with-pear --with-gd --with-jpeg-dir --with-png-dir --with-zlib --with-xpm-dir --with-freetype-dir --with-t1lib --with-mcrypt --with-mhash --with-mysql --with-mysqli --with-pdo-mysql --with-openssl --with-xmlrpc --with-xsl --with-bz2 --with-gettext --with-fpm-user=www-data --with-fpm-group=www-data --disable-debug --enable-fpm --enable-exif --enable-wddx --enable-zip --enable-bcmath --enable-calendar --enable-ftp --enable-mbstring --enable-soap --enable-sockets --enable-sqlite-utf8 --enable-shmop --enable-dba --enable-sysvsem --enable-sysvshm --enable-sysvmsg
+  make && make install
+  mkdir -p $DSTDIR/php/$php_ver/conf/conf.d /var/log/php5-fpm
+  cp -f php.ini-development $DSTDIR/php/$php_ver/conf/php.ini
+  cp -f $SRCDIR/conf/php-fpm.conf $DSTDIR/php/$php_ver/conf/php-fpm.conf
+  cp -f $SRCDIR/init/php5-fpm /etc/init.d/php5-fpm
+  chmod +x /etc/init.d/php5-fpm
+  update-rc.d -f php5-fpm defaults
+  cd ..; rm -rf php-$php_ver
+  chown -R www-data:www-data /var/log/php5-fpm
+
+  if [ $2 ] && [ $2 = "main" ]; then 
+    sudo ln -s -f $DSTDIR/php/$php_ver/bin/php /usr/bin/php
+  fi
+  
+  ### APC
+  
+  cd $TMPDIR
+  download "http://pecl.php.net/get/APC-$APC_VER.tgz"
+  if [ -f APC-$APC_VER.tgz ]; then 
+    tar xvzf APC-$APC_VER.tgz
+    cd APC-$APC_VER
+    $DSTDIR/php/$php_ver/bin/phpize
+    ./configure --enable-apc --with-php-config=$DSTDIR/php/$php_ver/bin/php-config --with-libdir=$DSTDIR/php/$php_ver/lib/php
+    make && make install
+    echo 'extension = apc.so
+apc.enabled = 1
+apc.shm_size = 128M
+apc.shm_segments=1
+apc.write_lock = 1
+apc.rfc1867 = On
+apc.ttl=7200
+apc.user_ttl=7200
+apc.num_files_hint=1024
+apc.mmap_file_mask=/tmp/apc.XXXXXX
+apc.enable_cli=1
+; Optional, for "[apc-warning] Potential cache slam averted for key... errors"
+; apc.slam_defense = Off
+' > $DSTDIR/php/$php_ver/conf/conf.d/apc.ini
+    cd ..; rm -rf APC-$APC_VER package.xml
+  else
+    echo "apc $APC_VER did not download successfully"
+  fi 
+  
+  ### SUHOSIN
+  
+  cd $TMPDIR
+  download "http://download.suhosin.org/suhosin-$SUHOSIN_VER.tar.gz"
+  if [ -f suhosin-$SUHOSIN_VER.tgz ]; then 
+    tar xvzf suhosin-$SUHOSIN_VER.tgz
+    cd suhosin-$SUHOSIN_VER
+    $DSTDIR/php/$php_ver/bin/phpize
+    ./configure --with-php-config=$DSTDIR/php/$php_ver/bin/php-config --with-libdir=$DSTDIR/php/$php_ver/lib/php
+    make && make install
+    echo '; Suhosin Extension
+extension = suhosin.so' > $DSTDIR/php/$php_ver/conf/conf.d/suhosin.ini
+    cd ..; rm -rf suhosin-$SUHOSIN_VER
+  else
+    echo "suhosin $APC_VER did not download successfully"
+  fi
+  
+}
+
+
+
+apt-get update
+apt-get upgrade
+apt-get -y install $ESSENTIAL_PACKAGES
+apt-get -y install $PHP_PACKAGES
+apt-get -y install $NGINX_PACKAGES
+
+mkdir -p $DSTDIR $TMPDIR $WEBDIR; cd $TMPDIR
+
+if ! [ -f /etc/my.cnf ]; then cp $SRCDIR/conf/my.cnf /etc/my.cnf; fi
+
+install_nginx $NGINX_VER
+install_php $PHP_VER main
+
+pkill nginx;    /etc/init.d/nginx start
+pkill php5_fpm; /etc/init.d/php5-fpm start
+
+cd $SRCDIR; chown -R $USER:$USER *

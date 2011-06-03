@@ -11,9 +11,12 @@
 
 set -u
 
+PHP_VER="5.3.6"
+DSTDIR="/opt"
+
 DAEMON="PHP5 FPM"
-FPM_CMD=/opt/php5/sbin/php-fpm
-FPM_CONF=/etc/php5/php-fpm.conf
+FPM_CMD=$DSTDIR/php/$PHP_VER/sbin/php-fpm
+FPM_CONF=$DSTDIR/php/$PHP_VER/conf/php-fpm.conf
 FPM_PID=/var/run/php-fpm.pid
 TIMEOUT=30
 

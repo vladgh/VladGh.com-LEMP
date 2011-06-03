@@ -1,0 +1,28 @@
+#!/bin/bash
+
+DSTDIR="/opt"
+
+if ! [ $1 ]; then exit; fi
+
+for site in $*; do
+  
+  # check if already enabled
+  if [ -f $DSTDIR/nginx/sites-enabled/$site ]; then
+    echo "$site is already enabled"; continue
+  fi
+  
+  # check if exists
+  if [ -f $DSTDIR/nginx/sites-available/$site ]; then
+    echo "Enabling $site"
+    sudo ln -s $DSTDIR/nginx/sites-available/$site $DSTDIR/nginx/sites-enabled/$site
+  else
+    echo "no such file: $DSTDIR/nginx/sites-available/$site"
+  fi
+  
+done
+
+echo "Do you want to restart nginx? [Y/n]: "
+read  answer
+case  $answer in 'n'|'N'|'No'|'no') exit ;; esac
+
+sudo /etc/init.d/nginx restart

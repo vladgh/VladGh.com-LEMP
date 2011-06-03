@@ -329,3 +329,8 @@ else
   read -n 1
   exit 1
 fi
+
+
+# It bothers me when there are files in my home dir that are not owned by me :)
+USER=$(who mom likes | awk '{print $1}')
+chown -R $USER:$USER $CUR_DIR/*

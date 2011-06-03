@@ -71,6 +71,12 @@ apt-get -y install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpe
 echo "Installing the MySQL..." >&3
 apt-get -y install mysql-server mysql-client >&3
 
+### Setting default character set UTF-8 for non root connections to MySQL
+# Don't know if you need it, but I often find it very useful. :)
+if ! [ -f /etc/my.cnf ]; then 
+  cp $CUR_DIR/conf/my.cnf /etc/my.cnf; 
+fi
+
 ### Download the packages
 echo "Downloading and extracting nginx-$NGINX_VER..." >&3
 mkdir /var/www

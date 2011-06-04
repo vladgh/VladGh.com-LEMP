@@ -10,7 +10,7 @@
 #provide here you accept this terms.
 
 ### Program Versions:
-NGINX_VER="1.0.3"
+NGINX_VER="1.0.4"
 PHP_VER="5.3.6"
 APC_VER="3.1.9"
 SUHOSIN_VER="0.9.32.1"
@@ -23,6 +23,9 @@ TMPDIR="$SRCDIR/sources"
 
 ### Log file
 LOG_FILE="install.log"
+
+### Active user
+USER=$(who mom likes | awk '{print $1}')
 
 ### Essential Packages
 ESSENTIAL_PACKAGES="htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev libcompress-zlib-perl m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev lynx make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc"
@@ -79,6 +82,7 @@ function install_mysql() {
 }
 
 function install_php() {
+	# Get PHP package
 	echo "Downloading and extracting PHP-$PHP_VER..." >&3
 	cd $TMPDIR
 	wget "http://us2.php.net/distributions/php-$PHP_VER.tar.gz" & progress
@@ -92,6 +96,7 @@ function install_php() {
 	[ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
 	##################################
 	
+	# Compile php source
 	cd $TMPDIR/php-$PHP_VER
 	./buildconf --force
 	echo "Configuring PHP (Please be patient, this will take a while...)" >&3
@@ -142,7 +147,8 @@ function install_php() {
 	make & progress
 	echo "Installing PHP..." >&3
 	make install & progress
-	
+
+	# Copy configuration files
 	echo 'Setting up PHP...' >&3
 	sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"$DSTDIR/php5\"~" $SRCDIR/init_files/php5-fpm
 	mkdir -p /etc/php5/conf.d /var/log/php5-fpm
@@ -153,6 +159,7 @@ function install_php() {
 	update-rc.d -f php5-fpm defaults
 	chown -R www-data:www-data /var/log/php5-fpm
 
+	# Create log rotation script 
 	echo 'Creating logrotate script...' >&3
 	echo '/var/log/php5-fpm/*.log {
 weekly
@@ -172,6 +179,7 @@ endscript
 }
 
 function install_apc() {
+	# Get APC package
 	echo "Downloading and extracting APC-$APC_VER..." >&3
 	cd $TMPDIR
 	wget "http://pecl.php.net/get/APC-$APC_VER.tgz" & progress
@@ -179,7 +187,8 @@ function install_apc() {
 	check_download "APC" "$TMPDIR/APC-$APC_VER.tgz"
 
 	cd $TMPDIR/APC-$APC_VER
-
+	
+	# Compile APC source
 	echo 'Configuring APC...' >&3
 	$DSTDIR/php5/bin/phpize -clean
 	./configure --enable-apc --with-php-config=$DSTDIR/php5/bin/php-config --with-libdir=$DSTDIR/php5/lib/php & progress
@@ -189,7 +198,8 @@ function install_apc() {
 	
 	echo 'Installing APC...' >&3
 	make install
-	
+
+	# Copy configuration files
 	echo 'extension = apc.so
 apc.enabled = 1
 apc.shm_size = 128M
@@ -209,6 +219,7 @@ apc.enable_cli=1
 }
 
 function install_suhosin() {
+	#Get Suhosin packages
 	echo "Downloading and extracting Suhosin-$SUHOSIN_VER..." >&3
 	cd $TMPDIR
 	wget "http://download.suhosin.org/suhosin-$SUHOSIN_VER.tar.gz" & progress
@@ -216,7 +227,8 @@ function install_suhosin() {
 	check_download "Suhosin" "$TMPDIR/suhosin-$SUHOSIN_VER.tar.gz"
 	
 	cd $TMPDIR/suhosin-$SUHOSIN_VER
-	
+
+	# Compile Suhosin source
 	echo 'Configuring Suhosin...' >&3
 	$DSTDIR/php5/bin/phpize -clean	
 	./configure --with-php-config=$DSTDIR/php5/bin/php-config --with-libdir=$DSTDIR/php5/lib/php & progress
@@ -226,7 +238,8 @@ function install_suhosin() {
 	
 	echo 'Installing Suhosin...' >&3
 	make install
-		
+
+	# Copy configuration files
 	echo '; Suhosin Extension
 extension = suhosin.so' > /etc/php5/conf.d/suhosin.ini
 
@@ -234,7 +247,8 @@ extension = suhosin.so' > /etc/php5/conf.d/suhosin.ini
 }
 
 function check_php () {
-	if [ -e "$DSTDIR/php5/bin/php" ] && [ $($DSTDIR/php5/bin/php -m | grep apc) ] && [ $($DSTDIR/php5/bin/php -m | grep suhosin) ] ; then
+	# Check if the PHP executable exists and has the APC and Suhosin modules compiled.
+	if [ -x "$DSTDIR/php5/bin/php" ] && [ $($DSTDIR/php5/bin/php -m | grep apc) ] && [ $($DSTDIR/php5/bin/php -m | grep suhosin) ] ; then
 		echo "=========================================================================" >&3
 		echo 'PHP with APC and Suhosin was successfully installed.' >&3
 		$DSTDIR/php5/bin/php -v >&3
@@ -249,6 +263,7 @@ function check_php () {
 }
 
 function install_nginx() {
+	#Get NginX package
 	echo "Downloading and extracting nginx-$NGINX_VER..." >&3
 	mkdir $WEBDIR;
 	cd $TMPDIR
@@ -258,6 +273,7 @@ function install_nginx() {
 	
 	cd $TMPDIR/nginx-$NGINX_VER/
 	
+	# Compile php source
 	echo 'Configuring NginX...' >&3
 	./configure --prefix=$DSTDIR/nginx \
 --conf-path=/etc/nginx/nginx.conf \
@@ -277,9 +293,9 @@ function install_nginx() {
 	
 	echo 'Installing NginX...' >&3
 	make install
-	
+
+	# Copy configuration files
 	sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"$DSTDIR/nginx\"~" $SRCDIR/init_files/nginx
-	
 	cp $SRCDIR/init_files/nginx /etc/init.d/nginx
 	chmod +x /etc/init.d/nginx
 	update-rc.d -f nginx defaults
@@ -295,7 +311,8 @@ function install_nginx() {
 	cp $SRCDIR/web_files/* $WEBDIR
 	
 	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
-	
+
+	# Create log rotation script 
 	echo 'Creating logrotate script...' >&3
 	chown -R www-data:www-data /var/log/nginx
 	echo '/var/log/nginx/*.log {
@@ -315,6 +332,7 @@ function install_nginx() {
 }
 
 function check_nginx () {
+	# Check if Nginx exists and is executable and display the version.
 	if [ -x "$DSTDIR/nginx/sbin/nginx" ] ; then
 		echo "=========================================================================" >&3
 		echo 'NginX was successfully installed.' >&3
@@ -330,6 +348,7 @@ function check_nginx () {
 }
 
 function set_paths() {
+	# Make the NginX and PHP paths global.
 	echo 'Setting up paths...' >&3
 	export PATH="$PATH:$DSTDIR/nginx/sbin:$DSTDIR/php5/bin:$DSTDIR/php5/sbin"
 	echo "PATH=\"$PATH\"" > /etc/environment
@@ -337,6 +356,7 @@ function set_paths() {
 }
 
 function restart_servers() {
+	# Restart both NginX and PHP daemons
 	echo 'Restarting servers...' >&3
 	pkill nginx
 	pkill php-fpm
@@ -344,18 +364,27 @@ function restart_servers() {
 	/etc/init.d/nginx start
 }
 
-# Check if you are root
-if [ $(id -u) != "0" ]; then
-  echo "Error: You must be root to run this installer."
-  echo "Error: Please use 'sudo'."
-  exit 1
-fi
-USER=$(who mom likes | awk '{print $1}')
+function check_root() {
+	# Check if you are root
+	if [ $(id -u) != "0" ]; then
+		echo "Error: You must be root to run this installer."
+		echo "Error: Please use 'sudo'."
+		exit 1
+	fi
+}
 
-# Logging everything to LOG_FILE 
-exec 3>&1 4>&2
-trap 'exec 2>&4 1>&3' 0 1 2 3
-exec 1>$LOG_FILE 2>&1
+function log2file() {
+	# Logging everything to LOG_FILE 
+	exec 3>&1 4>&2
+	trap 'exec 2>&4 1>&3' 0 1 2 3
+	exec 1>$LOG_FILE 2>&1
+}
+
+###################################################################################
+### RUN ALL THE FUNCTIONS:
+
+check_root
+log2file
 
 # Traps CTRL-C
 trap ctrl_c INT
@@ -383,7 +412,7 @@ case  $continue_install  in
   exit 1
   ;;
   *)
-esac 
+esac
 
 prepare_system
 

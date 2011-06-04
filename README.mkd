@@ -9,6 +9,10 @@ All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-
 It's highly recommended to run this installer on a fresh installed system.
 This is tested with Ubuntu 10.04, 10.10 and 11.04, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
 
+![Donate via PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)
+
+###[If you find this interesting and you want to keep the development active, please click here to donate via PayPal:](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EBHGZKAFGW8CG)###
+
 # HOW TO: #
 
 Make sure you have Git installed on your Ubuntu System:
@@ -37,7 +41,11 @@ Also, if you go to:
 
 You can also use the `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
 
-### If you want to report an issue you can use the tracker available at [https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ###
+![Donate via PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)
+
+###[If you find this interesting and you want to keep the development active, please click here to donate via PayPal:](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EBHGZKAFGW8CG)###
+
+#### If you want to report an issue you can use the tracker available at [https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ####
 
 # DISCLAIMER: #
 ** All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms. **

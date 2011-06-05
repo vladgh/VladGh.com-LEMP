@@ -39,7 +39,13 @@ Also, if you go to:
   * **http://example.com/nginx_status** for the NginX statistics;
   * **http://example.com/status?html** for the FPM statistics. 
 
-You can also use the `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
+# Utilities: #
+In the "ext" folder you will also find some utilities:
+
+* `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
+* `update_nginx.sh` script which can upgrade the current nginx.
+	* you can run it with `sudo env PATH=$PATH bash ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
+	* this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options programmatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
 
 ![Donate via PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)
 
@@ -52,6 +58,11 @@ You can also use the `nxensite` and `nxdissite` commands to enable or disable si
 
 ## Release Notes: ##
 
+### 3.1 ###
+
+  * Added nginx upgrade script.
+  * Improved kill command.
+	
 ### 3.0 ###
 
   * Added progress indicator and reorganized code.

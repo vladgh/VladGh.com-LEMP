@@ -358,8 +358,10 @@ function set_paths() {
 function restart_servers() {
 	# Restart both NginX and PHP daemons
 	echo 'Restarting servers...' >&3
-	pkill nginx
-	pkill php-fpm
+	if [ $(ps -ef | egrep -c "(nginx|php-fpm)") -gt 1 ]; then 
+		ps -e | grep nginx | awk '{print $1}' | xargs sudo kill -INT
+	fi
+	sleep 2
 	/etc/init.d/php5-fpm start
 	/etc/init.d/nginx start
 }
@@ -389,7 +391,7 @@ log2file
 # Traps CTRL-C
 trap ctrl_c INT
 function ctrl_c() {
-	echo -e '\nCancelled by user' >&3; echo -e '\nCancelled by user'; kill $!; exit 1
+	echo -e '\nCancelled by user' >&3; echo -e '\nCancelled by user'; if [ -n "$!" ]; then kill $!; fi; exit 1
 }
 
 clear >&3

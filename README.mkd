@@ -9,9 +9,8 @@ All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-
 It's highly recommended to run this installer on a fresh installed system.
 This is tested with Ubuntu 10.04, 10.10 and 11.04, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
 
-![Donate via PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)
-
-###[If you find this interesting and you want to keep the development active, please click here to donate via PayPal:](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EBHGZKAFGW8CG)###
+###If you find this interesting and you want to keep the development active, please click on the button below to donate via PayPal:###
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EBHGZKAFGW8CG"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate via PayPal" /></a>
 
 # HOW TO: #
 
@@ -47,9 +46,8 @@ In the "ext" folder you will also find some utilities:
 	* you can run it with `sudo env PATH=$PATH bash ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
 	* this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options programmatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
 
-![Donate via PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)
-
-###[If you find this interesting and you want to keep the development active, please click here to donate via PayPal:](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EBHGZKAFGW8CG)###
+###If you find this interesting and you want to keep the development active, please click on the button below to donate via PayPal:###
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=EBHGZKAFGW8CG"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" alt="Donate via PayPal" /></a>
 
 #### If you want to report an issue you can use the tracker available at [https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ####
 

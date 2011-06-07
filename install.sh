@@ -4,10 +4,14 @@
 ###################
 ### DISCLAIMER: ###
 ###################
-#All content provided here including the scripts is provided without
-#any warranty. You use it at your own risk. I can not be held responsible
-#for any damage that may occur because of it. By using the scripts I
-#provide here you accept this terms.
+# All content provided here including the scripts is provided without
+# any warranty. You use it at your own risk. I can not be held responsible
+# for any damage that may occur because of it. By using the scripts I
+# provide here you accept this terms.
+#
+# Please bear in mind that this method is intended for development
+# and testing purposes only. If you care about stability and security
+# you should use the packages provided by your distribution.
 
 ### Program Versions:
 NGINX_VER="1.0.4"

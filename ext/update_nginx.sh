@@ -44,7 +44,7 @@ check_sanity() {
 	NGINX_CMD=$(type -p nginx) # Get executable path
 	CONFIGURE_ARGS=$($NGINX_CMD -V 2>&1 | grep "configure arguments:" | cut -d " " -f4-) # Get original configure options
 	if [ ! -n "$CONFIGURE_ARGS" ]; then 	# tests to see if the argument is non empty
-		die "Previous arguments could not be loaded. You must run the command with 'sudo env PATH=$PATH bash ...'"
+		die "Previous arguments could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
 	fi
 	
 	# Check if version is the same

@@ -60,7 +60,7 @@ function prepare_system() {
 	# Install all PHP Libraries
 	echo "Installing the PHP libraries..." >&3
 	apt-get -y $PHP_LIBRARIES & progress
-	
+
 	# Create temporary folder for the sources
 	mkdir $TMPDIR
 }
@@ -75,7 +75,7 @@ function check_download () {
 		echo "Check the install.log for errors." >&3
 		echo "Press any key to exit..." >&3
 		read -n 1
-		exit 1   
+		exit 1
 	fi
 }
 
@@ -92,14 +92,14 @@ function install_php() {
 	wget "http://us2.php.net/distributions/php-$PHP_VER.tar.gz" & progress
 	tar xzvf php-$PHP_VER.tar.gz
 	check_download "PHP5" "$TMPDIR/php-$PHP_VER.tar.gz"
-	
+
 	### Fix Ubuntu 11.04 LIB PATH ###
 	[ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
 	[ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so
 	[ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
 	[ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
 	##################################
-	
+
 	# Compile php source
 	cd $TMPDIR/php-$PHP_VER
 	./buildconf --force
@@ -146,7 +146,7 @@ function install_php() {
 --enable-sysvsem \
 --enable-sysvshm \
 --enable-sysvmsg & progress
-	
+
 	echo "Compiling PHP (Please be patient, this will take a while...)" >&3
 	make & progress
 	echo "Installing PHP..." >&3
@@ -163,7 +163,7 @@ function install_php() {
 	update-rc.d -f php5-fpm defaults
 	chown -R www-data:www-data /var/log/php5-fpm
 
-	# Create log rotation script 
+	# Create log rotation script
 	echo 'Creating logrotate script...' >&3
 	echo '/var/log/php5-fpm/*.log {
 weekly
@@ -178,7 +178,7 @@ postrotate
 	[ ! -f /var/run/php5-fpm.pid ] || kill -USR1 `cat /var/run/php5-fpm.pid`
 endscript
 }' > /etc/logrotate.d/php5-fpm
-	
+
 	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
 }
 
@@ -191,7 +191,7 @@ function install_apc() {
 	check_download "APC" "$TMPDIR/APC-$APC_VER.tgz"
 
 	cd $TMPDIR/APC-$APC_VER
-	
+
 	# Compile APC source
 	echo 'Configuring APC...' >&3
 	$DSTDIR/php5/bin/phpize -clean
@@ -199,7 +199,7 @@ function install_apc() {
 
 	echo 'Compiling APC...' >&3
 	make & progress
-	
+
 	echo 'Installing APC...' >&3
 	make install
 
@@ -218,7 +218,7 @@ apc.enable_cli=1
 ; Optional, for "[apc-warning] Potential cache slam averted for key... errors"
 ; apc.slam_defense = Off
 ' > /etc/php5/conf.d/apc.ini
-	
+
 	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
 }
 
@@ -229,17 +229,17 @@ function install_suhosin() {
 	wget "http://download.suhosin.org/suhosin-$SUHOSIN_VER.tar.gz" & progress
 	tar zxvf suhosin-$SUHOSIN_VER.tar.gz
 	check_download "Suhosin" "$TMPDIR/suhosin-$SUHOSIN_VER.tar.gz"
-	
+
 	cd $TMPDIR/suhosin-$SUHOSIN_VER
 
 	# Compile Suhosin source
 	echo 'Configuring Suhosin...' >&3
-	$DSTDIR/php5/bin/phpize -clean	
+	$DSTDIR/php5/bin/phpize -clean
 	./configure --with-php-config=$DSTDIR/php5/bin/php-config --with-libdir=$DSTDIR/php5/lib/php & progress
 
 	echo 'Compiling Suhosin...' >&3
 	make & progress
-	
+
 	echo 'Installing Suhosin...' >&3
 	make install
 
@@ -274,9 +274,9 @@ function install_nginx() {
 	wget "http://nginx.org/download/nginx-$NGINX_VER.tar.gz" & progress
 	tar zxvf nginx-$NGINX_VER.tar.gz
 	check_download "NginX" "$TMPDIR/nginx-$NGINX_VER.tar.gz"
-	
+
 	cd $TMPDIR/nginx-$NGINX_VER/
-	
+
 	# Compile php source
 	echo 'Configuring NginX...' >&3
 	./configure --prefix=$DSTDIR/nginx \
@@ -291,10 +291,10 @@ function install_nginx() {
 --without-mail_pop3_module \
 --without-mail_imap_module \
 --without-mail_smtp_module & progress
-		
+
 	echo 'Compiling NginX...' >&3
 	make & progress
-	
+
 	echo 'Installing NginX...' >&3
 	make install
 
@@ -313,10 +313,10 @@ function install_nginx() {
 	chmod +x $DSTDIR/nginx/sbin/*
 
 	cp $SRCDIR/web_files/* $WEBDIR
-	
+
 	echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
 
-	# Create log rotation script 
+	# Create log rotation script
 	echo 'Creating logrotate script...' >&3
 	chown -R www-data:www-data /var/log/nginx
 	echo '/var/log/nginx/*.log {
@@ -331,8 +331,8 @@ function install_nginx() {
 	postrotate
 		[ ! -f /var/run/nginx.pid ] || kill -USR1 `cat /var/run/nginx.pid`
 	endscript
-}' > /etc/logrotate.d/nginx	
-	
+}' > /etc/logrotate.d/nginx
+
 }
 
 function check_nginx () {
@@ -362,7 +362,7 @@ function set_paths() {
 function restart_servers() {
 	# Restart both NginX and PHP daemons
 	echo 'Restarting servers...' >&3
-	if [ $(ps -ef | egrep -c "(nginx|php-fpm)") -gt 1 ]; then 
+	if [ $(ps -ef | egrep -c "(nginx|php-fpm)") -gt 1 ]; then
 		ps -e | grep nginx | awk '{print $1}' | xargs sudo kill -INT
 	fi
 	sleep 2
@@ -380,7 +380,7 @@ function check_root() {
 }
 
 function log2file() {
-	# Logging everything to LOG_FILE 
+	# Logging everything to LOG_FILE
 	exec 3>&1 4>&2
 	trap 'exec 2>&4 1>&3' 0 1 2 3
 	exec 1>$LOG_FILE 2>&1
@@ -413,7 +413,7 @@ echo "========================================================================="
 echo "Do you want to continue[Y/n]:" >&3
 read  continue_install
 case  $continue_install  in
-  'n'|'N'|'No'|'no') 
+  'n'|'N'|'No'|'no')
   echo -e "\nCancelled." >&3
   exit 1
   ;;

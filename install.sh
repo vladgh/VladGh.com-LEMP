@@ -35,7 +35,7 @@ USER=$(who mom likes | awk '{print $1}')
 ESSENTIAL_PACKAGES="htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev libcompress-zlib-perl m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev lynx make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc"
 
 ### PHP Libraries
-PHP_LIBRARIES="install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick"
+PHP_LIBRARIES="install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick libreadline-dev"
 
 function progress() {
 # Simple progress indicator at the end of line (followed by "Done" when command is completed)
@@ -57,10 +57,6 @@ function prepare_system() {
 	echo "Installing dependencies..." >&3
 	apt-get -y install $ESSENTIAL_PACKAGES & progress
 
-	# Install all PHP Libraries
-	echo "Installing the PHP libraries..." >&3
-	apt-get -y $PHP_LIBRARIES & progress
-
 	# Create temporary folder for the sources
 	mkdir $TMPDIR
 }
@@ -81,11 +77,16 @@ function check_download () {
 
 function install_mysql() {
 # Installing MySQL server (this is escaped in order to be able to type the password in the initial dialog)
-	echo "Installing the MySQL..." >&3
-	apt-get -y install mysql-server mysql-client >&3
+	echo "Installing MySQL..." >&3
+	env DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server mysql-client & progress
+  mysql_secure_installation >&3
 }
 
 function install_php() {
+	# Install all PHP Libraries
+	echo "Installing PHP libraries..." >&3
+	apt-get -y $PHP_LIBRARIES & progress
+  
 	# Get PHP package
 	echo "Downloading and extracting PHP-$PHP_VER..." >&3
 	cd $TMPDIR
@@ -127,10 +128,13 @@ function install_php() {
 --with-xsl \
 --with-bz2 \
 --with-gettext \
+--with-readline \
 --with-fpm-user=www-data \
 --with-fpm-group=www-data \
 --disable-debug \
 --enable-fpm \
+--enable-cli \
+--enable-inline-optimization \
 --enable-exif \
 --enable-wddx \
 --enable-zip \

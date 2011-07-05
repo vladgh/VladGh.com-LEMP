@@ -56,6 +56,11 @@ In the "ext" folder you will also find some utilities:
 
 ## Release Notes: ##
 
+### 3.2 ###
+
+  * Added command line interface for PHP.
+  * replaced default mysql install with mysql_secure_installation.
+  
 ### 3.1 ###
 
   * Added nginx upgrade script.

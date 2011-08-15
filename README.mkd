@@ -56,6 +56,10 @@ In the "ext" folder you will also find some utilities:
 
 ## Release Notes: ##
 
+### 3.4 ###
+
+  * Added HttpGzipStaticModule for NginX.
+
 ### 3.3 ###
 
   * Upgraded NginX to 1.0.5.

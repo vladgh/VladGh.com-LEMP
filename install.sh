@@ -15,7 +15,7 @@
 
 ### Program Versions:
 NGINX_VER="1.0.5"
-PHP_VER="5.3.6"
+PHP_VER="5.3.8"
 APC_VER="3.1.9"
 SUHOSIN_VER="0.9.32.1"
 
@@ -90,7 +90,7 @@ function install_php() {
 	# Get PHP package
 	echo "Downloading and extracting PHP-$PHP_VER..." >&3
 	cd $TMPDIR
-	wget "http://us2.php.net/distributions/php-$PHP_VER.tar.gz" & progress
+	wget "http://us.php.net/distributions/php-$PHP_VER.tar.gz" & progress
 	tar xzvf php-$PHP_VER.tar.gz
 	check_download "PHP5" "$TMPDIR/php-$PHP_VER.tar.gz"
 
@@ -368,7 +368,7 @@ function restart_servers() {
 	# Restart both NginX and PHP daemons
 	echo 'Restarting servers...' >&3
 	if [ $(ps -ef | egrep -c "(nginx|php-fpm)") -gt 1 ]; then
-		ps -e | grep nginx | awk '{print $1}' | xargs sudo kill -INT
+		ps -e | egrep "(nginx|php)" | awk '{print $1}' | xargs sudo kill -INT
 	fi
 	sleep 2
 	/etc/init.d/php5-fpm start

@@ -59,6 +59,7 @@ In the "ext" folder you will also find some utilities:
 ### 3.6 ###
 
   * Upgraded NginX to version 1.0.6 stable.
+  * Hard coded sendmail path in the PHP-FPM config file.
 
 ### 3.5 ###
 

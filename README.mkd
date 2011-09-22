@@ -56,6 +56,10 @@ In the "ext" folder you will also find some utilities:
 
 ## Release Notes: ##
 
+### 3.8 ###
+
+  * Added imap and imap-ssl support to PHP.
+  
 ### 3.7 ###
 
   * Upgraded NginX to development version 1.1.4 (http://wiki.nginx.org/NginxFaq#Is_it_safe_to_use_the_development_branch_in_production.3F)

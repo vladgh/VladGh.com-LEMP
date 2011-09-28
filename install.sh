@@ -96,9 +96,11 @@ function install_php() {
 
 	### Fix Ubuntu 11.04 LIB PATH ###
 	[ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
+  [ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
 	[ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so
-	[ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
 	[ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
+  [ -d /usr/lib/x86_64-linux-gnu/mit-krb5 ] && ln -s /usr/lib/x86_64-linux-gnu/mit-krb5/lib*.so /usr/lib/
+  [ -d /usr/lib/i386-linux-gnu/mit-krb5 ] && ln -s /usr/lib/i386-linux-gnu/mit-krb5/lib*.so /usr/lib/
 	##################################
 
 	# Compile php source

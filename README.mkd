@@ -56,6 +56,10 @@ In the "ext" folder you will also find some utilities:
 
 ## Release Notes: ##
 
+### 3.9 ###
+
+  * Fixed kerberos libraries path.
+
 ### 3.8 ###
 
   * Added imap and imap-ssl support to PHP.

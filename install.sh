@@ -14,7 +14,7 @@
 # you should use the packages provided by your distribution.
 
 ### Program Versions:
-NGINX_VER="1.1.7"
+NGINX_VER="1.1.9"
 PHP_VER="5.3.8"
 APC_VER="3.1.9"
 SUHOSIN_VER="0.9.32.1"

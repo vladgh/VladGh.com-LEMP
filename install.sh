@@ -161,7 +161,7 @@ function install_php() {
 --enable-sysvmsg & progress
 
 	echo "Compiling PHP (Please be patient, this will take a while...)" >&3
-	make & progress
+	make -j8 & progress
 	echo "Installing PHP..." >&3
 	make install & progress
 
@@ -211,7 +211,7 @@ function install_apc() {
 	./configure --enable-apc --with-php-config=$DSTDIR/php5/bin/php-config --with-libdir=$DSTDIR/php5/lib/php & progress
 
 	echo 'Compiling APC...' >&3
-	make & progress
+	make -j8 & progress
 
 	echo 'Installing APC...' >&3
 	make install
@@ -251,7 +251,7 @@ function install_suhosin() {
 	./configure --with-php-config=$DSTDIR/php5/bin/php-config --with-libdir=$DSTDIR/php5/lib/php & progress
 
 	echo 'Compiling Suhosin...' >&3
-	make & progress
+	make -j8 & progress
 
 	echo 'Installing Suhosin...' >&3
 	make install
@@ -307,7 +307,7 @@ function install_nginx() {
 --without-mail_smtp_module & progress
 
 	echo 'Compiling NginX...' >&3
-	make & progress
+	make -j8 & progress
 
 	echo 'Installing NginX...' >&3
 	make install

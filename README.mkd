@@ -1,6 +1,6 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 
-  * NginX 1.1.9
+  * NginX 1.1.7
   * PHP 5.3.8
   * APC 3.1.9
   * Suhosin Extension 0.9.32.1
@@ -58,7 +58,7 @@ In the "ext" folder you will also find some utilities:
 
 ### 3.11 ###
 
-  * Upgraded NginX to version 1.1.9.
+  * Upgraded NginX to version 1.1.7.
 
 ### 3.10 ###
 

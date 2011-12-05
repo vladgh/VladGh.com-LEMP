@@ -64,8 +64,7 @@ function prepare_system() {
 function check_download () {
 # Simple function to check if the download and extraction finished successfully.
 	if [ -e "$2" ] ; then
-		echo  -e '\E[47;34m'"$1 download and extraction was successful." >&3
-		tput sgr0 >&3
+		echo  -e '\E[47;34m'"$1 download and extraction was successful." >&3; tput sgr0 >&3
 	else
 		echo "Error: $1 Download was unsuccessful." >&3
 		echo "Check the install.log for errors." >&3

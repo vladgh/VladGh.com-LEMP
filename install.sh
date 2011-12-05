@@ -35,7 +35,7 @@ USER=$(who mom likes | awk '{print $1}')
 ESSENTIAL_PACKAGES="htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev libcompress-zlib-perl m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev lynx make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc"
 
 ### PHP Libraries
-PHP_LIBRARIES="install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick libreadline-dev libc-client-dev"
+PHP_LIBRARIES="install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick libreadline-dev libc-client-dev libsnmp-dev libsnmp snmpd snmp"
 
 function progress() {
 # Simple progress indicator at the end of line (followed by "Done" when command is completed)
@@ -135,6 +135,7 @@ function install_php() {
 --with-imap \
 --with-imap-ssl \
 --with-kerberos \
+--with-snmp \
 --disable-debug \
 --enable-fpm \
 --enable-cli \

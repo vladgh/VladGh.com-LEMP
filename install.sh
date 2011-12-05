@@ -35,7 +35,7 @@ USER=$(who mom likes | awk '{print $1}')
 ESSENTIAL_PACKAGES="htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev libcompress-zlib-perl m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev lynx make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc"
 
 ### PHP Libraries
-PHP_LIBRARIES="install libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick libreadline-dev libc-client-dev libsnmp-dev libsnmp snmpd snmp"
+PHP_LIBRARIES="libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick libreadline-dev libc-client-dev libsnmp-dev snmpd snmp"
 
 function progress() {
 # Simple progress indicator at the end of line (followed by "Done" when command is completed)
@@ -58,7 +58,11 @@ function prepare_system() {
 	apt-get -y install $ESSENTIAL_PACKAGES & progress
 
 	# Create temporary folder for the sources
-	mkdir $TMPDIR
+	if [ -d $TMPDIR ]; then
+	 rm -r $TMPDIR
+	else
+	 mkdir $TMPDIR
+	fi 
 }
 
 function check_download () {
@@ -84,7 +88,7 @@ function install_mysql() {
 function install_php() {
 	# Install all PHP Libraries
 	echo "Installing PHP libraries..." >&3
-	apt-get -y $PHP_LIBRARIES & progress
+	apt-get -y install $PHP_LIBRARIES & progress
   
 	# Get PHP package
 	echo "Downloading and extracting PHP-$PHP_VER..." >&3

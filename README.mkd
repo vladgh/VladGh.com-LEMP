@@ -27,10 +27,6 @@ Run the installer; I recommend running everything inside a screen session becaus
 
     sudo screen ./install.sh
 
-If you need an earlier version checkout the appropriate tag before running the install script:
-  
-    git checkout 2.3
-
 After the installer is finished (this will take a long time depending on your server specifications), you can go to your servers address and you will see the PHP info page.
 Also, if you go to:
 

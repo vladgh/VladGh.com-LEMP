@@ -15,7 +15,7 @@
 
 ### Program Versions:
 NGINX_VER="1.1.12"
-PHP_VER="5.3.8"
+PHP_VER="5.3.9"
 APC_VER="3.1.9"
 SUHOSIN_VER="0.9.32.1"
 

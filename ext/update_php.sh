@@ -41,8 +41,10 @@ check_sanity() {
 	PHP_VER="$1"
 	DATE=`date +%Y.%m.%d`
 	SRCDIR=/tmp/php_$PHP_VER-$DATE
-	PHP_CMD=$(type -p php) # Get executable path
-	CONFIGURE_ARGS=$($PHP_CMD -i 2>&1 | grep "Configure Command =>" | cut -d " " -f6-) # Get original configure options
+        # Get executable path
+	PHP_CMD=$(type -p php) 
+        # Get original configure options
+	CONFIGURE_ARGS=$($PHP_CMD -i 2>&1 | grep "Configure Command =>" | cut -d " " -f6- | sed "s/'//g")
 	if [ ! -n "$CONFIGURE_ARGS" ]; then 	# tests to see if the argument is non empty
 		die "Previous arguments could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
 	fi

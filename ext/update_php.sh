@@ -67,6 +67,16 @@ get_php() {
 	tar zxvf php-$PHP_VER.tar.gz; cd php-$PHP_VER
 }
 
+compile_php() {
+
+	# Configure and compile NginX with previous options
+	echo "Configure with previous options..."
+	./configure $CONFIGURE_ARGS
+	make -j8
+	make install
+
+}
+
 backup_conf() {
         # Move the current configuration to a safe place.
         echo "Backing up working config..."
@@ -91,9 +101,11 @@ restart_servers() {
 	/etc/init.d/php5-fpm start
 }
 
+check_sanity $ARGS
+
 backup_conf
-get_nginx
-compile_nginx
+get_php
+compile_php
 recover_conf
 restart_servers
 

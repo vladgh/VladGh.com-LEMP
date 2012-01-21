@@ -42,7 +42,7 @@ check_sanity() {
 	DATE=`date +%Y.%m.%d`
 	SRCDIR=/tmp/nginx_$NGINX_VER-$DATE
 	NGINX_CMD=$(type -p nginx) # Get executable path
-	CONFIGURE_ARGS=$($NGINX_CMD -V 2>&1 | grep "configure arguments:" | cut -d " " -f4-) # Get original configure options
+	CONFIGURE_ARGS=$($NGINX_CMD -V 2>&1 | grep "configure arguments:" | cut -d " " -f3-) # Get original configure options
 	if [ ! -n "$CONFIGURE_ARGS" ]; then 	# tests to see if the argument is non empty
 		die "Previous arguments could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
 	fi

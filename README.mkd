@@ -1,9 +1,9 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 
   * NginX 1.1.14
-  * PHP 5.3.9
+  * PHP 5.3.10
   * APC 3.1.9
-  * Suhosin Extension 0.9.32.1
+  * Suhosin Extension 0.9.33
 
 All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-fpm-mysql-and-apc
 It's highly recommended to run this installer on a fresh installed system.
@@ -32,15 +32,15 @@ Also, if you go to:
 
   * **http://example.com/apc.php** you will find the APC Cache information page;
   * **http://example.com/nginx_status** for the NginX statistics;
-  * **http://example.com/status?html** for the FPM statistics. 
+  * **http://example.com/status?html** for the FPM statistics.
 
 # Utilities: #
 In the "ext" folder you will also find some utilities:
 
 * `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
 * `update_nginx.sh` script which can upgrade the current nginx.
-	* you can run it with `sudo env PATH=$PATH ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
-	* this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options programmatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
+  * you can run it with `sudo env PATH=$PATH ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
+  * this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options programmatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
 <a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></a>
@@ -51,6 +51,11 @@ In the "ext" folder you will also find some utilities:
 ** All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms. **
 
 ## Release Notes: ##
+
+### 3.19 ###
+
+  * Upgraded PHP to version 5.3.10.
+  * Upgraded Suhosin to version 0.9.33.
 
 ### 3.18 ###
 
@@ -95,7 +100,7 @@ In the "ext" folder you will also find some utilities:
 ### 3.8 ###
 
   * Added imap and imap-ssl support to PHP.
-  
+
 ### 3.7 ###
 
   * Upgraded NginX to development version 1.1.4 (http://wiki.nginx.org/NginxFaq#Is_it_safe_to_use_the_development_branch_in_production.3F)
@@ -122,32 +127,32 @@ In the "ext" folder you will also find some utilities:
 
   * Added command line interface for PHP.
   * replaced default mysql install with mysql_secure_installation.
-  
+
 ### 3.1 ###
 
   * Added nginx upgrade script.
   * Improved kill command.
   * made install.sh executable.
-	
+
 ### 3.0 ###
 
   * Added progress indicator and reorganized code.
-	
+
 ### 2.5 ###
 
   * Added nxensite and nxdissite scripts (Thanks to [dambravicius](https://github.com/dambravicius)).
   * Improved "Current Dir" declaration.
   * Made all the paths global.
-	
+
 ### 2.4 ###
 
   * Upgraded NginX to the latest 1.0.3 stable and APC to 3.1.9.
-  
+
 ### 2.3 ###
 
   * Upgraded NginX to the latest 1.0.2 stable and APC to 3.1.8.
   * Temporary fix for Ubuntu 11.04 libraries path.
-  
+
 ### 2.2 ###
 
   * Upgraded NginX to the latest 1.0.0 stable

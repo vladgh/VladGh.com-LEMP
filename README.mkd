@@ -1,6 +1,6 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 
-  * NginX 1.1.14
+  * NginX 1.1.14 (development) or 1.0.12 (stable)
   * PHP 5.3.10
   * APC 3.1.9
   * Suhosin Extension 0.9.33
@@ -16,7 +16,7 @@ This is tested with Ubuntu 10.04 and 11.10, both 32 bits and 64 bits, on officia
 
 Make sure you have Git installed on your Ubuntu System:
 
-    sudo apt-get install git-core screen
+    sudo apt-get install git screen
 
 Clone this repository, and get the latest stable version of this script:
 
@@ -34,13 +34,17 @@ Also, if you go to:
   * **http://example.com/nginx_status** for the NginX statistics;
   * **http://example.com/status?html** for the FPM statistics.
 
+In order to have imediate access to new paths you should also execute `source /etc/environment`. This command reloads the new environment variables.
+
 # Utilities: #
 In the "ext" folder you will also find some utilities:
 
 * `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
-* `update_nginx.sh` script which can upgrade the current nginx.
-  * you can run it with `sudo env PATH=$PATH ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
+* `update_nginx.sh` script which you can use to upgrade the current nginx.
+  * you can run it with `sudo env PATH=$PATH bash ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
   * this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options programmatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
+* `update_php.sh` - upgrades the current php (`sudo env PATH=$PATH bash ext/update_php.sh 5.3.10`).
+* `update_apc.sh` - upgrades the current apc (`sudo env PATH=$PATH bash ext/update_apc.sh 3.1.19`).
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
 <div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>
@@ -54,6 +58,16 @@ In the "ext" folder you will also find some utilities:
 <div style="text-align: center;"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">VladGh.com-LEMP Script</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://vladgh.com" property="cc:attributionName" rel="cc:attributionURL">Vlad Ghinea</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.</div>
 
 ## Release Notes: ##
+
+### 4.01 ###
+
+  * Added the option to choose wich nginx release you wish to install.
+  * Added a script to update php.
+  * Added a script to update apc.
+  * Major code improvements.
+  * Improved the update nginx script.
+  * Fixed timezone issues with newest php version.
+  * Other minor fixes.
 
 ### 3.19 ###
 

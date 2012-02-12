@@ -21,7 +21,8 @@
 # you should use the packages provided by your distribution.
 
 ### Program Versions:
-NGINX_VER="1.1.14"
+NGINX_STABLE="1.0.12"
+NGINX_DEV="1.1.14"
 PHP_VER="5.3.10"
 APC_VER="3.1.9"
 SUHOSIN_VER="0.9.33"
@@ -181,7 +182,12 @@ function install_php() {
   cp $SRCDIR/init_files/php5-fpm /etc/init.d/php5-fpm
   chmod +x /etc/init.d/php5-fpm
   update-rc.d -f php5-fpm defaults
-  chown -R www-data:www-data /var/log/php5-fpm
+
+  # The newer versions of php complain if a time zone is not set on php.ini (so we grab the system's one)
+  TIMEZONE=$([ -f /etc/timezone ] && cat /etc/timezone | sed "s/\//\\\\\//g")
+  sed -i "s/^\;date\.timezone.*$/date\.timezone = \"${TIMEZONE}\" /g" /etc/php5/php.ini
+
+  chown -R www-data:www-data /var/log/php5-fpm & progress
 
   # Create log rotation script
   echo 'Creating logrotate script...' >&3
@@ -423,7 +429,7 @@ clear >&3
 echo "=========================================================================" >&3
 echo "This script will install the following:" >&3
 echo "=========================================================================" >&3
-echo "  - Nginx $NGINX_VER;" >&3
+echo "  - Nginx $NGINX_DEV (development) or $NGINX_STABLE (stable);" >&3
 echo "  - PHP $PHP_VER;" >&3
 echo "  - APC $APC_VER;" >&3
 echo "  - Suhosin $SUHOSIN_VER;" >&3
@@ -439,6 +445,17 @@ case  $continue_install  in
   exit 1
   ;;
   *)
+esac
+
+echo "Which of the following NginX releases do you want installed:" >&3
+echo "1) Latest Development Release ($NGINX_DEV)(default)" >&3
+echo "2) Latest Stable Release ($NGINX_STABLE)" >&3
+echo -n "Enter your menu choice [1 or 2]: " >&3
+read nginxchoice
+case $nginxchoice in
+  1) NGINX_VER=$NGINX_DEV ;;
+  2) NGINX_VER=$NGINX_STABLE ;;
+  *) NGINX_VER=$NGINX_DEV ;
 esac
 
 prepare_system

@@ -1,4 +1,4 @@
-# THIS BRANCH IS FOR TESTING PURPOSES ONLY #
+# **THIS BRANCH IS FOR TESTING PURPOSES ONLY** #
 
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 

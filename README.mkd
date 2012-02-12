@@ -10,7 +10,7 @@ It's highly recommended to run this installer on a fresh installed system.
 This is tested with Ubuntu 10.04 and 11.10, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
-<div style="text-align:center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></a></div>
+[[<div style="text-align:center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></a>|align=center]]
 
 # HOW TO: #
 

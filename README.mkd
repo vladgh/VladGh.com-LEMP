@@ -1,5 +1,3 @@
-# **THIS BRANCH IS FOR TESTING PURPOSES ONLY** #
-
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 
   * NginX 1.1.14
@@ -40,9 +38,11 @@ Also, if you go to:
 In the "ext" folder you will also find some utilities:
 
 * `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
-* `update_nginx.sh` script which can upgrade the current nginx.
-  * you can run it with `sudo env PATH=$PATH ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
+* `update_nginx.sh` script which you can use to upgrade the current nginx.
+  * you can run it with `sudo env PATH=$PATH bash ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
   * this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options programmatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
+* `update_php.sh` - upgrades the current php (`sudo env PATH=$PATH bash ext/update_php.sh 5.3.10`).
+* `update_apc.sh` - upgrades the current apc (`sudo env PATH=$PATH bash ext/update_apc.sh 3.1.19`).
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
 <div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>

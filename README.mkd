@@ -43,7 +43,7 @@ In the "ext" folder you will also find some utilities:
   * this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options programmatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
--><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></a><-
+<div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>
 
 #### If you want to report an issue you can use the tracker available at [https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ####
 
@@ -51,7 +51,7 @@ In the "ext" folder you will also find some utilities:
 ** All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms. **
 
 ## License: ##
--><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">VladGh.com-LEMP Script</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://vladgh.com" property="cc:attributionName" rel="cc:attributionURL">Vlad Ghinea</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.<-
+<div style="text-align: center;"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">VladGh.com-LEMP Script</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://vladgh.com" property="cc:attributionName" rel="cc:attributionURL">Vlad Ghinea</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.</div>
 
 ## Release Notes: ##
 

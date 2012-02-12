@@ -446,6 +446,17 @@ case  $continue_install  in
   *)
 esac
 
+echo "Which of the following NginX releases do you want installed:"
+echo "1) Latest Development Release (default)"
+echo "2) Latest Stable Release"
+echo -n "Enter your menu choice [1 or 2]: "
+read nginxchoice
+case $nginxchoice in
+  1) NGINX_VER=$NGINX_VER ;;
+  2) NGINX_VER="1.0.12" ;;
+  *) NGINX_VER=$NGINX_VER ;
+esac
+
 prepare_system
 
 install_mysql

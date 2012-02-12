@@ -181,7 +181,7 @@ function install_php() {
   cp $SRCDIR/init_files/php5-fpm /etc/init.d/php5-fpm
   chmod +x /etc/init.d/php5-fpm
   update-rc.d -f php5-fpm defaults
-  chown -R www-data:www-data /var/log/php5-fpm
+  chown -R www-data:www-data /var/log/php5-fpm & progress
 
   # Create log rotation script
   echo 'Creating logrotate script...' >&3

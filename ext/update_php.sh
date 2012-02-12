@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 ###################################################################
-# Script to update PHP to the latest version.                     #
+# Script to change PHP version.                                   #
 # January 19, 2012                                   Vlad Ghinea. #
 ###################################################################
 #
@@ -67,7 +67,11 @@ get_php() {
     die "This version could not be found on php.net/distributions."
   fi
 
-  tar zxvf php-$PHP_VER.tar.gz; cd php-$PHP_VER
+  tar zxvf php-$PHP_VER.tar.gz
+  if [ ! -d "php-$PHP_VER" ]; then
+    die "The archive could not be decompressed."
+  fi
+  cd php-$PHP_VER
 }
 
 compile_php() {

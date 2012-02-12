@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 ###################################################################
-# Script to update Nginx to the latest version.                   #
+# Script to change Nginx version.                                 #
 # June 3rd 2011                                      Vlad Ghinea. #
 ###################################################################
 #

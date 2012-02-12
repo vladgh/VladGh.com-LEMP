@@ -59,11 +59,12 @@ get_php() {
 
   # Download and extract source package
   echo "Getting PHP"
-  mkdir $SRCDIR; cd $SRCDIR
+  [ -d $SRCDIR ] && rm -r $SRCDIR
+  mkdir $SRCDIR && cd $SRCDIR
   wget "http://us.php.net/distributions/php-$PHP_VER.tar.gz"
 
   if [ ! -f "php-$PHP_VER.tar.gz" ]; then
-    die "This version could not be found on php.net/distrobutions."
+    die "This version could not be found on php.net/distributions."
   fi
 
   tar zxvf php-$PHP_VER.tar.gz; cd php-$PHP_VER
@@ -92,11 +93,11 @@ recover_conf() {
 
   # Recover previous configuration files
   echo "Restore working config..."
-  [ -d /etc/php5.original  ] && mv /etc/php5.original /etc/php5
+  [ -d /etc/php5.original ] && mv /etc/php5.original /etc/php5
 }
 
 restart_servers() {
-  echo "Restart PHP"
+  echo "Restarting PHP..."
   if [ $(ps -ef | grep -c "php") -gt 1 ]; then
     ps -e | grep "php" | awk '{print $1}' | xargs sudo kill -INT
   fi

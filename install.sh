@@ -181,6 +181,11 @@ function install_php() {
   cp $SRCDIR/init_files/php5-fpm /etc/init.d/php5-fpm
   chmod +x /etc/init.d/php5-fpm
   update-rc.d -f php5-fpm defaults
+
+  # The newer versions of php complain if a time zone is not set on php.ini (so we grab the system's one)
+  TIMEZONE=$([ -f /etc/timezone ] && cat /etc/timezone | sed "s/\//\\\\\//g")
+  sed -i "s/^\;date\.timezone.*$/date\.timezone = \"${TIMEZONE}\" /g" /etc/php5/php.ini
+
   chown -R www-data:www-data /var/log/php5-fpm & progress
 
   # Create log rotation script

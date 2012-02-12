@@ -34,6 +34,8 @@ Also, if you go to:
   * **http://example.com/nginx_status** for the NginX statistics;
   * **http://example.com/status?html** for the FPM statistics.
 
+In order to have imediate access to new paths you should also execute `source /etc/environment`. This command reloads the new environment variables.
+
 # Utilities: #
 In the "ext" folder you will also find some utilities:
 

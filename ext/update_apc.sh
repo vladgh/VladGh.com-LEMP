@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 ###################################################################
-# Script to update APC to the latest version.                     #
-# February 11, 2012                                  Vlad Ghinea. #
+# Script to change APC version.                                   #
+# February 12, 2012                                  Vlad Ghinea. #
 ###################################################################
 #
 # Needs to be called with the version number as argument and also
@@ -40,7 +40,9 @@ check_sanity() {
 
   APC_VER="$1"
   DATE=`date +%Y.%m.%d`
-  SRCDIR=/tmp/php_$APC_VER-$DATE
+  SRCDIR=/tmp/apc_$APC_VER-$DATE
+  # Get php executable's path
+  PHP_CMD=$(type -p php)
   # Get phpize's path
   PHPIZE=$(type -p phpize)
   # Get php-config's path
@@ -49,7 +51,7 @@ check_sanity() {
   LIBDIR=$(php -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://')
 
   # Store the configure args.
-  CONFIGURE_ARGS=$("--enable-apc --with-php-config=$PHP_CONFIG --with-libdir=$LIBDIR")
+  CONFIGURE_ARGS="--enable-apc --with-php-config=$PHP_CONFIG --with-libdir=$LIBDIR"
   if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
     die "The paths for your previous instalation could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
   fi
@@ -64,10 +66,11 @@ get_apc() {
 
   # Download and extract source package
   echo "Getting APC"
-  mkdir $SRCDIR; cd $SRCDIR
+  [ -d $SRCDIR ] && rm -r $SRCDIR
+  mkdir $SRCDIR && cd $SRCDIR
   wget "http://pecl.php.net/get/APC-$APC_VER.tgz"
 
-  if [ ! -f "APC-$APC_VER.tar.gz" ]; then
+  if [ ! -f "APC-$APC_VER.tgz" ]; then
     die "This version could not be found."
   fi
 
@@ -85,23 +88,8 @@ compile_apc() {
 
 }
 
-backup_conf() {
-  # Move the current configuration to a safe place.
-  echo "Backing up working config..."
-  [ -e /etc/php5/conf.d/apc.ini ] && mv /etc/php5/conf.d/apc.ini /etc/php5/conf.d.bak/apc.ini
-}
-
-recover_conf() {
-  # Send the new default configuration to /tmp
-  [ -e /etc/php5/conf.d/apc.ini ] && mv /etc/php5/conf.d/apc.ini /tmp/apc.ini-$DATE
-
-  # Recover previous configuration files
-  echo "Restore working config..."
-  [ -e /etc/php5/conf.d.bak/apc.ini  ] && mv /etc/php5/conf.d.bak/apc.ini /etc/php5/conf.d/apc.ini
-}
-
 restart_servers() {
-  echo "Restart PHP"
+  echo "Restarting PHP..."
   if [ $(ps -ef | grep -c "php") -gt 1 ]; then
     ps -e | grep "php" | awk '{print $1}' | xargs sudo kill -INT
   fi
@@ -110,11 +98,8 @@ restart_servers() {
 }
 
 check_sanity $ARGS
-
-backup_conf
 get_apc
 compile_apc
-recover_conf
 restart_servers
 
 # Clean Sources

@@ -21,7 +21,8 @@
 # you should use the packages provided by your distribution.
 
 ### Program Versions:
-NGINX_VER="1.1.14"
+NGINX_STABLE="1.0.12"
+NGINX_DEV="1.1.14"
 PHP_VER="5.3.10"
 APC_VER="3.1.9"
 SUHOSIN_VER="0.9.33"
@@ -428,7 +429,7 @@ clear >&3
 echo "=========================================================================" >&3
 echo "This script will install the following:" >&3
 echo "=========================================================================" >&3
-echo "  - Nginx $NGINX_VER;" >&3
+echo "  - Nginx $NGINX_DEV (development) or $NGINX_STABLE (stable);" >&3
 echo "  - PHP $PHP_VER;" >&3
 echo "  - APC $APC_VER;" >&3
 echo "  - Suhosin $SUHOSIN_VER;" >&3
@@ -446,15 +447,15 @@ case  $continue_install  in
   *)
 esac
 
-echo "Which of the following NginX releases do you want installed:"
-echo "1) Latest Development Release (default)"
-echo "2) Latest Stable Release"
-echo -n "Enter your menu choice [1 or 2]: "
+echo "Which of the following NginX releases do you want installed:" >&3
+echo "1) Latest Development Release ($NGINX_DEV)(default)" >&3
+echo "2) Latest Stable Release ($NGINX_STABLE)" >&3
+echo -n "Enter your menu choice [1 or 2]: " >&3
 read nginxchoice
 case $nginxchoice in
-  1) NGINX_VER=$NGINX_VER ;;
-  2) NGINX_VER="1.0.12" ;;
-  *) NGINX_VER=$NGINX_VER ;
+  1) NGINX_VER=$NGINX_DEV ;;
+  2) NGINX_VER=$NGINX_STABLE ;;
+  *) NGINX_VER=$NGINX_DEV ;
 esac
 
 prepare_system

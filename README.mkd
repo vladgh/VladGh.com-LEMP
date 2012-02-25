@@ -34,7 +34,7 @@ Also, if you go to:
   * **http://example.com/nginx_status** for the NginX statistics;
   * **http://example.com/status?html** for the FPM statistics.
 
-In order to have imediate access to new paths you should also execute `source /etc/environment`. This command reloads the new environment variables.
+In order to have immediate access to new paths you should also execute `source /etc/environment`. This command reloads the new environment variables.
 
 # Utilities: #
 In the "ext" folder you will also find some utilities:
@@ -62,7 +62,7 @@ In the "ext" folder you will also find some utilities:
 ### 4.02 ###
 
   * Upgraded NginX development to 1.1.15.
-  
+
 ### 4.01 ###
 
   * Added the option to choose wich nginx release you wish to install.

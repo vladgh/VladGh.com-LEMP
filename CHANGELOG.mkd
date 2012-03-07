@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 4.04 ###
+
+  * Upgraded NginX stable to 1.1.13.
+
 ### 4.03 ###
 
   * Upgraded NginX development to 1.1.16.

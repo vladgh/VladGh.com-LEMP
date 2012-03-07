@@ -21,7 +21,7 @@
 # you should use the packages provided by your distribution.
 
 ### Program Versions:
-NGINX_STABLE="1.0.12"
+NGINX_STABLE="1.0.13"
 NGINX_DEV="1.1.16"
 PHP_VER="5.3.10"
 APC_VER="3.1.9"

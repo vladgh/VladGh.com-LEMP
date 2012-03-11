@@ -1,9 +1,9 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 
   * NginX 1.1.16 (development) or 1.0.13 (stable)
-  * PHP 5.3.10
-  * APC 3.1.9
-  * Suhosin Extension 0.9.33
+  * PHP 5.3.10 or PHP 5.4.0
+  * APC 3.1.9 (at this moment it is not available with PHP 5.4)
+  * Suhosin Extension 0.9.33 (at this moment it is not available with PHP 5.4)
 
 All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-fpm-mysql-and-apc
 It's highly recommended to run this installer on a fresh installed system.

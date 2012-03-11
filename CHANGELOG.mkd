@@ -1,5 +1,10 @@
 ## Release Notes: ##
 
+### 5.0 ###
+
+  * Major code refactoring (all the functions are in separate files).
+  * Added the option to install PHP 5.4.
+
 ### 4.04 ###
 
   * Upgraded NginX stable to 1.1.13.

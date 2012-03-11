@@ -23,7 +23,8 @@
 ### Program Versions:
 NGINX_STABLE="1.0.13"
 NGINX_DEV="1.1.16"
-PHP_VER="5.3.10"
+PHP_53="5.3.10"
+PHP_54="5.4.0"
 APC_VER="3.1.9"
 SUHOSIN_VER="0.9.33"
 
@@ -62,7 +63,7 @@ echo "========================================================================="
 echo "This script will install the following:" >&3
 echo "=========================================================================" >&3
 echo "  - Nginx $NGINX_DEV (development) or $NGINX_STABLE (stable);" >&3
-echo "  - PHP $PHP_VER;" >&3
+echo "  - PHP $PHP_53 or $PHP_54;" >&3
 echo "  - APC $APC_VER;" >&3
 echo "  - Suhosin $SUHOSIN_VER;" >&3
 echo "=========================================================================" >&3
@@ -77,6 +78,17 @@ case  $continue_install  in
   exit 1
   ;;
   *)
+esac
+
+echo "Which of PHP release do you want installed:" >&3
+echo "1) Current PHP 5.4 Stable Release ($PHP_54)" >&3
+echo "2) Current PHP 5.3 Stable Release ($PHP_53)(default)" >&3
+echo -n "Enter your menu choice [1 or 2]: " >&3
+read nginxchoice
+case $nginxchoice in
+  1) PHP_VER=$PHP_54 ;;
+  2) PHP_VER=$PHP_53 ;;
+  *) PHP_VER=$PHP_53 ;
 esac
 
 echo "Which of the following NginX releases do you want installed:" >&3

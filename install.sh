@@ -107,10 +107,10 @@ prepare_system
 install_mysql
 
 install_php
-install_apc
 if [ $PHP_VER == $PHP_54 ]; then
-  echo "At this moment the Suhosin extensions is not available for PHP 5.4" >&3
+  echo "At this moment the APC and Suhosin extensions is not available for PHP 5.4" >&3
 else
+  install_apc
   install_suhosin
 fi
 check_php

@@ -51,9 +51,9 @@ function check_php () {
     echo '${PHP_VER} with APC and Suhosin was successfully installed.' >&3
     $DSTDIR/php5/bin/php -v >&3
     echo "=========================================================================" >&3
-  elif [ $PHP_VER == $PHP_54 ] && [ -x "$DSTDIR/php5/bin/php" ] && [ $($DSTDIR/php5/bin/php -m | grep apc) ] ; then
+  elif [ $PHP_VER == $PHP_54 ] && [ -x "$DSTDIR/php5/bin/php" ] ; then
     echo "=========================================================================" >&3
-    echo '${PHP_VER} with APC was successfully installed.' >&3
+    echo '${PHP_VER} was successfully installed.' >&3
     $DSTDIR/php5/bin/php -v >&3
     echo "=========================================================================" >&3
   else

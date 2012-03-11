@@ -55,7 +55,7 @@ log2file
 # Traps CTRL-C
 trap ctrl_c INT
 function ctrl_c() {
-  echo -e '\nCancelled by user' >&3; echo -e '\nCancelled by user'; if [ -n "$!" ]; then kill $!; fi; exit 1
+  tput bold >&3; tput setaf 1 >&3; echo -e '\nCancelled by user' >&3; echo -e '\nCancelled by user'; tput sgr0 >&3; if [ -n "$!" ]; then kill $!; fi; exit 1
 }
 
 clear >&3

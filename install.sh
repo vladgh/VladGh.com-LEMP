@@ -65,7 +65,7 @@ echo "========================================================================="
 echo "  - Nginx $NGINX_DEV (development) or $NGINX_STABLE (stable);" >&3
 echo "  - PHP $PHP_53 or $PHP_54;" >&3
 echo "  - APC $APC_VER;" >&3
-echo "  - Suhosin $SUHOSIN_VER;" >&3
+echo "  - Suhosin $SUHOSIN_VER (at this moment not available for PHP 5.4)" >&3
 echo "=========================================================================" >&3
 echo "For more information please visit:" >&3
 echo "https://github.com/vladgh/VladGh.com-LEMP" >&3
@@ -108,7 +108,11 @@ install_mysql
 
 install_php
 install_apc
-install_suhosin
+if [ $PHP_VER == $PHP_54 ]; then
+  echo "At this moment the Suhosin extensions is not available for PHP 5.4" >&3
+else
+  install_suhosin
+fi
 check_php
 
 install_nginx

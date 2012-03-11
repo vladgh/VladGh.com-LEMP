@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# PHP Libraries
+PHP_LIBRARIES="libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev bzip2 libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick libreadline-dev libc-client-dev libsnmp-dev snmpd snmp"
+
 function install_php() {
   # Install all PHP Libraries
   echo "Installing PHP libraries..." >&3
@@ -68,7 +71,6 @@ function install_php() {
 --enable-mbstring \
 --enable-soap \
 --enable-sockets \
---enable-sqlite-utf8 \
 --enable-shmop \
 --enable-dba \
 --enable-sysvsem \

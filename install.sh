@@ -64,7 +64,7 @@ echo "This script will install the following:" >&3
 echo "=========================================================================" >&3
 echo "  - Nginx $NGINX_DEV (development) or $NGINX_STABLE (stable);" >&3
 echo "  - PHP $PHP_53 or $PHP_54;" >&3
-echo "  - APC $APC_VER;" >&3
+echo "  - APC $APC_VER (at this moment not available for PHP 5.4);" >&3
 echo "  - Suhosin $SUHOSIN_VER (at this moment not available for PHP 5.4)" >&3
 echo "=========================================================================" >&3
 echo "For more information please visit:" >&3
@@ -108,7 +108,7 @@ install_mysql
 
 install_php
 if [ $PHP_VER == $PHP_54 ]; then
-  echo "At this moment the APC and Suhosin extensions is not available for PHP 5.4" >&3
+  tput bold >&3; tput setaf 1 >&3; echo "At this moment the APC and Suhosin extensions are not available for PHP 5.4" >&3; tput sgr0 >&3
 else
   install_apc
   install_suhosin
@@ -129,7 +129,7 @@ sleep 5
 ### Final check
 if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
   echo "=========================================================================" >&3
-  echo 'NginX, PHP, APC and Suhosin were successfully installed.' >&3
+  echo 'All the components were successfully installed.' >&3
   echo "If your hosts are setup correctly you should be able to see some stats at:" >&3
   echo "- http://$(hostname -f)/index.php (PHP Status page)" >&3
   echo "- http://$(hostname -f)/apc.php (APC Status page)" >&3

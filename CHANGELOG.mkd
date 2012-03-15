@@ -1,5 +1,10 @@
 ## Release Notes: ##
 
+### 5.1 ###
+
+  * Upgraded NginX stable to 1.0.14.
+  * Upgraded NginX development to 1.1.17.
+
 ### 5.0 ###
 
   * Major code refactoring (all the functions are in separate files).
@@ -7,7 +12,7 @@
 
 ### 4.04 ###
 
-  * Upgraded NginX stable to 1.1.13.
+  * Upgraded NginX stable to 1.0.13.
 
 ### 4.03 ###
 

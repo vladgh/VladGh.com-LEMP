@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 5.2 ###
+
+  * Upgraded NginX development to 1.1.18.
+
 ### 5.1 ###
 
   * Upgraded NginX stable to 1.0.14.

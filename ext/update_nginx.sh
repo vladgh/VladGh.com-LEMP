@@ -88,6 +88,11 @@ compile_nginx() {
 
 }
 
+backup_conf() {
+  # Backup the old configuration
+  [ -d /etc/nginx ] && mv /etc/nginx /etc/nginx.original
+}
+
 recover_conf() {
   # Send the new default configuration to /tmp
   [ -d /etc/nginx ] && mv /etc/nginx /tmp/nginx-$DATE
@@ -99,8 +104,8 @@ recover_conf() {
 
 restart_servers() {
   echo "Restart NginX"
-  if [ $(ps -ef | grep -c "nginx") -gt 1 ]; then
-    ps -e | grep "nginx" | awk '{print $1}' | xargs sudo kill -INT
+  if [ $(ps -ef | grep -c [n]ginx) -gt 1 ]; then
+    ps -e | grep "nginx" | awk '{print $1}' | xargs sudo kill -9
   fi
   sleep 2
   /etc/init.d/nginx start
@@ -108,9 +113,7 @@ restart_servers() {
 
 check_sanity $ARGS
 
-# Move original configuration
-[ -d /etc/nginx ] && mv /etc/nginx /etc/nginx.original
-
+backup_conf
 get_nginx
 compile_nginx
 recover_conf

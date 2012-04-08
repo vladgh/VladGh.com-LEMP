@@ -3,7 +3,7 @@
 function install_nginx() {
   #Get NginX package
   echo "Downloading and extracting nginx-$NGINX_VER..." >&3
-  mkdir $WEBDIR;
+  mkdir $WEBDIR
   cd $TMPDIR
   wget "http://nginx.org/download/nginx-$NGINX_VER.tar.gz" & progress
   tar zxvf nginx-$NGINX_VER.tar.gz

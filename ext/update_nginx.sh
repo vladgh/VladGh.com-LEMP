@@ -104,9 +104,11 @@ recover_conf() {
 
 restart_servers() {
   echo "Restart NginX"
-  if [ -f /var/run/nginx.pid ]; then
-    NGX_PID=`cat /var/run/nginx.pid`
+  PID_FILE=/var/run/nginx.pid
+  if [ -f $PID_FILE ]; then
+    NGX_PID=`cat $PID_FILE`
     kill -s KILL $NGX_PID
+    rm -f $PID_FILE
     sleep 2
     invoke-rc.d nginx start
   else

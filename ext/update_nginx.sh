@@ -103,7 +103,7 @@ recover_conf() {
 }
 
 restart_servers() {
-  echo "Restart NginX"
+  echo "Restarting NginX..."
   PID_FILE=/var/run/nginx.pid
   if [ -f $PID_FILE ]; then
     NGX_PID=`cat $PID_FILE`
@@ -112,7 +112,8 @@ restart_servers() {
     sleep 2
     invoke-rc.d nginx start
   else
-    die "Could not find the pid file. Try a manual restart."
+    echo "Could not find the pid file. Trying to start..."
+    invoke-rc.d nginx start && echo "NginX started"
   fi
 }
 
@@ -125,5 +126,12 @@ recover_conf
 restart_servers
 
 # Clean Sources
+echo "Cleaning sources..."
 rm -r $SRCDIR
 
+# Check if everything is installed
+if [ $NGINX_VER == $($NGINX_CMD -v 2>&1 | cut -d "/" -f2) ]; then
+  echo "${NGINX_VER} is now installed."
+fi
+
+exit 0

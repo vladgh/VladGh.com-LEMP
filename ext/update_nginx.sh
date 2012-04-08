@@ -104,11 +104,14 @@ recover_conf() {
 
 restart_servers() {
   echo "Restart NginX"
-  if [ $(ps -ef | grep -c [n]ginx) -gt 1 ]; then
-    ps -e | grep "nginx" | awk '{print $1}' | xargs sudo kill -9
+  if [ -f /var/run/nginx.pid ]; then
+    NGX_PID=`cat /var/run/nginx.pid`
+    kill -s KILL $NGX_PID
+    sleep 2
+    invoke-rc.d nginx start
+  else
+    die "Could not find the pid file. Try a manual restart."
   fi
-  sleep 2
-  /etc/init.d/nginx start
 }
 
 check_sanity $ARGS

@@ -12,6 +12,10 @@
 
 # Get NginX Version as a argument
 ARGS="$@"
+NGINX_VER="$1"
+DATE=`date +%Y.%m.%d`
+SRCDIR=/tmp/nginx_$NGINX_VER-$DATE
+NGINX_CMD=$(type -p nginx) # Get executable path
 
 # Traps CTRL-C
 trap ctrl_c INT
@@ -38,10 +42,6 @@ check_sanity() {
   # Check if version is sane
   echo $1 | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version number doesn't seem right; Please double check: $1"
 
-  NGINX_VER="$1"
-  DATE=`date +%Y.%m.%d`
-  SRCDIR=/tmp/nginx_$NGINX_VER-$DATE
-  NGINX_CMD=$(type -p nginx) # Get executable path
   CONFIGURE_ARGS=$($NGINX_CMD -V 2>&1 | grep "configure arguments:" | cut -d " " -f3-) # Get original configure options
   if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
     die "Previous arguments could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
@@ -57,14 +57,24 @@ get_nginx() {
 
   # Download and extract source package
   echo "Getting NginX"
-  mkdir $SRCDIR; cd $SRCDIR
-  wget http://nginx.org/download/nginx-$NGINX_VER.tar.gz
+  if [ -d $SRCDIR ]; then
+    rm -r $SRCDIR && mkdir $SRCDIR && cd $SRCDIR
+  else
+    mkdir $SRCDIR && cd $SRCDIR
+  fi
+  wget -O ${SRCDIR}/nginx-$NGINX_VER.tar.gz http://nginx.org/download/nginx-$NGINX_VER.tar.gz
 
-  if [ ! -f "nginx-$NGINX_VER.tar.gz" ]; then
+  if [ -f ${SRCDIR}/nginx-$NGINX_VER.tar.gz ]; then
+    tar zxvf nginx-$NGINX_VER.tar.gz
+  else
     die "This version could not be found on nginx.org/download."
   fi
 
-  tar zxvf nginx-$NGINX_VER.tar.gz; cd nginx-$NGINX_VER
+  if [ -d ${SRCDIR}/nginx-$NGINX_VER ]; then
+    cd ${SRCDIR}/nginx-$NGINX_VER
+  else
+    die "Could not extract the archive."
+  fi
 
 }
 

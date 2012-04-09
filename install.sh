@@ -82,7 +82,7 @@ esac
 
 echo 'Which of the following PHP releases do you want installed:' >&3
 echo "1) Current PHP 5.3 Stable (${PHP_53})(default)" >&3
-echo "2) Current PHP 5.4 Stable (${PHP_54})(does not have the Suhosin extension)" >&3
+echo "2) Current PHP 5.4 Stable (${PHP_54})(at this moment without the APC or Suhosin extensions)" >&3
 echo -n 'Enter your menu choice [1 or 2]: ' >&3
 read nginxchoice
 case $nginxchoice in

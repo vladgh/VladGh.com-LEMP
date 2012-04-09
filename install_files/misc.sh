@@ -33,10 +33,10 @@ function prepare_system() {
 
 function check_download () {
 # Simple function to check if the download and extraction finished successfully.
-  if [ -e "$2" ] ; then
-    echo  -e '\E[47;34m'"$1 download and extraction was successful." >&3; tput sgr0 >&3
+  if [ -f "$2" ] && [ -f "$3" ] ; then
+    echo  -e '\E[47;34m'"${1} download and extraction was successful." >&3; tput sgr0 >&3
   else
-    echo "Error: $1 Download was unsuccessful." >&3
+    echo "Error: ${1} Download was unsuccessful." >&3
     echo "Check the install.log for errors." >&3
     echo "Press any key to exit..." >&3
     read -n 1
@@ -46,15 +46,15 @@ function check_download () {
 
 function check_php () {
   # Check if the PHP executable exists and has the APC and Suhosin modules compiled.
-  if [ $PHP_VER != $PHP_54 ] && [ -x "$DSTDIR/php5/bin/php" ] && [ $($DSTDIR/php5/bin/php -m | grep apc) ] && [ $($DSTDIR/php5/bin/php -m | grep suhosin) ] ; then
+  if [ $PHP_VER != $PHP_54 ] && [ -x "${DSTDIR}/php5/bin/php" ] && [ $(${DSTDIR}/php5/bin/php -m | grep apc) ] && [ $(${DSTDIR}/php5/bin/php -m | grep suhosin) ] ; then
     echo "=========================================================================" >&3
     echo '${PHP_VER} with APC and Suhosin was successfully installed.' >&3
-    $DSTDIR/php5/bin/php -v >&3
+    ${DSTDIR}/php5/bin/php -v >&3
     echo "=========================================================================" >&3
-  elif [ $PHP_VER == $PHP_54 ] && [ -x "$DSTDIR/php5/bin/php" ] ; then
+  elif [ $PHP_VER == $PHP_54 ] && [ -x "${DSTDIR}/php5/bin/php" ] ; then
     echo "=========================================================================" >&3
     echo '${PHP_VER} was successfully installed.' >&3
-    $DSTDIR/php5/bin/php -v >&3
+    ${DSTDIR}/php5/bin/php -v >&3
     echo "=========================================================================" >&3
   else
     echo 'Error: PHP installation was unsuccessful.' >&3
@@ -67,10 +67,10 @@ function check_php () {
 
 function check_nginx () {
   # Check if Nginx exists and is executable and display the version.
-  if [ -x "$DSTDIR/nginx/sbin/nginx" ] ; then
+  if [ -x "${DSTDIR}/nginx/sbin/nginx" ] ; then
     echo "=========================================================================" >&3
     echo 'NginX was successfully installed.' >&3
-    $DSTDIR/nginx/sbin/nginx -v >&3
+    ${DSTDIR}/nginx/sbin/nginx -v >&3
     echo "=========================================================================" >&3
   else
     echo 'Error: NginX installation was unsuccessful.' >&3
@@ -84,7 +84,7 @@ function check_nginx () {
 function set_paths() {
   # Make the NginX and PHP paths global.
   echo 'Setting up paths...' >&3
-  export PATH="$PATH:$DSTDIR/nginx/sbin:$DSTDIR/php5/bin:$DSTDIR/php5/sbin"
+  export PATH="${PATH}:${DSTDIR}/nginx/sbin:${DSTDIR}/php5/bin:${DSTDIR}/php5/sbin"
   echo "PATH=\"$PATH\"" > /etc/environment
   source /etc/environment
 }
@@ -113,6 +113,6 @@ function log2file() {
   # Logging everything to LOG_FILE
   exec 3>&1 4>&2
   trap 'exec 2>&4 1>&3' 0 1 2 3
-  exec 1>$LOG_FILE 2>&1
+  exec 1>${LOG_FILE} 2>&1
 }
 

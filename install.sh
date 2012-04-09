@@ -32,8 +32,8 @@ SUHOSIN_VER="0.9.33"
 DSTDIR="/opt"
 WEBDIR="/var/www"
 SRCDIR=`dirname $(readlink -f $0)`
-TMPDIR="$SRCDIR/sources"
-INSTALL_FILES="$SRCDIR/install_files/*.sh"
+TMPDIR="${SRCDIR}/sources"
+INSTALL_FILES="${SRCDIR}/install_files/*.sh"
 
 ### Log file
 LOG_FILE="install.log"
@@ -62,10 +62,10 @@ clear >&3
 echo "=========================================================================" >&3
 echo "This script will install the following:" >&3
 echo "=========================================================================" >&3
-echo "  - Nginx $NGINX_DEV (development) or $NGINX_STABLE (stable);" >&3
-echo "  - PHP $PHP_53 or $PHP_54;" >&3
-echo "  - APC $APC_VER (at this moment not available for PHP 5.4);" >&3
-echo "  - Suhosin $SUHOSIN_VER (at this moment not available for PHP 5.4)" >&3
+echo "  - Nginx ${NGINX_DEV} (development) or ${NGINX_STABLE} (stable);" >&3
+echo "  - PHP ${PHP_53} or ${PHP_54};" >&3
+echo "  - APC ${APC_VER} (at this moment not available for PHP 5.4);" >&3
+echo "  - Suhosin ${SUHOSIN_VER} (at this moment not available for PHP 5.4)" >&3
 echo "=========================================================================" >&3
 echo "For more information please visit:" >&3
 echo "https://github.com/vladgh/VladGh.com-LEMP" >&3
@@ -81,8 +81,8 @@ case  $continue_install  in
 esac
 
 echo "Which of the following PHP releases do you want installed:" >&3
-echo "1) Current PHP 5.3 Stable ($PHP_53)(default)" >&3
-echo "2) Current PHP 5.4 Stable ($PHP_54)(does not have the Suhosin extension)" >&3
+echo "1) Current PHP 5.3 Stable (${PHP_53})(default)" >&3
+echo "2) Current PHP 5.4 Stable (${PHP_54})(does not have the Suhosin extension)" >&3
 echo -n "Enter your menu choice [1 or 2]: " >&3
 read nginxchoice
 case $nginxchoice in
@@ -92,8 +92,8 @@ case $nginxchoice in
 esac
 
 echo "Which of the following NginX releases do you want installed:" >&3
-echo "1) Latest Development Release ($NGINX_DEV)(default)" >&3
-echo "2) Latest Stable Release ($NGINX_STABLE)" >&3
+echo "1) Latest Development Release (${NGINX_DEV})(default)" >&3
+echo "2) Latest Stable Release (${NGINX_STABLE})" >&3
 echo -n "Enter your menu choice [1 or 2]: " >&3
 read nginxchoice
 case $nginxchoice in

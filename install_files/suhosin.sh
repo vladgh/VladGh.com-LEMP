@@ -3,17 +3,16 @@
 function install_suhosin() {
   #Get Suhosin packages
   echo "Downloading and extracting Suhosin-$SUHOSIN_VER..." >&3
+  wget -O ${TMPDIR}/suhosin-${SUHOSIN_VER}.tgz "http://download.suhosin.org/suhosin-${SUHOSIN_VER}.tgz" & progress
   cd $TMPDIR
-  wget "http://download.suhosin.org/suhosin-$SUHOSIN_VER.tgz" & progress
-  tar zxvf suhosin-$SUHOSIN_VER.tgz
-  check_download "Suhosin" "$TMPDIR/suhosin-$SUHOSIN_VER.tgz"
-
-  cd $TMPDIR/suhosin-$SUHOSIN_VER
+  tar zxvf suhosin-${SUHOSIN_VER}.tgz
+  check_download "Suhosin" "${TMPDIR}/suhosin-${SUHOSIN_VER}.tgz" "${TMPDIR}/suhosin-${SUHOSIN_VER}/config.m4"
+  cd ${TMPDIR}/suhosin-${SUHOSIN_VER}
 
   # Compile Suhosin source
   echo 'Configuring Suhosin...' >&3
-  $DSTDIR/php5/bin/phpize -clean
-  ./configure --with-php-config=$DSTDIR/php5/bin/php-config --with-libdir=$DSTDIR/php5/lib/php & progress
+  ${DSTDIR}/php5/bin/phpize -clean
+  ./configure --with-php-config=${DSTDIR}/php5/bin/php-config --with-libdir=${DSTDIR}/php5/lib/php & progress
 
   echo 'Compiling Suhosin...' >&3
   make -j8 & progress

@@ -40,7 +40,7 @@ check_sanity() {
 
   APC_VER="$1"
   DATE=`date +%Y.%m.%d`
-  SRCDIR=/tmp/apc_$APC_VER-$DATE
+  SRCDIR=/tmp/apc_${APC_VER-$DATE}
   # Get php executable's path
   PHP_CMD=$(type -p php)
   # Get phpize's path
@@ -51,7 +51,7 @@ check_sanity() {
   LIBDIR=$(php -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://')
 
   # Store the configure args.
-  CONFIGURE_ARGS="--enable-apc --with-php-config=$PHP_CONFIG --with-libdir=$LIBDIR"
+  CONFIGURE_ARGS="--enable-apc --with-php-config=${PHP_CONFIG} --with-libdir=${LIBDIR}"
   if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
     die "The paths for your previous instalation could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
   fi
@@ -68,13 +68,13 @@ get_apc() {
   echo "Getting APC"
   [ -d $SRCDIR ] && rm -r $SRCDIR
   mkdir $SRCDIR && cd $SRCDIR
-  wget "http://pecl.php.net/get/APC-$APC_VER.tgz"
+  wget "http://pecl.php.net/get/APC-${APC_VER}.tgz"
 
-  if [ ! -f "APC-$APC_VER.tgz" ]; then
+  if [ ! -f "APC-${APC_VER}.tgz" ]; then
     die "This version could not be found."
   fi
 
-  tar xzvf APC-$APC_VER.tgz; cd APC-$APC_VER
+  tar xzvf APC-${APC_VER}.tgz; cd APC-${APC_VER}
 }
 
 compile_apc() {

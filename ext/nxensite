@@ -12,16 +12,16 @@ fi
 for site in $*; do
   
   # Check if already enabled
-  if [ -f /etc/nginx/sites-enabled/$site ]; then
-    echo "$site is already enabled"; continue
+  if [ -f /etc/nginx/sites-enabled/${site} ]; then
+    echo "${site} is already enabled"; continue
   fi
   
   # Check if file exists
-  if [ -f /etc/nginx/sites-available/$site ]; then
-    echo "Enabling $site"
-    ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/$site
+  if [ -f /etc/nginx/sites-available/${site} ]; then
+    echo "Enabling ${site}"
+    ln -s /etc/nginx/sites-available/${site} /etc/nginx/sites-enabled/${site}
   else
-    echo "no such file: /opt/nginx/sites-available/$site"
+    echo "no such file: /opt/nginx/sites-available/${site}"
   fi
   
 done

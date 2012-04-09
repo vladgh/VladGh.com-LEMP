@@ -14,7 +14,7 @@
 ARGS="$@"
 NGINX_VER="$1"
 DATE=`date +%Y.%m.%d`
-SRCDIR=/tmp/nginx_$NGINX_VER-$DATE
+SRCDIR=/tmp/nginx_${NGINX_VER-$DATE}
 NGINX_CMD=$(type -p nginx) # Get executable path
 
 # Traps CTRL-C
@@ -62,16 +62,16 @@ get_nginx() {
   else
     mkdir $SRCDIR && cd $SRCDIR
   fi
-  wget -O ${SRCDIR}/nginx-$NGINX_VER.tar.gz http://nginx.org/download/nginx-$NGINX_VER.tar.gz
+  wget -O ${SRCDIR}/nginx-${NGINX_VER}.tar.gz http://nginx.org/download/nginx-${NGINX_VER}.tar.gz
 
-  if [ -f ${SRCDIR}/nginx-$NGINX_VER.tar.gz ]; then
-    tar zxvf nginx-$NGINX_VER.tar.gz
+  if [ -f ${SRCDIR}/nginx-${NGINX_VER}.tar.gz ]; then
+    tar zxvf nginx-${NGINX_VER}.tar.gz
   else
     die "This version could not be found on nginx.org/download."
   fi
 
-  if [ -d ${SRCDIR}/nginx-$NGINX_VER ]; then
-    cd ${SRCDIR}/nginx-$NGINX_VER
+  if [ -d ${SRCDIR}/nginx-${NGINX_VER} ]; then
+    cd ${SRCDIR}/nginx-${NGINX_VER}
   else
     die "Could not extract the archive."
   fi
@@ -95,7 +95,7 @@ backup_conf() {
 
 recover_conf() {
   # Send the new default configuration to /tmp
-  [ -d /etc/nginx ] && mv /etc/nginx /tmp/nginx-$DATE
+  [ -d /etc/nginx ] && mv /etc/nginx /tmp/nginx-${DATE}
 
   # Recover previous configuration files
   echo "Restore working Config..."

@@ -12,11 +12,11 @@ fi
 for site in $*; do
 
   # Check if enabled
-  if [ -f /etc/nginx/sites-enabled/$site ]; then
-    echo "Disabling $site"
-    rm /etc/nginx/sites-enabled/$site
+  if [ -f /etc/nginx/sites-enabled/${site} ]; then
+    echo "Disabling ${site}"
+    rm /etc/nginx/sites-enabled/${site}
   else
-    echo "$site is already disabled"
+    echo "${site} is already disabled"
   fi
 
 done

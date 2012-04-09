@@ -40,7 +40,7 @@ check_sanity() {
 
   PHP_VER="$1"
   DATE=`date +%Y.%m.%d`
-  SRCDIR=/tmp/php_$PHP_VER-$DATE
+  SRCDIR=/tmp/php_${PHP_VER-$DATE}
   # Get executable path
   PHP_CMD=$(type -p php)
   # Get original configure options
@@ -61,17 +61,17 @@ get_php() {
   echo "Getting PHP"
   [ -d $SRCDIR ] && rm -r $SRCDIR
   mkdir $SRCDIR && cd $SRCDIR
-  wget "http://us.php.net/distributions/php-$PHP_VER.tar.gz"
+  wget "http://us.php.net/distributions/php-${PHP_VER}.tar.gz"
 
-  if [ ! -f "php-$PHP_VER.tar.gz" ]; then
+  if [ ! -f "php-${PHP_VER}.tar.gz" ]; then
     die "This version could not be found on php.net/distributions."
   fi
 
-  tar zxvf php-$PHP_VER.tar.gz
-  if [ ! -d "php-$PHP_VER" ]; then
+  tar zxvf php-${PHP_VER}.tar.gz
+  if [ ! -d "php-${PHP_VER}" ]; then
     die "The archive could not be decompressed."
   fi
-  cd php-$PHP_VER
+  cd php-${PHP_VER}
 }
 
 compile_php() {
@@ -93,7 +93,7 @@ backup_conf() {
 
 recover_conf() {
   # Send the new default configuration to /tmp
-  [ -d /etc/php5 ] && mv /etc/php5 /tmp/php5-$DATE
+  [ -d /etc/php5 ] && mv /etc/php5 /tmp/php5-${DATE}
 
   # Recover previous configuration files
   echo "Restore working config..."

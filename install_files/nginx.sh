@@ -2,18 +2,17 @@
 
 function install_nginx() {
   #Get NginX package
-  echo "Downloading and extracting nginx-$NGINX_VER..." >&3
+  echo "Downloading and extracting nginx-${NGINX_VER}..." >&3
   mkdir $WEBDIR
+  wget -O ${TMPDIR}/nginx-${NGINX_VER}.tar.gz "http://nginx.org/download/nginx-${NGINX_VER}.tar.gz" & progress
   cd $TMPDIR
-  wget "http://nginx.org/download/nginx-$NGINX_VER.tar.gz" & progress
-  tar zxvf nginx-$NGINX_VER.tar.gz
-  check_download "NginX" "$TMPDIR/nginx-$NGINX_VER.tar.gz"
-
-  cd $TMPDIR/nginx-$NGINX_VER/
+  tar zxvf nginx-${NGINX_VER}.tar.gz
+  check_download "NginX" "${TMPDIR}/nginx-${NGINX_VER}.tar.gz" "${TMPDIR}/nginx-${NGINX_VER}/configure"
+  cd ${TMPDIR}/nginx-${NGINX_VER}
 
   # Compile php source
   echo 'Configuring NginX...' >&3
-  ./configure --prefix=$DSTDIR/nginx \
+  ./configure --prefix=${DSTDIR}/nginx \
 --conf-path=/etc/nginx/nginx.conf \
 --http-log-path=/var/log/nginx/access.log \
 --error-log-path=/var/log/nginx/error.log \
@@ -34,20 +33,20 @@ function install_nginx() {
   make install
 
   # Copy configuration files
-  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"$DSTDIR/nginx\"~" $SRCDIR/init_files/nginx
-  cp $SRCDIR/init_files/nginx /etc/init.d/nginx
+  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"${DSTDIR}/nginx\"~" ${SRCDIR}/init_files/nginx
+  cp ${SRCDIR}/init_files/nginx /etc/init.d/nginx
   chmod +x /etc/init.d/nginx
   update-rc.d -f nginx defaults
-  cp $SRCDIR/conf_files/nginx.conf /etc/nginx/nginx.conf
+  cp ${SRCDIR}/conf_files/nginx.conf /etc/nginx/nginx.conf
   mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
-  cp $SRCDIR/conf_files/default /etc/nginx/sites-available/default
+  cp ${SRCDIR}/conf_files/default /etc/nginx/sites-available/default
   ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
-  cp $SRCDIR/ext/nxensite $DSTDIR/nginx/sbin/nxensite
-  cp $SRCDIR/ext/nxdissite $DSTDIR/nginx/sbin/nxdissite
-  chmod +x $DSTDIR/nginx/sbin/*
+  cp ${SRCDIR}/ext/nxensite ${DSTDIR}/nginx/sbin/nxensite
+  cp ${SRCDIR}/ext/nxdissite ${DSTDIR}/nginx/sbin/nxdissite
+  chmod +x ${DSTDIR}/nginx/sbin/*
 
-  cp $SRCDIR/web_files/* $WEBDIR
+  cp ${SRCDIR}/web_files/* $WEBDIR
 
   echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
 

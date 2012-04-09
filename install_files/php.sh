@@ -10,10 +10,10 @@ function install_php() {
 
   # Get PHP package
   echo "Downloading and extracting PHP-$PHP_VER..." >&3
+  wget -O ${TMPDIR}/php-${PHP_VER}.tar.gz "http://us.php.net/distributions/php-${PHP_VER}.tar.gz" & progress
   cd $TMPDIR
-  wget "http://us.php.net/distributions/php-$PHP_VER.tar.gz" & progress
-  tar xzvf php-$PHP_VER.tar.gz
-  check_download "PHP5" "$TMPDIR/php-$PHP_VER.tar.gz"
+  tar xzvf php-${PHP_VER}.tar.gz
+  check_download "PHP5" "${TMPDIR}/php-${PHP_VER}.tar.gz" "${TMPDIR}/php-${PHP_VER}/configure"
 
   ### Fix Ubuntu 11.04 LIB PATH ###
   [ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
@@ -25,11 +25,11 @@ function install_php() {
   ##################################
 
   # Compile php source
-  cd $TMPDIR/php-$PHP_VER
+  cd ${TMPDIR}/php-${PHP_VER}
   ./buildconf --force
   echo "Configuring PHP (Please be patient, this will take a while...)" >&3
   ./configure \
---prefix=$DSTDIR/php5 \
+--prefix=${DSTDIR}/php5 \
 --with-config-file-path=/etc/php5 \
 --with-config-file-scan-dir=/etc/php5/conf.d \
 --with-curl \
@@ -84,11 +84,11 @@ function install_php() {
 
   # Copy configuration files
   echo 'Setting up PHP...' >&3
-  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"$DSTDIR/php5\"~" $SRCDIR/init_files/php5-fpm
+  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"${DSTDIR}/php5\"~" ${SRCDIR}/init_files/php5-fpm
   mkdir -p /etc/php5/conf.d /var/log/php5-fpm
   cp -f php.ini-production /etc/php5/php.ini
-  cp $SRCDIR/conf_files/php-fpm.conf /etc/php5/php-fpm.conf
-  cp $SRCDIR/init_files/php5-fpm /etc/init.d/php5-fpm
+  cp ${SRCDIR}/conf_files/php-fpm.conf /etc/php5/php-fpm.conf
+  cp ${SRCDIR}/init_files/php5-fpm /etc/init.d/php5-fpm
   chmod +x /etc/init.d/php5-fpm
   update-rc.d -f php5-fpm defaults
 

@@ -59,18 +59,18 @@ function ctrl_c() {
 }
 
 clear >&3
-echo "=========================================================================" >&3
-echo "This script will install the following:" >&3
-echo "=========================================================================" >&3
+echo '=========================================================================' >&3
+echo 'This script will install the following:' >&3
+echo '=========================================================================' >&3
 echo "  - Nginx ${NGINX_DEV} (development) or ${NGINX_STABLE} (stable);" >&3
 echo "  - PHP ${PHP_53} or ${PHP_54};" >&3
 echo "  - APC ${APC_VER} (at this moment not available for PHP 5.4);" >&3
 echo "  - Suhosin ${SUHOSIN_VER} (at this moment not available for PHP 5.4)" >&3
-echo "=========================================================================" >&3
-echo "For more information please visit:" >&3
-echo "https://github.com/vladgh/VladGh.com-LEMP" >&3
-echo "=========================================================================" >&3
-echo "Do you want to continue[Y/n]:" >&3
+echo '=========================================================================' >&3
+echo 'For more information please visit:' >&3
+echo 'https://github.com/vladgh/VladGh.com-LEMP' >&3
+echo '=========================================================================' >&3
+echo 'Do you want to continue[Y/n]:' >&3
 read  continue_install
 case  $continue_install  in
   'n'|'N'|'No'|'no')
@@ -80,10 +80,10 @@ case  $continue_install  in
   *)
 esac
 
-echo "Which of the following PHP releases do you want installed:" >&3
+echo 'Which of the following PHP releases do you want installed:' >&3
 echo "1) Current PHP 5.3 Stable (${PHP_53})(default)" >&3
 echo "2) Current PHP 5.4 Stable (${PHP_54})(does not have the Suhosin extension)" >&3
-echo -n "Enter your menu choice [1 or 2]: " >&3
+echo -n 'Enter your menu choice [1 or 2]: ' >&3
 read nginxchoice
 case $nginxchoice in
   1) PHP_VER=$PHP_53 ;;
@@ -91,10 +91,10 @@ case $nginxchoice in
   *) PHP_VER=$PHP_53 ;
 esac
 
-echo "Which of the following NginX releases do you want installed:" >&3
+echo 'Which of the following NginX releases do you want installed:' >&3
 echo "1) Latest Development Release (${NGINX_DEV})(default)" >&3
 echo "2) Latest Stable Release (${NGINX_STABLE})" >&3
-echo -n "Enter your menu choice [1 or 2]: " >&3
+echo -n 'Enter your menu choice [1 or 2]: ' >&3
 read nginxchoice
 case $nginxchoice in
   1) NGINX_VER=$NGINX_DEV ;;
@@ -108,7 +108,7 @@ install_mysql
 
 install_php
 if [ $PHP_VER == $PHP_54 ]; then
-  tput bold >&3; tput setaf 1 >&3; echo "At this moment the APC and Suhosin extensions are not available for PHP 5.4" >&3; tput sgr0 >&3
+  tput bold >&3; tput setaf 1 >&3; echo 'At this moment the APC and Suhosin extensions are not available for PHP 5.4' >&3; tput sgr0 >&3
 else
   install_apc
   install_suhosin
@@ -128,9 +128,9 @@ sleep 5
 
 ### Final check
 if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
-  echo "=========================================================================" >&3
+  echo '=========================================================================' >&3
   echo 'All the components were successfully installed.' >&3
-  echo "If your hosts are setup correctly you should be able to see some stats at:" >&3
+  echo 'If your hosts are setup correctly you should be able to see some stats at:' >&3
   echo "- http://$(hostname -f)/index.php (PHP Status page)" >&3
   echo "- http://$(hostname -f)/apc.php (APC Status page)" >&3
   echo "- http://$(hostname -f)/nginx_status (NginX Status page)" >&3
@@ -139,8 +139,8 @@ if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
   read -n 1
   exit 0
 else
-  echo "=========================================================================" >&3
-  echo "Errors encountered. Check the install.log." >&3
+  echo '=========================================================================' >&3
+  echo 'Errors encountered. Check the install.log.' >&3
   echo 'Press any key to exit...' >&3
   read -n 1
   exit 1

@@ -51,25 +51,25 @@ check_sanity() {
 
   # Check if version is the same
   if [ $PHP_VER == $($PHP_CMD -v 2>&1 | grep "built" | cut -d " " -f2) ]; then
-    die "This version number is already installed."
+    die 'This version number is already installed.'
   fi
 }
 
 get_php() {
 
   # Download and extract source package
-  echo "Getting PHP"
+  echo 'Getting PHP'
   [ -d $SRCDIR ] && rm -r $SRCDIR
   mkdir $SRCDIR && cd $SRCDIR
   wget "http://us.php.net/distributions/php-${PHP_VER}.tar.gz"
 
   if [ ! -f "php-${PHP_VER}.tar.gz" ]; then
-    die "This version could not be found on php.net/distributions."
+    die 'This version could not be found on php.net/distributions.'
   fi
 
   tar zxvf php-${PHP_VER}.tar.gz
   if [ ! -d "php-${PHP_VER}" ]; then
-    die "The archive could not be decompressed."
+    die 'The archive could not be decompressed.'
   fi
   cd php-${PHP_VER}
 }
@@ -77,7 +77,7 @@ get_php() {
 compile_php() {
 
   # Configure and compile NginX with previous options
-  echo "Configure with previous options..."
+  echo 'Configure with previous options...'
   ./buildconf --force
   ./configure $CONFIGURE_ARGS
   make -j8
@@ -87,7 +87,7 @@ compile_php() {
 
 backup_conf() {
   # Move the current configuration to a safe place.
-  echo "Backing up working config..."
+  echo 'Backing up working config...'
   [ -d /etc/php5 ] && mv /etc/php5 /etc/php5.original
 }
 
@@ -96,12 +96,12 @@ recover_conf() {
   [ -d /etc/php5 ] && mv /etc/php5 /tmp/php5-${DATE}
 
   # Recover previous configuration files
-  echo "Restore working config..."
+  echo 'Restore working config...'
   [ -d /etc/php5.original ] && mv /etc/php5.original /etc/php5
 }
 
 restart_servers() {
-  echo "Restarting PHP..."
+  echo 'Restarting PHP...'
   if [ $(ps -ef | grep -c "php") -gt 1 ]; then
     ps -e | grep "php" | awk '{print $1}' | xargs sudo kill -INT
   fi

@@ -5,11 +5,11 @@ PHP_LIBRARIES="libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-
 
 function install_php() {
   # Install all PHP Libraries
-  echo "Installing PHP libraries..." >&3
+  echo 'Installing PHP libraries...' >&3
   apt-get -y install $PHP_LIBRARIES & progress
 
   # Get PHP package
-  echo "Downloading and extracting PHP-$PHP_VER..." >&3
+  echo "Downloading and extracting PHP-${PHP_VER}..." >&3
   wget -O ${TMPDIR}/php-${PHP_VER}.tar.gz "http://us.php.net/distributions/php-${PHP_VER}.tar.gz" & progress
   cd $TMPDIR
   tar xzvf php-${PHP_VER}.tar.gz
@@ -27,7 +27,7 @@ function install_php() {
   # Compile php source
   cd ${TMPDIR}/php-${PHP_VER}
   ./buildconf --force
-  echo "Configuring PHP (Please be patient, this will take a while...)" >&3
+  echo 'Configuring PHP (Please be patient, this will take a while...)' >&3
   ./configure \
 --prefix=${DSTDIR}/php5 \
 --with-config-file-path=/etc/php5 \
@@ -77,9 +77,9 @@ function install_php() {
 --enable-sysvshm \
 --enable-sysvmsg & progress
 
-  echo "Compiling PHP (Please be patient, this will take a while...)" >&3
+  echo 'Compiling PHP (Please be patient, this will take a while...)' >&3
   make -j8 & progress
-  echo "Installing PHP..." >&3
+  echo 'Installing PHP...' >&3
   make install & progress
 
   # Copy configuration files

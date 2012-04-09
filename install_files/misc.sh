@@ -16,11 +16,11 @@ function progress() {
 
 function prepare_system() {
   # Upgrading APT-GET
-  echo "Updating apt-get..." >&3
+  echo 'Updating apt-get...' >&3
   apt-get -y update & progress
 
   # Install essential packages for Ubuntu
-  echo "Installing dependencies..." >&3
+  echo 'Installing dependencies...' >&3
   apt-get -y install $ESSENTIAL_PACKAGES & progress
 
   # Create temporary folder for the sources
@@ -37,8 +37,8 @@ function check_download () {
     echo  -e '\E[47;34m'"${1} download and extraction was successful." >&3; tput sgr0 >&3
   else
     echo "Error: ${1} Download was unsuccessful." >&3
-    echo "Check the install.log for errors." >&3
-    echo "Press any key to exit..." >&3
+    echo 'Check the install.log for errors.' >&3
+    echo 'Press any key to exit...' >&3
     read -n 1
     exit 1
   fi
@@ -47,18 +47,18 @@ function check_download () {
 function check_php () {
   # Check if the PHP executable exists and has the APC and Suhosin modules compiled.
   if [ $PHP_VER != $PHP_54 ] && [ -x "${DSTDIR}/php5/bin/php" ] && [ $(${DSTDIR}/php5/bin/php -m | grep apc) ] && [ $(${DSTDIR}/php5/bin/php -m | grep suhosin) ] ; then
-    echo "=========================================================================" >&3
-    echo '${PHP_VER} with APC and Suhosin was successfully installed.' >&3
+    echo '=========================================================================' >&3
+    echo "${PHP_VER} with APC and Suhosin was successfully installed." >&3
     ${DSTDIR}/php5/bin/php -v >&3
-    echo "=========================================================================" >&3
+    echo '=========================================================================' >&3
   elif [ $PHP_VER == $PHP_54 ] && [ -x "${DSTDIR}/php5/bin/php" ] ; then
-    echo "=========================================================================" >&3
-    echo '${PHP_VER} was successfully installed.' >&3
+    echo '=========================================================================' >&3
+    echo "${PHP_VER} was successfully installed." >&3
     ${DSTDIR}/php5/bin/php -v >&3
-    echo "=========================================================================" >&3
+    echo '=========================================================================' >&3
   else
     echo 'Error: PHP installation was unsuccessful.' >&3
-    echo "Check the install.log for errors." >&3
+    echo 'Check the install.log for errors.' >&3
     echo 'Press any key to exit...' >&3
     read -n 1
     exit 1
@@ -68,13 +68,13 @@ function check_php () {
 function check_nginx () {
   # Check if Nginx exists and is executable and display the version.
   if [ -x "${DSTDIR}/nginx/sbin/nginx" ] ; then
-    echo "=========================================================================" >&3
+    echo '=========================================================================' >&3
     echo 'NginX was successfully installed.' >&3
     ${DSTDIR}/nginx/sbin/nginx -v >&3
-    echo "=========================================================================" >&3
+    echo '=========================================================================' >&3
   else
     echo 'Error: NginX installation was unsuccessful.' >&3
-    echo "Check the install.log for errors." >&3
+    echo 'Check the install.log for errors.' >&3
     echo 'Press any key to exit...' >&3
     read -n 1
     exit 1
@@ -103,7 +103,7 @@ function restart_servers() {
 function check_root() {
   # Check if you are root
   if [ $(id -u) != "0" ]; then
-    echo "Error: You must be root to run this installer."
+    echo 'Error: You must be root to run this installer.'
     echo "Error: Please use 'sudo'."
     exit 1
   fi

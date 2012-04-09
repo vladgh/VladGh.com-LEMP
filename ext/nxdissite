@@ -4,7 +4,7 @@ if ! [ $1 ]; then exit; fi
 
 # Check if you are root
 if [ $(id -u) != "0" ]; then
-  echo "Error: You must be root to run this command."
+  echo 'Error: You must be root to run this command.'
   echo "Error: Please use 'sudo'."
   exit 1
 fi
@@ -21,7 +21,7 @@ for site in $*; do
 
 done
 
-echo "Do you want to restart Nginx? [Y/n]: "
+echo 'Do you want to restart Nginx? [Y/n]: '
 read answer
 case $answer in 'n'|'N'|'No'|'no') exit ;; esac
 

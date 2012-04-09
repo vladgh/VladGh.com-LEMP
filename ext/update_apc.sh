@@ -58,20 +58,20 @@ check_sanity() {
 
   # Check if version is the same
   if [ $APC_VER == $($PHP_CMD -i 2>&1 | grep -m 2 "Version" | grep -v PHP | cut -d " " -f3) ]; then
-    die "This version number is already installed."
+    die 'This version number is already installed.'
   fi
 }
 
 get_apc() {
 
   # Download and extract source package
-  echo "Getting APC"
+  echo 'Getting APC'
   [ -d $SRCDIR ] && rm -r $SRCDIR
   mkdir $SRCDIR && cd $SRCDIR
   wget "http://pecl.php.net/get/APC-${APC_VER}.tgz"
 
   if [ ! -f "APC-${APC_VER}.tgz" ]; then
-    die "This version could not be found."
+    die 'This version could not be found.'
   fi
 
   tar xzvf APC-${APC_VER}.tgz; cd APC-${APC_VER}
@@ -80,7 +80,7 @@ get_apc() {
 compile_apc() {
 
   # Configure and compile APC.
-  echo "Configure APC with typical options..."
+  echo 'Configure APC with typical options...'
   $PHPIZE -clean
   ./configure $CONFIGURE_ARGS
   make -j8
@@ -89,7 +89,7 @@ compile_apc() {
 }
 
 restart_servers() {
-  echo "Restarting PHP..."
+  echo 'Restarting PHP...'
   if [ $(ps -ef | grep -c "php") -gt 1 ]; then
     ps -e | grep "php" | awk '{print $1}' | xargs sudo kill -INT
   fi

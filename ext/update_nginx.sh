@@ -49,14 +49,14 @@ check_sanity() {
 
   # Check if version is the same
   if [ $NGINX_VER == $($NGINX_CMD -v 2>&1 | cut -d "/" -f2) ]; then
-    die "This version number is already installed."
+    die 'This version number is already installed.'
   fi
 }
 
 get_nginx() {
 
   # Download and extract source package
-  echo "Getting NginX"
+  echo 'Getting NginX'
   if [ -d $SRCDIR ]; then
     rm -r $SRCDIR && mkdir $SRCDIR && cd $SRCDIR
   else
@@ -67,13 +67,13 @@ get_nginx() {
   if [ -f ${SRCDIR}/nginx-${NGINX_VER}.tar.gz ]; then
     tar zxvf nginx-${NGINX_VER}.tar.gz
   else
-    die "This version could not be found on nginx.org/download."
+    die 'This version could not be found on nginx.org/download.'
   fi
 
   if [ -d ${SRCDIR}/nginx-${NGINX_VER} ]; then
     cd ${SRCDIR}/nginx-${NGINX_VER}
   else
-    die "Could not extract the archive."
+    die 'Could not extract the archive.'
   fi
 
 }
@@ -81,7 +81,7 @@ get_nginx() {
 compile_nginx() {
 
   # Configure and compile NginX with previous options
-  echo "Configure with previous options..."
+  echo 'Configure with previous options...'
   ./configure $CONFIGURE_ARGS
   make
   make install
@@ -90,6 +90,7 @@ compile_nginx() {
 
 backup_conf() {
   # Backup the old configuration
+  echo 'Backing up current config...'
   [ -d /etc/nginx ] && mv /etc/nginx /etc/nginx.original
 }
 
@@ -98,12 +99,12 @@ recover_conf() {
   [ -d /etc/nginx ] && mv /etc/nginx /tmp/nginx-${DATE}
 
   # Recover previous configuration files
-  echo "Restore working Config..."
+  echo 'Restore working config...'
   [ -d /etc/nginx.original  ] && mv /etc/nginx.original /etc/nginx
 }
 
 restart_servers() {
-  echo "Restarting NginX..."
+  echo 'Restarting NginX...'
   PID_FILE=/var/run/nginx.pid
   if [ -f $PID_FILE ]; then
     NGX_PID=`cat $PID_FILE`
@@ -112,8 +113,8 @@ restart_servers() {
     sleep 2
     invoke-rc.d nginx start
   else
-    echo "Could not find the pid file. Trying to start..."
-    invoke-rc.d nginx start && echo "NginX started"
+    echo 'Could not find the pid file. Trying to start...'
+    invoke-rc.d nginx start && echo 'NginX started'
   fi
 }
 
@@ -126,7 +127,7 @@ recover_conf
 restart_servers
 
 # Clean Sources
-echo "Cleaning sources..."
+echo 'Cleaning sources...'
 rm -r $SRCDIR
 
 # Check if everything is installed
@@ -135,3 +136,4 @@ if [ $NGINX_VER == $($NGINX_CMD -v 2>&1 | cut -d "/" -f2) ]; then
 fi
 
 exit 0
+

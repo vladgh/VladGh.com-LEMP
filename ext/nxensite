@@ -10,12 +10,12 @@ if [ $(id -u) != "0" ]; then
 fi
 
 for site in $*; do
-  
+
   # Check if already enabled
   if [ -f /etc/nginx/sites-enabled/${site} ]; then
     echo "${site} is already enabled"; continue
   fi
-  
+
   # Check if file exists
   if [ -f /etc/nginx/sites-available/${site} ]; then
     echo "Enabling ${site}"
@@ -23,11 +23,12 @@ for site in $*; do
   else
     echo "no such file: /opt/nginx/sites-available/${site}"
   fi
-  
+
 done
 
 echo "Do you want to restart Nginx? [Y/n]: "
 read  answer
 case  $answer in 'n'|'N'|'No'|'no') exit ;; esac
 
-/etc/init.d/nginx restart
+invoke-rc.d nginx restart
+

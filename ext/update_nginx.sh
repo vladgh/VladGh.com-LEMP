@@ -105,17 +105,11 @@ recover_conf() {
 
 restart_servers() {
   echo 'Restarting NginX...'
-  PID_FILE=/var/run/nginx.pid
-  if [ -f $PID_FILE ]; then
-    NGX_PID=`cat $PID_FILE`
-    kill -s KILL $NGX_PID
-    rm -f $PID_FILE
-    sleep 2
-    invoke-rc.d nginx start
-  else
-    echo 'Could not find the pid file. Trying to start...'
-    invoke-rc.d nginx start && echo 'NginX started'
+  if [ $(ps -ef | grep -c [n]ginx) -gt 1 ]; then
+    ps -e | grep [n]ginx | awk '{print $1}' | xargs kill -INT
   fi
+  sleep 2
+  invoke-rc.d nginx start
 }
 
 check_sanity $ARGS

@@ -93,11 +93,11 @@ function restart_servers() {
   # Restart both NginX and PHP daemons
   echo 'Restarting servers...' >&3
   if [ $(ps -ef | egrep -c "(nginx|php-fpm)") -gt 1 ]; then
-    ps -e | egrep "(nginx|php)" | awk '{print $1}' | xargs sudo kill -INT
+    ps -e | egrep "(nginx|php)" | awk '{print $1}' | xargs kill -INT
   fi
   sleep 2
-  /etc/init.d/php5-fpm start
-  /etc/init.d/nginx start
+  invoke-rc.d php5-fpm start
+  invoke-rc.d nginx start
 }
 
 function check_root() {

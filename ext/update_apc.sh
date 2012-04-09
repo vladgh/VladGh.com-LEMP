@@ -90,11 +90,11 @@ compile_apc() {
 
 restart_servers() {
   echo 'Restarting PHP...'
-  if [ $(ps -ef | grep -c "php") -gt 1 ]; then
-    ps -e | grep "php" | awk '{print $1}' | xargs sudo kill -INT
+  if [ $(ps -ef | grep -c [p]hp) -gt 1 ]; then
+    ps -e | grep [p]hp | awk '{print $1}' | xargs kill -INT
   fi
   sleep 2
-  /etc/init.d/php5-fpm start
+  invoke-rc.d php5-fpm start
 }
 
 check_sanity $ARGS

@@ -25,4 +25,4 @@ echo 'Do you want to restart Nginx? [Y/n]: '
 read answer
 case $answer in 'n'|'N'|'No'|'no') exit ;; esac
 
-/etc/init.d/nginx restart
+invoke-rc.d nginx restart

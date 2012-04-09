@@ -3,6 +3,7 @@
 ### 5.3 ###
 
   * Improved the check download function.
+  * Improved discovery of old configure options.
   * Improved syntax.
   * Minor fixes.
 

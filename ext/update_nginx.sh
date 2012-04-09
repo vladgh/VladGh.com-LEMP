@@ -42,7 +42,7 @@ check_sanity() {
   # Check if version is sane
   echo $1 | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version number doesn't seem right; Please double check: $1"
 
-  CONFIGURE_ARGS=$($NGINX_CMD -V 2>&1 | grep "configure arguments:" | cut -d " " -f3-) # Get original configure options
+  CONFIGURE_ARGS=$($NGINX_CMD -V 2>&1 | grep "configure arguments:" | sed 's/^.*: --/--/g') # Get original configure options
   if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
     die "Previous arguments could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
   fi

@@ -48,12 +48,12 @@ function check_php () {
   # Check if the PHP executable exists and has the APC and Suhosin modules compiled.
   if [ $PHP_VER != $PHP_54 ] && [ -x "${DSTDIR}/php5/bin/php" ] && [ $(${DSTDIR}/php5/bin/php -m | grep apc) ] && [ $(${DSTDIR}/php5/bin/php -m | grep suhosin) ] ; then
     echo '=========================================================================' >&3
-    echo "${PHP_VER} with APC and Suhosin was successfully installed." >&3
+    echo "PHP ${PHP_VER} with APC and Suhosin was successfully installed." >&3
     ${DSTDIR}/php5/bin/php -v >&3
     echo '=========================================================================' >&3
   elif [ $PHP_VER == $PHP_54 ] && [ -x "${DSTDIR}/php5/bin/php" ] ; then
     echo '=========================================================================' >&3
-    echo "${PHP_VER} was successfully installed." >&3
+    echo "PHP ${PHP_VER} was successfully installed." >&3
     ${DSTDIR}/php5/bin/php -v >&3
     echo '=========================================================================' >&3
   else

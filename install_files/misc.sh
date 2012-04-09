@@ -92,9 +92,9 @@ function set_paths() {
 function restart_servers() {
   # Restart both NginX and PHP daemons
   echo 'Restarting servers...' >&3
-  if [ $(ps -ef | egrep -c "(nginx|php-fpm)") -gt 1 ]; then
-    ps -e | egrep "(nginx|php)" | awk '{print $1}' | xargs kill -INT
-  fi
+  for pid in $(ps -eo pid,cmd | egrep '(nginx|php-fpm): master' | awk '{print $1}'); do
+    kill -INT $pid
+  done
   sleep 2
   invoke-rc.d php5-fpm start
   invoke-rc.d nginx start

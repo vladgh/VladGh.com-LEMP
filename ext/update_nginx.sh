@@ -105,9 +105,9 @@ recover_conf() {
 
 restart_servers() {
   echo 'Restarting NginX...'
-  if [ $(ps -ef | grep -c [n]ginx) -gt 1 ]; then
-    ps -e | grep [n]ginx | awk '{print $1}' | xargs kill -INT
-  fi
+  for pid in $(ps -eo pid,cmd | grep '[n]ginx: master' | awk '{print $1}'); do
+    kill -INT $pid
+  done
   sleep 2
   invoke-rc.d nginx start
 }

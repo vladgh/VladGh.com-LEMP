@@ -90,9 +90,9 @@ compile_apc() {
 
 restart_servers() {
   echo 'Restarting PHP...'
-  if [ $(ps -ef | grep -c [p]hp) -gt 1 ]; then
-    ps -e | grep [p]hp | awk '{print $1}' | xargs kill -INT
-  fi
+  for pid in $(ps -eo pid,cmd | grep '[p]hp-fpm: master' | awk '{print $1}'); do
+    kill -INT $pid
+  done
   sleep 2
   invoke-rc.d php5-fpm start
 }

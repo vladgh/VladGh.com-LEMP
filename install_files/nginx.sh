@@ -1,9 +1,10 @@
 #!/bin/bash
 
 function install_nginx() {
-  #Get NginX package
+  # Create Web Directory
+  [ ! -d $WEBDIR ] && mkdir $WEBDIR
+  # Get NginX package
   echo "Downloading and extracting nginx-${NGINX_VER}..." >&3
-  mkdir $WEBDIR
   wget -O ${TMPDIR}/nginx-${NGINX_VER}.tar.gz "http://nginx.org/download/nginx-${NGINX_VER}.tar.gz" & progress
   cd $TMPDIR
   tar zxvf nginx-${NGINX_VER}.tar.gz

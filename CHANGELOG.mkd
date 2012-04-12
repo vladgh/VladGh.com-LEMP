@@ -1,5 +1,12 @@
 ## Release Notes: ##
 
+### 5.4.0 ###
+
+  * NginX upstream release for both stable and development versions.
+  * With the new upstream release APC is now available for PHP 5.4.
+  * Converted repository to Vincent Driessen's branching model.
+  * Converted numbering scheme to Semantic Versioning
+
 ### 5.3 ###
 
   * Improved the check download function.

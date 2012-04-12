@@ -47,7 +47,7 @@ In the "ext" folder you will also find some utilities:
 * `update_apc.sh` - upgrades the current apc (`sudo env PATH=$PATH bash ext/update_apc.sh 3.1.19`).
 
 # CONTRIBUTING: #
-This project is still under development. Feedback and suggestions are very welcome and I encourage you to use the [Issues list](https://github.com/vladgh/VladGh.com-LEMP/issues) on Github to provide that feedback.This repository uses [Vincent Driessen's branching model](http://nvie.com/posts/a-successful-git-branching-model/).
+This project is still under development. Feedback and suggestions are very welcome and I encourage you to use the [Issues list](https://github.com/vladgh/VladGh.com-LEMP/issues) on Github to provide that feedback.This repository uses [Vincent Driessen's branching model](http://nvie.com/posts/a-successful-git-branching-model/). You can use [Git-Flow](https://github.com/nvie/gitflow) for this.
 
 Feel free to fork this repo and to commit your additions. When done, open a pull request to your feature branch.
 

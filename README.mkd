@@ -1,8 +1,8 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 
-  * NginX 1.1.18 (development) or 1.0.14 (stable)
+  * NginX 1.1.19 (development) or 1.0.15 (stable)
   * PHP 5.3.10 or PHP 5.4.0
-  * APC 3.1.9 (at this moment it is not available with PHP 5.4)
+  * APC 3.1.10
   * Suhosin Extension 0.9.33 (at this moment it is not available with PHP 5.4)
 
 All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-fpm-mysql-and-apc
@@ -45,6 +45,19 @@ In the "ext" folder you will also find some utilities:
   * this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options programmatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
 * `update_php.sh` - upgrades the current php (`sudo env PATH=$PATH bash ext/update_php.sh 5.3.10`).
 * `update_apc.sh` - upgrades the current apc (`sudo env PATH=$PATH bash ext/update_apc.sh 3.1.19`).
+
+# CONTRIBUTING: #
+This project is still under development. Feedback and suggestions are very welcome and I encourage you to use the [Issues list](https://github.com/vladgh/VladGh.com-LEMP/issues) on Github to provide that feedback.This repository uses [Vincent Driessen's branching model](http://nvie.com/posts/a-successful-git-branching-model/). You can use [Git-Flow](https://github.com/nvie/gitflow) for this.
+
+Feel free to fork this repo and to commit your additions. When done, open a pull request to your feature branch.
+
+The formatting conventions already present in these scripts are as follows:
+
+* Unix (LF), not dos (CRLF) line endings.
+* Two space indentation ([GNU Style](http://en.wikipedia.org/wiki/Indent_style#GNU_style)).
+* Eliminate all trailing whitespace.
+* Aim to wrap code at 80 characters, but favor functionality over wrapping.
+* Preserve existing formatting; i.e. do not reformat code for its own sake.
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
 <div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>

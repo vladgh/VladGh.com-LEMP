@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 5.5.0 ###
+
+  * Removed mysql questions from the install script.
+
 ### 5.4.1 ###
 
   * Upgraded apc.php.

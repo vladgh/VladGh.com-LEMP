@@ -27,7 +27,11 @@ Run the installer; I recommend running everything inside a screen session becaus
 
     sudo screen ./install.sh
 
-After the installer is finished (this will take a long time depending on your server specifications), you can go to your servers address and you will see the PHP info page.
+After the installer is finished (this will take a long time depending on your server specifications), you MUST set your mysql root password:
+
+    sudo mysqladmin -u root password MYPASSWORD
+
+You can go to your server's address and you will see the PHP info page.
 Also, if you go to:
 
   * **http://example.com/apc.php** you will find the APC Cache information page;

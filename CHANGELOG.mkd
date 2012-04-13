@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 5.4.1 ###
+
+  * Upgraded apc.php.
+
 ### 5.4.0 ###
 
   * NginX upstream release for both stable and development versions.

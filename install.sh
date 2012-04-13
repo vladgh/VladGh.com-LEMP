@@ -135,8 +135,11 @@ if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
   echo "- http://$(hostname -f)/apc.php (APC Status page)" >&3
   echo "- http://$(hostname -f)/nginx_status (NginX Status page)" >&3
   echo "- http://$(hostname -f)/status?html (FPM Status page)" >&3
-  tput bold >&3; tput setaf 1 >&3; echo 'DO NOT FORGET TO SET THE MYSQL ROOT PASSWORD:' >&3;
-  echo '"sudo mysqladmin -u root password MYPASSWORD"' >&3; tput sgr0 >&3
+  tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
+  echo 'DO NOT FORGET TO SET THE MYSQL ROOT PASSWORD:' >&3;
+  tput smul >&3;
+  echo '"sudo mysqladmin -u root password MYPASSWORD"' >&3
+  tput sgr0 >&3
   echo 'Press any key to exit...' >&3
   read -n 1
   exit 0

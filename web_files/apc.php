@@ -3,7 +3,7 @@
   +----------------------------------------------------------------------+
   | APC                                                                  |
   +----------------------------------------------------------------------+
-  | Copyright (c) 2006-2010 The PHP Group                                |
+  | Copyright (c) 2006-2011 The PHP Group                                |
   +----------------------------------------------------------------------+
   | This source file is subject to version 3.01 of the PHP license,      |
   | that is bundled with this package in the file LICENSE, and is        |
@@ -22,7 +22,7 @@
 
  */
 
-$VERSION='$Id: apc.php 305037 2010-11-02 19:15:05Z pajoye $';
+$VERSION='$Id: apc.php 307048 2011-01-03 23:53:17Z kalle $';
 
 ////////// READ OPTIONAL CONFIGURATION FILE ////////////
 if (file_exists("apc.conf.php")) include("apc.conf.php");
@@ -38,8 +38,8 @@ defaults('USE_AUTHENTICATION',1);			// Use (internal) authentication - best choi
 											// If set to 1:
 											//  You need to change ADMIN_PASSWORD to make
 											//  this work!
-defaults('ADMIN_USERNAME','user'); 			// Admin Username
-defaults('ADMIN_PASSWORD','xxxx');  	// Admin Password - CHANGE THIS TO ENABLE!!!
+defaults('ADMIN_USERNAME','apc'); 			// Admin Username
+defaults('ADMIN_PASSWORD','password');  	// Admin Password - CHANGE THIS TO ENABLE!!!
 
 // (beckerr) I'm using a clear text password here, because I've no good idea how to let 
 //           users generate a md5 or crypt password in a easy way to fill it in above

@@ -20,6 +20,8 @@ function install_php() {
   [ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
   [ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so
   [ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
+  [ -f /usr/lib/x86_64-linux-gnu/libXpm.so ] && ln -s /usr/lib/x86_64-linux-gnu/libXpm.so /usr/lib/libXpm.so
+  [ -f /usr/lib/i386-linux-gnu/libXpm.so ] && ln -s /usr/lib/i386-linux-gnu/libXpm.so /usr/lib/libXpm.so
   [ -d /usr/lib/x86_64-linux-gnu/mit-krb5 ] && ln -s /usr/lib/x86_64-linux-gnu/mit-krb5/lib*.so /usr/lib/
   [ -d /usr/lib/i386-linux-gnu/mit-krb5 ] && ln -s /usr/lib/i386-linux-gnu/mit-krb5/lib*.so /usr/lib/
   ##################################

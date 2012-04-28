@@ -15,13 +15,15 @@ function install_php() {
   tar xzvf php-${PHP_VER}.tar.gz
   check_download "PHP5" "${TMPDIR}/php-${PHP_VER}.tar.gz" "${TMPDIR}/php-${PHP_VER}/configure"
 
-  ### Fix Ubuntu 11.04 LIB PATH ###
-  [ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
-  [ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
-  [ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so
-  [ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
-  [ -f /usr/lib/x86_64-linux-gnu/libXpm.so ] && ln -s /usr/lib/x86_64-linux-gnu/libXpm.so /usr/lib/libXpm.so
-  [ -f /usr/lib/i386-linux-gnu/libXpm.so ] && ln -s /usr/lib/i386-linux-gnu/libXpm.so /usr/lib/libXpm.so
+  ### Fix Ubuntu 11.04 & 12.10 LIB PATH ###
+  [ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/
+  [ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/
+  [ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/
+  [ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/
+  [ -f /usr/lib/x86_64-linux-gnu/libXpm.so ] && ln -s /usr/lib/x86_64-linux-gnu/libXpm.so /usr/lib/
+  [ -f /usr/lib/i386-linux-gnu/libXpm.so ] && ln -s /usr/lib/i386-linux-gnu/libXpm.so /usr/lib/
+  [ -f /usr/lib/x86_64-linux-gnu/libmysqlclient.so ] && ln -s /usr/lib/x86_64-linux-gnu/libmysqlclient.so /usr/lib/
+  [ -f /usr/lib/i386-linux-gnu/libmysqlclient.so ] && ln -s /usr/lib/i386-linux-gnu/libmysqlclient.so /usr/lib/
   [ -d /usr/lib/x86_64-linux-gnu/mit-krb5 ] && ln -s /usr/lib/x86_64-linux-gnu/mit-krb5/lib*.so /usr/lib/
   [ -d /usr/lib/i386-linux-gnu/mit-krb5 ] && ln -s /usr/lib/i386-linux-gnu/mit-krb5/lib*.so /usr/lib/
   ##################################

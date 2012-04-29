@@ -2,17 +2,17 @@
 
 function install_apc() {
   # Get APC package
-  echo "Downloading and extracting APC-${APC_VER}..." >&3
-  wget -O ${TMPDIR}/APC-${APC_VER}.tgz "http://pecl.php.net/get/APC-${APC_VER}.tgz" & progress
+  echo "Downloading and extracting APC-${APC_VERSION}..." >&3
+  wget -O ${TMPDIR}/APC-${APC_VERSION}.tgz "http://pecl.php.net/get/APC-${APC_VERSION}.tgz" & progress
   cd $TMPDIR
-  tar xzvf APC-${APC_VER}.tgz
-  check_download "APC" "${TMPDIR}/APC-${APC_VER}.tgz" "${TMPDIR}/APC-${APC_VER}/config.m4"
-  cd ${TMPDIR}/APC-${APC_VER}
+  tar xzvf APC-${APC_VERSION}.tgz
+  check_download "APC" "${TMPDIR}/APC-${APC_VERSION}.tgz" "${TMPDIR}/APC-${APC_VERSION}/config.m4"
+  cd ${TMPDIR}/APC-${APC_VERSION}
 
   # Compile APC source
   echo 'Configuring APC...' >&3
-  ${DSTDIR}/php5/bin/phpize -clean
-  ./configure --enable-apc --with-php-config=${DSTDIR}/php5/bin/php-config --with-libdir=${DSTDIR}/php5/lib/php & progress
+  ${DESTINATION_DIR}/php5/bin/phpize -clean
+  ./configure --enable-apc --with-php-config=${DESTINATION_DIR}/php5/bin/php-config --with-libdir=${DESTINATION_DIR}/php5/lib/php & progress
 
   echo 'Compiling APC...' >&3
   make -j8 & progress

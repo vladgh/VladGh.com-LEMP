@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Enable the script?
+ENABLED='no'
+
+### Program Versions: #########################################################
+
+# NginX Version:
+# Ex: NGINX_VERSION='1.2.0'
+NGINX_VERSION='1.2.0'
+
+# PHP Version:
+# Ex: PHP_VERSION='5.4.1'
+PHP_VERSION='5.4.1'
+
+# APC Version:
+# Ex: APC_VERSION='3.1.10'
+APC_VERSION='3.1.10'
+
+# Suhosin Version:
+# Ex: SUHOSIN_VERSION='0.9.33'
+SUHOSIN_VER='0.9.33'
+
+###############################################################################
+
+### Directories ###############################################################
+
+# Destination directory (where to install the software)
+DESTINATION_DIR='/opt'
+
+# Web files directory
+WEB_DIR='/var/www'
+
+###############################################################################
+

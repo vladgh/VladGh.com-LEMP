@@ -9,31 +9,27 @@ function install_php() {
   apt-get -y install $PHP_LIBRARIES & progress
 
   # Get PHP package
-  echo "Downloading and extracting PHP-${PHP_VER}..." >&3
-  wget -O ${TMPDIR}/php-${PHP_VER}.tar.gz "http://us.php.net/distributions/php-${PHP_VER}.tar.gz" & progress
+  echo "Downloading and extracting PHP-${PHP_VERSION}..." >&3
+  wget -O ${TMPDIR}/php-${PHP_VERSION}.tar.gz "http://us.php.net/distributions/php-${PHP_VERSION}.tar.gz" & progress
   cd $TMPDIR
-  tar xzvf php-${PHP_VER}.tar.gz
-  check_download "PHP5" "${TMPDIR}/php-${PHP_VER}.tar.gz" "${TMPDIR}/php-${PHP_VER}/configure"
+  tar xzvf php-${PHP_VERSION}.tar.gz
+  check_download "PHP5" "${TMPDIR}/php-${PHP_VERSION}.tar.gz" "${TMPDIR}/php-${PHP_VERSION}/configure"
 
   ### Fix Ubuntu 11.04 & 12.10 LIB PATH ###
-  [ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/
-  [ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/
-  [ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/
-  [ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/
-  [ -f /usr/lib/x86_64-linux-gnu/libXpm.so ] && ln -s /usr/lib/x86_64-linux-gnu/libXpm.so /usr/lib/
-  [ -f /usr/lib/i386-linux-gnu/libXpm.so ] && ln -s /usr/lib/i386-linux-gnu/libXpm.so /usr/lib/
-  [ -f /usr/lib/x86_64-linux-gnu/libmysqlclient.so ] && ln -s /usr/lib/x86_64-linux-gnu/libmysqlclient.so /usr/lib/
-  [ -f /usr/lib/i386-linux-gnu/libmysqlclient.so ] && ln -s /usr/lib/i386-linux-gnu/libmysqlclient.so /usr/lib/
-  [ -d /usr/lib/x86_64-linux-gnu/mit-krb5 ] && ln -s /usr/lib/x86_64-linux-gnu/mit-krb5/lib*.so /usr/lib/
-  [ -d /usr/lib/i386-linux-gnu/mit-krb5 ] && ln -s /usr/lib/i386-linux-gnu/mit-krb5/lib*.so /usr/lib/
+  arch=$(dpkg-architecture -qDEB_HOST_MULTIARCH)
+  [ -f /usr/lib/${arch}/libjpeg.so ] && ln -s /usr/lib/${arch}/libjpeg.so /usr/lib/
+  [ -f /usr/lib/${arch}/libpng.so ] && ln -s /usr/lib/${arch}/libpng.so /usr/lib/
+  [ -f /usr/lib/${arch}/libXpm.so ] && ln -s /usr/lib/${arch}/libXpm.so /usr/lib/
+  [ -f /usr/lib/${arch}/libmysqlclient.so ] && ln -s /usr/lib/${arch}/libmysqlclient.so /usr/lib/
+  [ -d /usr/lib/i386-linux-gnu/mit-krb5 ] && ln -s /usr/lib/${arch}/mit-krb5/lib*.so /usr/lib/
   ##################################
 
   # Compile php source
-  cd ${TMPDIR}/php-${PHP_VER}
+  cd ${TMPDIR}/php-${PHP_VERSION}
   ./buildconf --force
   echo 'Configuring PHP (Please be patient, this will take a while...)' >&3
   ./configure \
---prefix=${DSTDIR}/php5 \
+--prefix=${DESTINATION_DIR}/php5 \
 --with-config-file-path=/etc/php5 \
 --with-config-file-scan-dir=/etc/php5/conf.d \
 --with-curl \
@@ -88,7 +84,7 @@ function install_php() {
 
   # Copy configuration files
   echo 'Setting up PHP...' >&3
-  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"${DSTDIR}/php5\"~" ${SRCDIR}/init_files/php5-fpm
+  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"${DESTINATION_DIR}/php5\"~" ${SRCDIR}/init_files/php5-fpm
   mkdir -p /etc/php5/conf.d /var/log/php5-fpm
   cp -f php.ini-production /etc/php5/php.ini
   cp ${SRCDIR}/conf_files/php-fpm.conf /etc/php5/php-fpm.conf

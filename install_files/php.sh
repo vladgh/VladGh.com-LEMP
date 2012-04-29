@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # PHP Libraries
-PHP_LIBRARIES="libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg62-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev bzip2 libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev imagemagick libreadline-dev libc-client-dev libsnmp-dev snmpd snmp"
+PHP_LIBRARIES="libmysqlclient-dev libcurl4-openssl-dev libgd2-xpm-dev libjpeg-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev bzip2 libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev libmagickcore-dev imagemagick libreadline-dev libc-client-dev libsnmp-dev snmpd snmp"
 
 function install_php() {
   # Install all PHP Libraries
@@ -15,11 +15,15 @@ function install_php() {
   tar xzvf php-${PHP_VER}.tar.gz
   check_download "PHP5" "${TMPDIR}/php-${PHP_VER}.tar.gz" "${TMPDIR}/php-${PHP_VER}/configure"
 
-  ### Fix Ubuntu 11.04 LIB PATH ###
-  [ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
-  [ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/libjpeg.so
-  [ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/libpng.so
-  [ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/libpng.so
+  ### Fix Ubuntu 11.04 & 12.10 LIB PATH ###
+  [ -f /usr/lib/x86_64-linux-gnu/libjpeg.so ] && ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib/
+  [ -f /usr/lib/i386-linux-gnu/libjpeg.so ] && ln -s /usr/lib/i386-linux-gnu/libjpeg.so /usr/lib/
+  [ -f /usr/lib/x86_64-linux-gnu/libpng.so ] && ln -s /usr/lib/x86_64-linux-gnu/libpng.so /usr/lib/
+  [ -f /usr/lib/i386-linux-gnu/libpng.so ] && ln -s /usr/lib/i386-linux-gnu/libpng.so /usr/lib/
+  [ -f /usr/lib/x86_64-linux-gnu/libXpm.so ] && ln -s /usr/lib/x86_64-linux-gnu/libXpm.so /usr/lib/
+  [ -f /usr/lib/i386-linux-gnu/libXpm.so ] && ln -s /usr/lib/i386-linux-gnu/libXpm.so /usr/lib/
+  [ -f /usr/lib/x86_64-linux-gnu/libmysqlclient.so ] && ln -s /usr/lib/x86_64-linux-gnu/libmysqlclient.so /usr/lib/
+  [ -f /usr/lib/i386-linux-gnu/libmysqlclient.so ] && ln -s /usr/lib/i386-linux-gnu/libmysqlclient.so /usr/lib/
   [ -d /usr/lib/x86_64-linux-gnu/mit-krb5 ] && ln -s /usr/lib/x86_64-linux-gnu/mit-krb5/lib*.so /usr/lib/
   [ -d /usr/lib/i386-linux-gnu/mit-krb5 ] && ln -s /usr/lib/i386-linux-gnu/mit-krb5/lib*.so /usr/lib/
   ##################################

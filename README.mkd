@@ -1,13 +1,13 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
 
-  * NginX 1.1.19 (development) or 1.0.15 (stable)
-  * PHP 5.3.10 or PHP 5.4.0
+  * NginX 1.2.0 (development) or 1.2.0 (stable)
+  * PHP 5.3.11 or PHP 5.4.1
   * APC 3.1.10
   * Suhosin Extension 0.9.33 (at this moment it is not available with PHP 5.4)
 
 All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-fpm-mysql-and-apc
 It's highly recommended to run this installer on a fresh installed system.
-This is tested with Ubuntu 10.04 and 11.10, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
+This is tested with Ubuntu 10.04, 11.10 and 12.04, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
 <div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>

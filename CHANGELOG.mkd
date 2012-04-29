@@ -1,5 +1,12 @@
 ## Release Notes: ##
 
+### 5.6.0 ###
+
+  * Support for Ubuntu Precise (12.04).
+  * Fix some of the library paths.
+  * PHP Upstream release (5.3.11 and 5.4.1)
+  * NginX Upstream release (1.2.0)
+
 ### 5.5.0 ###
 
   * Removed mysql questions from the install script.

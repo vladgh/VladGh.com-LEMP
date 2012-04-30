@@ -1,4 +1,6 @@
-This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin). You can install your preferred versions for any of the programs. Just edit the OPTIONS file and change them accordingly.
+This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin).
+Note: At this moment the Suhosin extension is not available for PHP 5.4.
+You can install your preferred versions for any of the programs. Just edit the OPTIONS file and change them accordingly.
 
 It is highly recommended to run this installer on a fresh installed system.
 This is tested with Ubuntu 10.04, 11.10 and 12.04, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.

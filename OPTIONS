@@ -19,7 +19,7 @@ APC_VERSION='3.1.10'
 
 # Suhosin Version:
 # Ex: SUHOSIN_VERSION='0.9.33'
-SUHOSIN_VER='0.9.33'
+SUHOSIN_VERSION='0.9.33'
 
 ###############################################################################
 

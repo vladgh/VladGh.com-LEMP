@@ -52,17 +52,17 @@ function ctrl_c() {
 }
 
 clear >&3
-echo '=========================================================================' >&3
+echo '===============================================================================' >&3
 echo 'This script will install the following:' >&3
-echo '=========================================================================' >&3
-echo "  - Nginx ${NGINX_VERSION}" >&3
+echo '===============================================================================' >&3
+echo "  - Nginx ${NGINX_VERSION};" >&3
 echo "  - PHP ${PHP_VERSION};" >&3
 echo "  - APC ${APC_VERSION};" >&3
 echo "  - Suhosin ${SUHOSIN_VERSION}." >&3
-echo '=========================================================================' >&3
+echo '===============================================================================' >&3
 echo 'For more information please visit:' >&3
 echo 'https://github.com/vladgh/VladGh.com-LEMP' >&3
-echo '=========================================================================' >&3
+echo '===============================================================================' >&3
 
 prepare_system
 install_mysql
@@ -86,15 +86,24 @@ rm -r $TMPDIR
 
 sleep 5
 
+# Get external IP if possible
+wimi="http://automation.whatismyip.com/n09230945.asp"
+if curl -s --head ${wimi} | grep "200 OK" > /dev/null
+  then
+    EXTIP=$(curl -s ${wimi})
+  else
+    EXTIP=$(hostname -f)
+fi
+
 ### Final check
 if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
-  echo '=========================================================================' >&3
+  echo '===============================================================================' >&3
   echo 'All the components were successfully installed.' >&3
-  echo 'If your hosts are setup correctly you should be able to see some stats at:' >&3
-  echo "- http://$(hostname -f)/index.php (PHP Status page)" >&3
-  echo "- http://$(hostname -f)/apc.php (APC Status page)" >&3
-  echo "- http://$(hostname -f)/nginx_status (NginX Status page)" >&3
-  echo "- http://$(hostname -f)/status?html (FPM Status page)" >&3
+  echo 'You should be able to see some stats when you visit the following URLs:' >&3
+  echo "- http://${EXTIP}/index.php (PHP Status page)" >&3
+  echo "- http://${EXTIP}/apc.php (APC Status page)" >&3
+  echo "- http://${EXTIP}/nginx_status (NginX Status page)" >&3
+  echo "- http://${EXTIP}/status?html (FPM Status page)" >&3
   tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
   echo 'DO NOT FORGET TO SET THE MYSQL ROOT PASSWORD:' >&3;
   tput smul >&3;
@@ -102,7 +111,7 @@ if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
   tput sgr0 >&3
   exit 0
 else
-  echo '=========================================================================' >&3
+  echo '===============================================================================' >&3
   echo 'Errors encountered. Check the install.log.' >&3
   exit 1
 fi

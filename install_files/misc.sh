@@ -45,15 +45,15 @@ function check_download () {
 function check_php () {
   # Check if the PHP executable exists and has the APC and Suhosin modules compiled.
   if [[ $PHP_VERSION = 5.4* ]] && [ -x "${DESTINATION_DIR}/php5/bin/php" ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep apc) ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep suhosin) ] ; then
-    echo '=========================================================================' >&3
+    echo '===============================================================================' >&3
     echo "PHP ${PHP_VERSION} with APC and Suhosin was successfully installed." >&3
     ${DESTINATION_DIR}/php5/bin/php -v >&3
-    echo '=========================================================================' >&3
+    echo '===============================================================================' >&3
   elif [[ $PHP_VERSION = 5.4* ]] && [ -x "${DESTINATION_DIR}/php5/bin/php" ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep apc) ] ; then
-    echo '=========================================================================' >&3
+    echo '===============================================================================' >&3
     echo "PHP ${PHP_VERSION} with APC was successfully installed." >&3
     ${DESTINATION_DIR}/php5/bin/php -v >&3
-    echo '=========================================================================' >&3
+    echo '===============================================================================' >&3
   else
     echo 'Error: PHP installation was unsuccessful.' >&3
     echo 'Check the install.log for errors.' >&3
@@ -64,10 +64,10 @@ function check_php () {
 function check_nginx () {
   # Check if Nginx exists and is executable and display the version.
   if [ -x "${DESTINATION_DIR}/nginx/sbin/nginx" ] ; then
-    echo '=========================================================================' >&3
+    echo '===============================================================================' >&3
     echo 'NginX was successfully installed.' >&3
     ${DESTINATION_DIR}/nginx/sbin/nginx -v >&3
-    echo '=========================================================================' >&3
+    echo '===============================================================================' >&3
   else
     echo 'Error: NginX installation was unsuccessful.' >&3
     echo 'Check the install.log for errors.' >&3
@@ -80,7 +80,6 @@ function set_paths() {
   echo 'Setting up paths...' >&3
   export PATH="${PATH}:${DESTINATION_DIR}/nginx/sbin:${DESTINATION_DIR}/php5/bin:${DESTINATION_DIR}/php5/sbin"
   echo "PATH=\"$PATH\"" > /etc/environment
-  source /etc/environment
 }
 
 function restart_servers() {

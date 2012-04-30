@@ -44,7 +44,7 @@ function check_download () {
 
 function check_php () {
   # Check if the PHP executable exists and has the APC and Suhosin modules compiled.
-  if [[ $PHP_VERSION = 5.4* ]] && [ -x "${DESTINATION_DIR}/php5/bin/php" ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep apc) ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep suhosin) ] ; then
+  if [[ $PHP_VERSION != 5.4* ]] && [ -x "${DESTINATION_DIR}/php5/bin/php" ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep apc) ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep suhosin) ] ; then
     echo '===============================================================================' >&3
     echo "PHP ${PHP_VERSION} with APC and Suhosin was successfully installed." >&3
     ${DESTINATION_DIR}/php5/bin/php -v >&3

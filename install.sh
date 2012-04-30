@@ -58,7 +58,9 @@ echo '==========================================================================
 echo "  - Nginx ${NGINX_VERSION};" >&3
 echo "  - PHP ${PHP_VERSION};" >&3
 echo "  - APC ${APC_VERSION};" >&3
-echo "  - Suhosin ${SUHOSIN_VERSION}." >&3
+if [[ $PHP_VERSION != 5.4* ]]; then
+  echo "  - Suhosin ${SUHOSIN_VERSION}." >&3
+fi
 echo '===============================================================================' >&3
 echo 'For more information please visit:' >&3
 echo 'https://github.com/vladgh/VladGh.com-LEMP' >&3

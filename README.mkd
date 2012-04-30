@@ -1,12 +1,8 @@
-This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin):
+This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin).
+Note: At this moment the Suhosin extension is not available for PHP 5.4.
+You can install your preferred versions for any of the programs. Just edit the OPTIONS file and change them accordingly.
 
-  * NginX 1.2.0 (development) or 1.2.0 (stable)
-  * PHP 5.3.11 or PHP 5.4.1
-  * APC 3.1.10
-  * Suhosin Extension 0.9.33 (at this moment it is not available with PHP 5.4)
-
-All the steps are described at http://vladgh.com/blog/install-nginx-and-php-php-fpm-mysql-and-apc
-It's highly recommended to run this installer on a fresh installed system.
+It is highly recommended to run this installer on a fresh installed system.
 This is tested with Ubuntu 10.04, 11.10 and 12.04, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
@@ -23,9 +19,17 @@ Clone this repository, and get the latest stable version of this script:
     git clone git://github.com/vladgh/VladGh.com-LEMP.git
     cd VladGh.com-LEMP
 
-Run the installer; I recommend running everything inside a screen session because if your connection drops you can easily come back with `screen -rad`
+Start a screen session:
 
-    sudo screen ./install.sh
+    screen
+
+I recommend running everything inside a screen session because if your connection drops you can easily come back with `screen -rad`. If you use something else (ex: byobu) you can skip this step.
+
+Edit the OPTIONS files and change `ENABLED='yes'`. This is were you can modify the versions for any of the programs, and paths.
+
+Run the installer:
+
+    sudo ./install.sh
 
 After the installer is finished (this will take a long time depending on your server specifications), you MUST set your mysql root password:
 

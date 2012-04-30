@@ -2,17 +2,17 @@
 
 function install_suhosin() {
   #Get Suhosin packages
-  echo "Downloading and extracting Suhosin-$SUHOSIN_VER..." >&3
-  wget -O ${TMPDIR}/suhosin-${SUHOSIN_VER}.tgz "http://download.suhosin.org/suhosin-${SUHOSIN_VER}.tgz" & progress
+  echo "Downloading and extracting Suhosin-$SUHOSIN_VERSION..." >&3
+  wget -O ${TMPDIR}/suhosin-${SUHOSIN_VERSION}.tgz "http://download.suhosin.org/suhosin-${SUHOSIN_VERSION}.tgz" & progress
   cd $TMPDIR
-  tar zxvf suhosin-${SUHOSIN_VER}.tgz
-  check_download "Suhosin" "${TMPDIR}/suhosin-${SUHOSIN_VER}.tgz" "${TMPDIR}/suhosin-${SUHOSIN_VER}/config.m4"
-  cd ${TMPDIR}/suhosin-${SUHOSIN_VER}
+  tar zxvf suhosin-${SUHOSIN_VERSION}.tgz
+  check_download "Suhosin" "${TMPDIR}/suhosin-${SUHOSIN_VERSION}.tgz" "${TMPDIR}/suhosin-${SUHOSIN_VERSION}/config.m4"
+  cd ${TMPDIR}/suhosin-${SUHOSIN_VERSION}
 
   # Compile Suhosin source
   echo 'Configuring Suhosin...' >&3
-  ${DSTDIR}/php5/bin/phpize -clean
-  ./configure --with-php-config=${DSTDIR}/php5/bin/php-config --with-libdir=${DSTDIR}/php5/lib/php & progress
+  ${DESTINATION_DIR}/php5/bin/phpize -clean
+  ./configure --with-php-config=${DESTINATION_DIR}/php5/bin/php-config --with-libdir=${DESTINATION_DIR}/php5/lib/php & progress
 
   echo 'Compiling Suhosin...' >&3
   make -j8 & progress

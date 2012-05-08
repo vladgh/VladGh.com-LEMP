@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# Enable the script?
+# Enable the script (yes/no)?
 ENABLED='no'
+# Install MySQL Server (yes/no)?
+INSTALL_MYSQL='no'
 
 ### Program Versions: #########################################################
 

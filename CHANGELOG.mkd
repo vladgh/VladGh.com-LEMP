@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 6.1.0 ###
+
+  * MySQL Server is now optional (closes Issue \#20).
+
 ### 6.0.1 ###
 
   * PHP upstream release (http://www.php.net/archive/2012.php#id2012-05-03-1)

@@ -13,7 +13,7 @@ NGINX_VERSION='1.2.0'
 
 # PHP Version:
 # Ex: PHP_VERSION='5.4.1'
-PHP_VERSION='5.4.2'
+PHP_VERSION='5.4.3'
 
 # APC Version:
 # Ex: APC_VERSION='3.1.10'

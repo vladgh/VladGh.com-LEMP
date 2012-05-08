@@ -67,7 +67,7 @@ echo 'https://github.com/vladgh/VladGh.com-LEMP' >&3
 echo '===============================================================================' >&3
 
 prepare_system
-install_mysql
+[ $INSTALL_MYSQL == 'yes' ] && install_mysql
 install_php
 install_apc
 
@@ -106,11 +106,13 @@ if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
   echo "- http://${EXTIP}/apc.php (APC Status page)" >&3
   echo "- http://${EXTIP}/nginx_status (NginX Status page)" >&3
   echo "- http://${EXTIP}/status?html (FPM Status page)" >&3
-  tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
-  echo 'DO NOT FORGET TO SET THE MYSQL ROOT PASSWORD:' >&3;
-  tput smul >&3;
-  echo '"sudo mysqladmin -u root password MYPASSWORD"' >&3
-  tput sgr0 >&3
+  if [ $INSTALL_MYSQL == 'yes' ]; then
+    tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
+    echo 'DO NOT FORGET TO SET THE MYSQL ROOT PASSWORD:' >&3;
+    tput smul >&3;
+    echo '"EX: sudo mysqladmin -u root password MYPASSWORD"' >&3
+    tput sgr0 >&3
+  fi
   exit 0
 else
   echo '===============================================================================' >&3

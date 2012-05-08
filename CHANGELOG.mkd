@@ -2,7 +2,7 @@
 
 ### 6.1.0 ###
 
-  * MySQL Server is now optional (closes Issue #20).
+  * MySQL Server is now optional (closes [Issue #20](https://github.com/vladgh/VladGh.com-LEMP/issues/20)).
 
 ### 6.0.1 ###
 

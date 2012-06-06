@@ -1,5 +1,10 @@
 ## Release Notes: ##
 
+### 6.1.1 ###
+
+  * Added re2c package as a dependency for php.
+  * Nginx Upstream release.
+
 ### 6.1.0 ###
 
   * MySQL Server is now optional (closes [Issue #20](https://github.com/vladgh/VladGh.com-LEMP/issues/20)).

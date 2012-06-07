@@ -1,0 +1,14 @@
+### Postfix SMTP Server
+myhostname = <fqdn>
+mydomain = <domain>
+myorigin = $mydomain
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+smtpd_banner = $myhostname ESMTP $mail_name (<domain>)
+biff = no
+append_dot_mydomain = no
+readme_directory = no
+relayhost =
+inet_interfaces = loopback-only
+local_transport = error:local delivery is disabled
+

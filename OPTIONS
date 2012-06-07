@@ -2,8 +2,12 @@
 
 # Enable the script (yes/no)?
 ENABLED='no'
+
 # Install MySQL Server (yes/no)?
 INSTALL_MYSQL='no'
+
+# Install Postfix (yes/no)?
+INSTALL_POSTFIX='yes'
 
 ### Program Versions: #########################################################
 

@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 6.1.2 ###
+
+  * PHP upstream release.
+
 ### 6.1.1 ###
 
   * Added re2c package as a dependency for php.

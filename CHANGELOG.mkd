@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 6.1.3 ###
+
+  * NginX upstream release.
+
 ### 6.1.2 ###
 
   * PHP upstream release.

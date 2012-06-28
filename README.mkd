@@ -26,7 +26,11 @@ Start a screen session:
 
 I recommend running everything inside a screen session because in case your connection drops you can easily come back with `screen -rad`. If you use something else (ex: byobu) you can skip this step.
 
+<<<<<<< HEAD
 Edit the OPTIONS files with your favourite editor and enable this installer: `ENABLED='yes'`. Read the rest of the file and choose what packages you want installed, what versions and where to install them.
+=======
+Edit the OPTIONS file and change `ENABLED='yes'`. This is were you can chose to install the MySQL Server or modify the versions for any of the programs, as well as the paths.
+>>>>>>> a296a4007776bec318cc30c857f900b449785446
 
 Run the installer:
 

@@ -16,7 +16,7 @@ function install_php() {
   check_download "PHP5" "${TMPDIR}/php-${PHP_VERSION}.tar.gz" "${TMPDIR}/php-${PHP_VERSION}/configure"
 
   ### Fix Ubuntu 11.04 & 12.10 LIB PATH ###
-  arch=$(dpkg-architecture -qDEB_HOST_MULTIARCH)
+  arch=$(dpkg-architecture -qDEB_HOST_GNU_TYPE)
   [ -f /usr/lib/${arch}/libjpeg.so ] && ln -s /usr/lib/${arch}/libjpeg.so /usr/lib/
   [ -f /usr/lib/${arch}/libpng.so ] && ln -s /usr/lib/${arch}/libpng.so /usr/lib/
   [ -f /usr/lib/${arch}/libXpm.so ] && ln -s /usr/lib/${arch}/libXpm.so /usr/lib/

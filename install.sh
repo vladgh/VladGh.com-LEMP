@@ -59,8 +59,10 @@ echo "  - Nginx ${NGINX_VERSION};" >&3
 echo "  - PHP ${PHP_VERSION};" >&3
 echo "  - APC ${APC_VERSION};" >&3
 if [[ $PHP_VERSION != 5.4* ]]; then
-  echo "  - Suhosin ${SUHOSIN_VERSION}." >&3
+  echo "  - Suhosin ${SUHOSIN_VERSION};" >&3
 fi
+[ $INSTALL_MYSQL == 'yes' ] && echo "  - MySQL (packaged version);" >&3
+[ $INSTALL_POSTFIX == 'yes' ] && echo "  - Postfix (packaged version);" >&3
 echo '===============================================================================' >&3
 echo 'For more information please visit:' >&3
 echo 'https://github.com/vladgh/VladGh.com-LEMP' >&3
@@ -76,13 +78,17 @@ if [[ $PHP_VERSION = 5.4* ]]; then
 else
   install_suhosin
 fi
-
 check_php
+
 install_nginx
 check_nginx
-set_paths
 
-install_postfix
+if [ $INSTALL_POSTFIX == 'yes' ]; then
+  install_postfix
+  check_postfix
+fi
+
+set_paths
 
 restart_servers
 

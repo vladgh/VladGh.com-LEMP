@@ -44,6 +44,20 @@ function check_nginx () {
   fi
 }
 
+function check_postfix () {
+  # Check if Postfix was installed correctly.
+  if [ -x '/usr/sbin/postconf' ] ; then
+    echo '===============================================================================' >&3
+    echo 'Postfix was successfully installed.' >&3
+    echo "Postfix version:$(/usr/sbin/postconf -d | grep 'mail_version = ' | cut -d '=' -f2)." >&3
+    echo '===============================================================================' >&3
+  else
+    echo 'Error: Postfix installation was unsuccessful.' >&3
+    echo 'Check the install.log for errors.' >&3
+    exit 1
+  fi
+}
+
 function check_root() {
   # Check if you are root
   if [ $(id -u) != "0" ]; then

@@ -81,6 +81,9 @@ check_php
 install_nginx
 check_nginx
 set_paths
+
+install_postfix
+
 restart_servers
 
 chown -R $USER:$USER $SRCDIR

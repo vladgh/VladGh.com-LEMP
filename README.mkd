@@ -4,7 +4,9 @@ You can install your preferred versions for any of the programs. Just edit the O
 
 It is highly recommended to run this installer on a fresh installed system.
 
-This is tested automatically on Ubuntu 10.04, 11.10 and 12.04, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
+This is tested automatically on:
+ * Ubuntu 10.04, 11.10 and 12.04, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
+ * Debian 6 on RightScale Debian images.
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
 <div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>

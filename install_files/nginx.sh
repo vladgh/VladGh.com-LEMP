@@ -23,6 +23,7 @@ function install_nginx() {
 --with-http_ssl_module \
 --with-http_realip_module \
 --with-http_gzip_static_module \
+--with-ipv6 \
 --without-mail_pop3_module \
 --without-mail_imap_module \
 --without-mail_smtp_module & progress

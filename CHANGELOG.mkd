@@ -3,6 +3,8 @@
 ### 7.0.0 ###
 
   * Added Postfix as a null client (send only).
+  * The script is now fully compatible with Debian.
+  * NginX now supports IPv6.
 
 ### 6.1.3 ###
 

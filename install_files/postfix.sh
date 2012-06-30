@@ -11,8 +11,8 @@ function install_postfix() {
   cp ${SRCDIR}/conf_files/main.cf /etc/postfix/main.cf
 
   # Modify configuration files
-  FQDN=$(hostname -f)
-  DOMAIN=$(hostname -d)
+  if [ $(hostname -f) ]; then FQDN=$(hostname -f); else FQDN=$(hostname); fi
+  if [ $(hostname -d) ]; then DOMAIN=$(hostname -d); else DOMAIN=$(hostname); fi
   sed -i "s/<fqdn>/$FQDN/g" /etc/postfix/main.cf
   sed -i "s/<domain>/$DOMAIN/g" /etc/postfix/main.cf
 

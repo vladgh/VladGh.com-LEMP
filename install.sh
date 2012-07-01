@@ -1,27 +1,6 @@
 #!/bin/bash
 ### Ubuntu LEMP Install Script --- VladGh.com
 #
-####################
-###   LICENSE:   ###
-####################
-# This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
-# Unported License. To view a copy of this license, visit
-# http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to
-# CreativeCommons, 444 Castro Street, Suite 900
-# Mountain View, California, 94041, USA.
-#
-###################
-### DISCLAIMER: ###
-###################
-# All content provided here including the scripts is provided without
-# any warranty. You use it at your own risk. I can not be held responsible
-# for any damage that may occur because of it. By using the scripts I
-# provide here you accept this terms.
-#
-# Please bear in mind that this method is intended for development
-# and testing purposes only. If you care about stability and security
-# you should use the packages provided by your distribution.
-
 # Directories
 SRCDIR=`dirname $(readlink -f $0)`
 OPTIONSFILE="${SRCDIR}/OPTIONS"

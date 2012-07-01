@@ -5,7 +5,7 @@
   * Added Postfix as a null client (send only).
   * The script is now fully compatible with Debian.
   * NginX now supports IPv6.
-  * Switched to Apache License, Version 2.0
+  * Switched to Apache License, Version 2.0.
 
 ### 6.1.3 ###
 

@@ -1,27 +1,6 @@
 #!/bin/bash
 ### Ubuntu LEMP Install Script --- VladGh.com
 #
-####################
-###   LICENSE:   ###
-####################
-# This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
-# Unported License. To view a copy of this license, visit
-# http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to
-# CreativeCommons, 444 Castro Street, Suite 900
-# Mountain View, California, 94041, USA.
-#
-###################
-### DISCLAIMER: ###
-###################
-# All content provided here including the scripts is provided without
-# any warranty. You use it at your own risk. I can not be held responsible
-# for any damage that may occur because of it. By using the scripts I
-# provide here you accept this terms.
-#
-# Please bear in mind that this method is intended for development
-# and testing purposes only. If you care about stability and security
-# you should use the packages provided by your distribution.
-
 # Directories
 SRCDIR=`dirname $(readlink -f $0)`
 OPTIONSFILE="${SRCDIR}/OPTIONS"
@@ -59,8 +38,10 @@ echo "  - Nginx ${NGINX_VERSION};" >&3
 echo "  - PHP ${PHP_VERSION};" >&3
 echo "  - APC ${APC_VERSION};" >&3
 if [[ $PHP_VERSION != 5.4* ]]; then
-  echo "  - Suhosin ${SUHOSIN_VERSION}." >&3
+  echo "  - Suhosin ${SUHOSIN_VERSION};" >&3
 fi
+[ $INSTALL_MYSQL == 'yes' ] && echo "  - MySQL (packaged version);" >&3
+[ $INSTALL_POSTFIX == 'yes' ] && echo "  - Postfix (packaged version);" >&3
 echo '===============================================================================' >&3
 echo 'For more information please visit:' >&3
 echo 'https://github.com/vladgh/VladGh.com-LEMP' >&3
@@ -76,11 +57,18 @@ if [[ $PHP_VERSION = 5.4* ]]; then
 else
   install_suhosin
 fi
-
 check_php
+
 install_nginx
 check_nginx
+
+if [ $INSTALL_POSTFIX == 'yes' ]; then
+  install_postfix
+  check_postfix
+fi
+
 set_paths
+
 restart_servers
 
 chown -R $USER:$USER $SRCDIR

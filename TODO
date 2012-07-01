@@ -1,1 +1,5 @@
 !TODO Fix Ubuntu >= 11.04 libraries path
+!TODO Finish postfix script
+!TODO Add PHPMYADMIN
+!TODO Improve restart_servers function (they need to be individual)
+!TODO Fix checks (they need to be individual)

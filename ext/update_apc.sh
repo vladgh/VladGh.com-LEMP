@@ -5,11 +5,13 @@
 # February 12, 2012                                  Vlad Ghinea. #
 ###################################################################
 #
-# Needs to be called with the version number as argument and also
-# with "sudo env PATH=$PATH" in front to preserve the paths.
-#
-# ex: $ sudo env PATH=$PATH bash update_apc.sh 3.1.9
-#
+# ex: $ sudo ext/update_apc.sh 3.1.10
+
+# Configure arguments:
+CONFIGURE_ARGS='--enable-apc
+  --with-php-config=/opt/php5/bin/php-config
+  --with-libdir=/opt/php5/lib/php'
+
 # Get APC Version as a argument
 ARGS="$@"
 
@@ -29,7 +31,7 @@ check_sanity() {
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
-    die "Must be run by root user. Use 'sudo env PATH=\$PATH bash ...'"
+    die "Must be run by root user. Use 'sudo ext/update_apc.sh ...'"
   fi
 
   # A single argument allowed
@@ -51,7 +53,7 @@ check_sanity() {
   LIBDIR=$(php -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://')
 
   # Store the configure args.
-  CONFIGURE_ARGS="--enable-apc --with-php-config=${PHP_CONFIG} --with-libdir=${LIBDIR}"
+
   if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
     die "The paths for your previous instalation could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
   fi
@@ -80,7 +82,7 @@ get_apc() {
 compile_apc() {
 
   # Configure and compile APC.
-  echo 'Configure APC with typical options...'
+  echo 'Configuring...'
   $PHPIZE -clean
   ./configure $CONFIGURE_ARGS
   make -j8
@@ -104,4 +106,6 @@ restart_servers
 
 # Clean Sources
 rm -r $SRCDIR
+
+exit 0
 

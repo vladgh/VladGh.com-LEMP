@@ -2,8 +2,16 @@
 
 # Enable the script (yes/no)?
 ENABLED='no'
+
 # Install MySQL Server (yes/no)?
+# MySQL Client is installed by default to allow
+# the connection between PHP and the MySQL server.
 INSTALL_MYSQL='no'
+
+# Install Postfix (yes/no)?
+# Postfix will be installed as a null (send-only) client. It will not receive
+# any emails.
+INSTALL_POSTFIX='yes'
 
 ### Program Versions: #########################################################
 

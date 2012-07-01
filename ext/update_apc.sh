@@ -8,9 +8,9 @@
 # ex: $ sudo ext/update_apc.sh 3.1.10
 
 # Configure arguments:
-CONFIGURE_ARGS="--enable-apc \
-  --with-php-config=/opt/php5/bin/php-config \
-  --with-libdir=/opt/php5/lib/php"
+CONFIGURE_ARGS='--enable-apc
+  --with-php-config=/opt/php5/bin/php-config
+  --with-libdir=/opt/php5/lib/php'
 
 # Get APC Version as a argument
 ARGS="$@"
@@ -82,7 +82,7 @@ get_apc() {
 compile_apc() {
 
   # Configure and compile APC.
-  echo 'Configure APC with typical options...'
+  echo 'Configuring...'
   $PHPIZE -clean
   ./configure $CONFIGURE_ARGS
   make -j8
@@ -106,4 +106,6 @@ restart_servers
 
 # Clean Sources
 rm -r $SRCDIR
+
+exit 0
 

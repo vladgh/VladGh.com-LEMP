@@ -8,53 +8,53 @@
 # ex: $ sudo ext/update_php.sh 5.4.4
 
 # Configure arguments:
-CONFIGURE_ARGS='--prefix=/opt/php5 \
---with-config-file-path=/etc/php5 \
---with-config-file-scan-dir=/etc/php5/conf.d \
---with-curl \
---with-pear \
---with-gd \
---with-jpeg-dir \
---with-png-dir \
---with-zlib \
---with-xpm-dir \
---with-freetype-dir \
---with-t1lib \
---with-mcrypt \
---with-mhash \
---with-mysql \
---with-mysqli \
---with-pdo-mysql \
---with-openssl \
---with-xmlrpc \
---with-xsl \
---with-bz2 \
---with-gettext \
---with-readline \
---with-fpm-user=www-data \
---with-fpm-group=www-data \
---with-imap \
---with-imap-ssl \
---with-kerberos \
---with-snmp \
---disable-debug \
---enable-fpm \
---enable-cli \
---enable-inline-optimization \
---enable-exif \
---enable-wddx \
---enable-zip \
---enable-bcmath \
---enable-calendar \
---enable-ftp \
---enable-mbstring \
---enable-soap \
---enable-sockets \
---enable-shmop \
---enable-dba \
---enable-sysvsem \
---enable-sysvshm \
---enable-sysvmsg'
+CONFIGURE_ARGS='--prefix=/opt/php5
+  --with-config-file-path=/etc/php5
+  --with-config-file-scan-dir=/etc/php5/conf.d
+  --with-curl
+  --with-pear
+  --with-gd
+  --with-jpeg-dir
+  --with-png-dir
+  --with-zlib
+  --with-xpm-dir
+  --with-freetype-dir
+  --with-t1lib
+  --with-mcrypt
+  --with-mhash
+  --with-mysql
+  --with-mysqli
+  --with-pdo-mysql
+  --with-openssl
+  --with-xmlrpc
+  --with-xsl
+  --with-bz2
+  --with-gettext
+  --with-readline
+  --with-fpm-user=www-data
+  --with-fpm-group=www-data
+  --with-imap
+  --with-imap-ssl
+  --with-kerberos
+  --with-snmp
+  --disable-debug
+  --enable-fpm
+  --enable-cli
+  --enable-inline-optimization
+  --enable-exif
+  --enable-wddx
+  --enable-zip
+  --enable-bcmath
+  --enable-calendar
+  --enable-ftp
+  --enable-mbstring
+  --enable-soap
+  --enable-sockets
+  --enable-shmop
+  --enable-dba
+  --enable-sysvsem
+  --enable-sysvshm
+  --enable-sysvmsg'
 
 # Get PHP Version as a argument
 ARGS="$@"
@@ -115,7 +115,7 @@ get_php() {
 compile_php() {
 
   # Configure and compile NginX with previous options
-  echo 'Configure with previous options...'
+  echo 'Configuring...'
   ./buildconf --force
   ./configure $CONFIGURE_ARGS
   make -j8
@@ -157,4 +157,6 @@ restart_servers
 
 # Clean Sources
 rm -r $SRCDIR
+
+exit 0
 

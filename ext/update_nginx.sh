@@ -8,20 +8,20 @@
 # ex: $ sudo ext/update_nginx.sh 1.3.2
 
 # Configure arguments:
-CONFIGURE_ARGS='--prefix=/opt/nginx \
---conf-path=/etc/nginx/nginx.conf \
---http-log-path=/var/log/nginx/access.log \
---error-log-path=/var/log/nginx/error.log \
---pid-path=/var/run/nginx.pid \
---lock-path=/var/lock/nginx.lock \
---with-http_stub_status_module \
---with-http_ssl_module \
---with-http_realip_module \
---with-http_gzip_static_module \
---with-ipv6 \
---without-mail_pop3_module \
---without-mail_imap_module \
---without-mail_smtp_module'
+CONFIGURE_ARGS='--prefix=/opt/nginx
+  --conf-path=/etc/nginx/nginx.conf
+  --http-log-path=/var/log/nginx/access.log
+  --error-log-path=/var/log/nginx/error.log
+  --pid-path=/var/run/nginx.pid
+  --lock-path=/var/lock/nginx.lock
+  --with-http_stub_status_module
+  --with-http_ssl_module
+  --with-http_realip_module
+  --with-http_gzip_static_module
+  --with-ipv6
+  --without-mail_pop3_module
+  --without-mail_imap_module
+  --without-mail_smtp_module'
 
 # Get NginX Version as a argument
 ARGS="$@"
@@ -88,7 +88,7 @@ get_nginx() {
 compile_nginx() {
 
   # Configure and compile NginX with previous options
-  echo 'Configure with previous options...'
+  echo 'Configuring...'
   ./configure $CONFIGURE_ARGS
   make -j8
   make install
@@ -130,11 +130,6 @@ restart_servers
 # Clean Sources
 echo 'Cleaning sources...'
 rm -r $SRCDIR
-
-# Check if everything is installed
-if [ $NGINX_VER == $($NGINX_CMD -v 2>&1 | cut -d "/" -f2) ]; then
-  echo "${NGINX_VER} is now installed."
-fi
 
 exit 0
 

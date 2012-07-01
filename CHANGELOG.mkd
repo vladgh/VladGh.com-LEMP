@@ -6,6 +6,8 @@
   * The script is now fully compatible with Debian.
   * NginX now supports IPv6.
   * Switched to Apache License, Version 2.0.
+  * "update_nginx.sh", "update_php.sh", "update_apc.sh" scripts now support
+  custom configure arguments, and can be used to modify the default configuration.
 
 ### 6.1.3 ###
 

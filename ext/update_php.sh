@@ -5,10 +5,56 @@
 # January 19, 2012                                   Vlad Ghinea. #
 ###################################################################
 #
-# Needs to be called with the version number as argument and also
-# with "sudo env PATH=$PATH" in front to preserve the paths.
-#
-# ex: $ sudo env PATH=$PATH bash update_php.sh 5.3.8
+# ex: $ sudo bash update_php.sh 5.4.4
+
+# Configure arguments:
+CONFIGURE_ARGS='--prefix=/opt/php5 \
+--with-config-file-path=/etc/php5 \
+--with-config-file-scan-dir=/etc/php5/conf.d \
+--with-curl \
+--with-pear \
+--with-gd \
+--with-jpeg-dir \
+--with-png-dir \
+--with-zlib \
+--with-xpm-dir \
+--with-freetype-dir \
+--with-t1lib \
+--with-mcrypt \
+--with-mhash \
+--with-mysql \
+--with-mysqli \
+--with-pdo-mysql \
+--with-openssl \
+--with-xmlrpc \
+--with-xsl \
+--with-bz2 \
+--with-gettext \
+--with-readline \
+--with-fpm-user=www-data \
+--with-fpm-group=www-data \
+--with-imap \
+--with-imap-ssl \
+--with-kerberos \
+--with-snmp \
+--disable-debug \
+--enable-fpm \
+--enable-cli \
+--enable-inline-optimization \
+--enable-exif \
+--enable-wddx \
+--enable-zip \
+--enable-bcmath \
+--enable-calendar \
+--enable-ftp \
+--enable-mbstring \
+--enable-soap \
+--enable-sockets \
+--enable-shmop \
+--enable-dba \
+--enable-sysvsem \
+--enable-sysvshm \
+--enable-sysvmsg'
 
 # Get PHP Version as a argument
 ARGS="$@"
@@ -29,7 +75,7 @@ check_sanity() {
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
-    die "Must be run by root user. Use 'sudo env PATH=\$PATH bash ...'"
+    die "Must be run by root user. Use 'sudo bash ...'"
   fi
 
   # A single argument allowed
@@ -41,17 +87,9 @@ check_sanity() {
   PHP_VER="$1"
   DATE=`date +%Y.%m.%d`
   SRCDIR=/tmp/php_${PHP_VER-$DATE}
-  # Get executable path
-  PHP_CMD=$(type -p php)
-  # Get original configure options
-  CONFIGURE_ARGS=$($PHP_CMD -i 2>&1 | grep "Configure Command =>" | cut -d " " -f7- | sed "s/'//g")
-  if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
-    die "Previous configure options could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
-  fi
 
-  # Check if version is the same
-  if [ $PHP_VER == $($PHP_CMD -v 2>&1 | grep "built" | cut -d " " -f2) ]; then
-    die 'This version number is already installed.'
+  if [ -z "$CONFIGURE_ARGS" ]; then
+    die "Configure arguments are missing ..."
   fi
 }
 

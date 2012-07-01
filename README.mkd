@@ -54,11 +54,14 @@ In order to have immediate access to new paths you should also execute `source /
 In the "ext" folder you will also find some utilities:
 
 * `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
-* `update_nginx.sh` script which you can use to upgrade the current nginx.
-  * you can run it with `sudo env PATH=$PATH bash ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
-  * this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options automatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
-* `update_php.sh` - upgrades the current php (`sudo env PATH=$PATH bash ext/update_php.sh 5.3.10`).
-* `update_apc.sh` - upgrades the current apc (`sudo env PATH=$PATH bash ext/update_apc.sh 3.1.19`).
+* `update_nginx.sh` - upgrades NginX (`sudo bash ext/update_nginx.sh 1.3.2`).
+* `update_php.sh`   - upgrades PHP (`sudo bash ext/update_php.sh 5.4.4`).
+* `update_apc.sh`   - upgrades APC (`sudo bash ext/update_apc.sh 3.1.10`).
+
+NOTES:
+  * The update_* scripts above can be used to upgrade the software, or change current configure arguments.
+  * You can only have one argument in a strict form x.x.x.
+  * The `CONFIGURE_ARGS` variable inside can be modified, but make sure the installation directory (`--prefix`) is the same.
 
 # CONTRIBUTING: #
 This project is still under development. Feedback and suggestions are very welcome and I encourage you to use the [Issues list](https://github.com/vladgh/VladGh.com-LEMP/issues) on Github to provide that feedback.

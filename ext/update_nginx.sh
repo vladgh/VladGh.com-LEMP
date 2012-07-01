@@ -5,17 +5,29 @@
 # June 3rd 2011                                      Vlad Ghinea. #
 ###################################################################
 #
-# Needs to be called with the version number as argument and also
-# with "sudo env PATH=$PATH" in front to preserve the paths.
-#
-# ex: $ sudo env PATH=$PATH bash update_nginx.sh 1.0.4
+# ex: $ sudo bash update_nginx.sh 1.3.2
+
+# Configure arguments:
+CONFIGURE_ARGS='--prefix=/opt/nginx \
+--conf-path=/etc/nginx/nginx.conf \
+--http-log-path=/var/log/nginx/access.log \
+--error-log-path=/var/log/nginx/error.log \
+--pid-path=/var/run/nginx.pid \
+--lock-path=/var/lock/nginx.lock \
+--with-http_stub_status_module \
+--with-http_ssl_module \
+--with-http_realip_module \
+--with-http_gzip_static_module \
+--with-ipv6 \
+--without-mail_pop3_module \
+--without-mail_imap_module \
+--without-mail_smtp_module'
 
 # Get NginX Version as a argument
 ARGS="$@"
 NGINX_VER="$1"
 DATE=`date +%Y.%m.%d`
 SRCDIR=/tmp/nginx_${NGINX_VER-$DATE}
-NGINX_CMD=$(type -p nginx) # Get executable path
 
 # Traps CTRL-C
 trap ctrl_c INT
@@ -33,7 +45,7 @@ check_sanity() {
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
-    die "Must be run by root user. Use 'sudo env PATH=\$PATH bash ...'"
+    die "Must be run by root user. Use 'sudo bash ...'"
   fi
 
   # A single argument allowed
@@ -42,15 +54,10 @@ check_sanity() {
   # Check if version is sane
   echo $1 | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version number doesn't seem right; Please double check: $1"
 
-  CONFIGURE_ARGS=$($NGINX_CMD -V 2>&1 | grep "configure arguments:" | sed 's/^.*: --/--/g') # Get original configure options
-  if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
-    die "Previous arguments could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
+  if [ -z "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is empty
+    die "Configure arguments are missing ..."
   fi
 
-  # Check if version is the same
-  if [ $NGINX_VER == $($NGINX_CMD -v 2>&1 | cut -d "/" -f2) ]; then
-    die 'This version number is already installed.'
-  fi
 }
 
 get_nginx() {
@@ -83,7 +90,7 @@ compile_nginx() {
   # Configure and compile NginX with previous options
   echo 'Configure with previous options...'
   ./configure $CONFIGURE_ARGS
-  make
+  make -j8
   make install
 
 }

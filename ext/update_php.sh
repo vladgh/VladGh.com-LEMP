@@ -131,7 +131,7 @@ backup_conf() {
 
 recover_conf() {
   # Send the new default configuration to /tmp
-  [ -d /etc/php5 ] && mv /etc/php5 /tmp/php5-${DATE}
+  [ -d /etc/php5 ] && mv /etc/php5 /tmp/php5-$(date +%s)
 
   # Recover previous configuration files
   echo 'Restore working config...'

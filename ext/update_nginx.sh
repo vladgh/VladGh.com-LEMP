@@ -103,11 +103,11 @@ backup_conf() {
 
 recover_conf() {
   # Send the new default configuration to /tmp
-  [ -d /etc/nginx ] && mv /etc/nginx /tmp/nginx-${DATE}
+  [ -d /etc/nginx ] && mv /etc/nginx /tmp/nginx-$(date +%s)
 
   # Recover previous configuration files
   echo 'Restore working config...'
-  [ -d /etc/nginx.original  ] && mv /etc/nginx.original /etc/nginx
+  [ -d /etc/nginx.original ] && mv /etc/nginx.original /etc/nginx
 }
 
 restart_servers() {

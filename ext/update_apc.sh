@@ -5,7 +5,7 @@
 # February 12, 2012                                  Vlad Ghinea. #
 ###################################################################
 #
-# ex: $ sudo bash update_apc.sh 3.1.10
+# ex: $ sudo ext/update_apc.sh 3.1.10
 
 # Configure arguments:
 CONFIGURE_ARGS="--enable-apc \
@@ -31,7 +31,7 @@ check_sanity() {
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
-    die "Must be run by root user. Use 'sudo env PATH=\$PATH bash ...'"
+    die "Must be run by root user. Use 'sudo ext/update_apc.sh ...'"
   fi
 
   # A single argument allowed

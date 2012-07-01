@@ -5,7 +5,7 @@
 # June 3rd 2011                                      Vlad Ghinea. #
 ###################################################################
 #
-# ex: $ sudo bash update_nginx.sh 1.3.2
+# ex: $ sudo ext/update_nginx.sh 1.3.2
 
 # Configure arguments:
 CONFIGURE_ARGS='--prefix=/opt/nginx \
@@ -45,7 +45,7 @@ check_sanity() {
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
-    die "Must be run by root user. Use 'sudo bash ...'"
+    die "Must be run by root user. Use 'sudo ext/update_nginx.sh ...'"
   fi
 
   # A single argument allowed

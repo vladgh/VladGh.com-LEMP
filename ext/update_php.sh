@@ -5,7 +5,7 @@
 # January 19, 2012                                   Vlad Ghinea. #
 ###################################################################
 #
-# ex: $ sudo bash update_php.sh 5.4.4
+# ex: $ sudo ext/update_php.sh 5.4.4
 
 # Configure arguments:
 CONFIGURE_ARGS='--prefix=/opt/php5 \
@@ -75,7 +75,7 @@ check_sanity() {
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
-    die "Must be run by root user. Use 'sudo bash ...'"
+    die "Must be run by root user. Use 'sudo ext/update_php.sh ...'"
   fi
 
   # A single argument allowed

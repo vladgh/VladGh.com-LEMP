@@ -21,13 +21,12 @@ function install_php() {
   else
     arch=$(arch)-linux-gnu
   fi
-  echo ${arch}
 
-  [ -f /usr/lib/${arch}/libjpeg.so ] && ln -s /usr/lib/${arch}/libjpeg.so /usr/lib/
-  [ -f /usr/lib/${arch}/libpng.so ] && ln -s /usr/lib/${arch}/libpng.so /usr/lib/
-  [ -f /usr/lib/${arch}/libXpm.so ] && ln -s /usr/lib/${arch}/libXpm.so /usr/lib/
-  [ -f /usr/lib/${arch}/libmysqlclient.so ] && ln -s /usr/lib/${arch}/libmysqlclient.so /usr/lib/
-  [ -d /usr/lib/${arch}/mit-krb5 ] && ln -s /usr/lib/${arch}/mit-krb5/lib*.so /usr/lib/
+  [ -f /usr/lib/${arch}/libjpeg.so ] && ln -fs /usr/lib/${arch}/libjpeg.so /usr/lib/
+  [ -f /usr/lib/${arch}/libpng.so ] && ln -fs /usr/lib/${arch}/libpng.so /usr/lib/
+  [ -f /usr/lib/${arch}/libXpm.so ] && ln -fs /usr/lib/${arch}/libXpm.so /usr/lib/
+  [ -f /usr/lib/${arch}/libmysqlclient.so ] && ln -fs /usr/lib/${arch}/libmysqlclient.so /usr/lib/
+  [ -d /usr/lib/${arch}/mit-krb5 ] && ln -fs /usr/lib/${arch}/mit-krb5/lib*.so /usr/lib/
   ##################################
 
   # Compile php source

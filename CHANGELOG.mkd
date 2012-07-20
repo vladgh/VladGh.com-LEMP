@@ -6,6 +6,7 @@
   * APC Upstream Release.
   * APC now reports the correct version.
   * Fix architecture auto-detection (Closes #29).
+  * Improved process killing function.
 
 ### 7.0.0 ###
 

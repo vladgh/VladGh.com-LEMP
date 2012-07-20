@@ -16,12 +16,18 @@ function install_php() {
   check_download "PHP5" "${TMPDIR}/php-${PHP_VERSION}.tar.gz" "${TMPDIR}/php-${PHP_VERSION}/configure"
 
   ### Fix Ubuntu 11.04 & 12.10 LIB PATH ###
-  arch=$(dpkg-architecture -qDEB_HOST_GNU_TYPE)
+  if [ $(arch) == 'i686' ]; then
+    arch=i386-linux-gnu
+  else
+    arch=$(arch)-linux-gnu
+  fi
+  echo ${arch}
+
   [ -f /usr/lib/${arch}/libjpeg.so ] && ln -s /usr/lib/${arch}/libjpeg.so /usr/lib/
   [ -f /usr/lib/${arch}/libpng.so ] && ln -s /usr/lib/${arch}/libpng.so /usr/lib/
   [ -f /usr/lib/${arch}/libXpm.so ] && ln -s /usr/lib/${arch}/libXpm.so /usr/lib/
   [ -f /usr/lib/${arch}/libmysqlclient.so ] && ln -s /usr/lib/${arch}/libmysqlclient.so /usr/lib/
-  [ -d /usr/lib/i386-linux-gnu/mit-krb5 ] && ln -s /usr/lib/${arch}/mit-krb5/lib*.so /usr/lib/
+  [ -d /usr/lib/${arch}/mit-krb5 ] && ln -s /usr/lib/${arch}/mit-krb5/lib*.so /usr/lib/
   ##################################
 
   # Compile php source

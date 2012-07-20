@@ -1,5 +1,12 @@
 ## Release Notes: ##
 
+### 7.0.1 ###
+
+  * PHP Upstream Release.
+  * APC Upstream Release.
+  * APC now reports the correct version.
+  * Fix architecture auto-detection (Closes #29).
+
 ### 7.0.0 ###
 
   * Added Postfix as a null client (send only).

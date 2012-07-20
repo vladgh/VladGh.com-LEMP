@@ -2,7 +2,6 @@ This package represents a script to install the latest NginX, MySQL and PHP (wit
 
 Note:
   * At this moment the Suhosin extension is not available for PHP 5.4.
-  * APC v3.1.10 reports as v3.1.9: (https://bugs.php.net/bug.php?id=61695)
 
 You can install your preferred versions for any of the programs. Just edit the OPTIONS file and change them accordingly.
 

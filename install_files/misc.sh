@@ -61,8 +61,8 @@ restart_servers() {
     cycle_kill $pid
   done
   sleep 2
-  invoke-rc.d php5-fpm start
-  invoke-rc.d nginx start
+  invoke-rc.d --force php5-fpm start
+  invoke-rc.d --force nginx start
 }
 
 log2file() {

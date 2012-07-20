@@ -4,7 +4,7 @@
 ESSENTIAL_PACKAGES="htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev curl make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc re2c"
 
 # Simple progress indicator at the end of line (followed by "Done" when command is completed)
-function progress() {
+progress() {
   while ps |grep $!; do
     echo -en "\b-" >&3; sleep 1
     echo -en "\b\\" >&3; sleep 1
@@ -14,7 +14,7 @@ function progress() {
   echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
 }
 
-function prepare_system() {
+prepare_system() {
   # Upgrading APT-GET
   echo 'Updating apt-get...' >&3
   apt-get -y update & progress
@@ -31,25 +31,41 @@ function prepare_system() {
   fi
 }
 
-function set_paths() {
+set_paths() {
   # Make the NginX and PHP paths global.
   echo 'Setting up paths...' >&3
   export PATH="${PATH}:${DESTINATION_DIR}/nginx/sbin:${DESTINATION_DIR}/php5/bin:${DESTINATION_DIR}/php5/sbin"
   echo "PATH=\"$PATH\"" > /etc/environment
 }
 
-function restart_servers() {
+
+cycle_kill() {
+PID=$1
+RETVAL=0
+
+for signal in "TERM" "INT" "HUP" "KILL"; do
+kill -$signal $PID
+RETVAL=$?
+[ $RETVAL -eq 0 ] && break
+echo "warning: kill failed: pid=$PID, signal=$signal" >&3
+sleep 1
+done
+
+return $RETVAL
+}
+
+restart_servers() {
   # Restart both NginX and PHP daemons
   echo 'Restarting servers...' >&3
   for pid in $(ps -eo pid,cmd | egrep '(nginx|php-fpm): master' | awk '{print $1}'); do
-    kill -INT $pid
+    cycle_kill $pid
   done
   sleep 2
   invoke-rc.d php5-fpm start
   invoke-rc.d nginx start
 }
 
-function log2file() {
+log2file() {
   # Logging everything to LOG_FILE
   exec 3>&1 4>&2
   trap 'exec 2>&4 1>&3' 0 1 2 3

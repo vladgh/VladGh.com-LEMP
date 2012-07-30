@@ -41,8 +41,10 @@ set_paths() {
 restart_servers() {
   # Restart both NginX and PHP daemons
   echo 'Restarting servers...' >&3
-  /etc/init.d/php5-fpm restart
-  /etc/init.d/nginx restart
+  /etc/init.d/php5-fpm stop
+  /etc/init.d/nginx stop
+  /etc/init.d/php5-fpm start
+  /etc/init.d/nginx start
 }
 
 log2file() {

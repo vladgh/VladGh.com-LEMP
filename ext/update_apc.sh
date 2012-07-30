@@ -2,15 +2,10 @@
 #
 ###################################################################
 # Script to change APC version.                                   #
-# February 12, 2012                                  Vlad Ghinea. #
+# July 30th, 2012                                    Vlad Ghinea. #
 ###################################################################
 #
-# ex: $ sudo ext/update_apc.sh 3.1.10
-
-# Configure arguments:
-CONFIGURE_ARGS='--enable-apc
-  --with-php-config=/opt/php5/bin/php-config
-  --with-libdir=/opt/php5/lib/php'
+# ex: $ sudo ext/update_apc.sh 3.1.11
 
 # Get APC Version as a argument
 ARGS="$@"
@@ -40,6 +35,12 @@ check_sanity() {
   # Check if version is sane
   echo $1 | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version number doesn't seem right; Please double check: $1"
 
+  # Load OPTIONS
+  source $(dirname $(readlink -f $0))/../OPTIONS
+
+  # Load environment path
+  source /etc/environment
+
   APC_VER="$1"
   DATE=`date +%Y.%m.%d`
   SRCDIR=/tmp/apc_${APC_VER-$DATE}
@@ -50,13 +51,12 @@ check_sanity() {
   # Get php-config's path
   PHP_CONFIG=$(type -p php-config)
   # Get libraries' path
-  LIBDIR=$(php -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://')
+  LIBDIR=$($PHP_CMD -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://')
 
-  # Store the configure args.
-
-  if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
-    die "The paths for your previous instalation could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
-  fi
+  # Configure arguments:
+  CONFIGURE_ARGS="--enable-apc
+  --with-php-config=${PHP_CONFIG}
+  --with-libdir=${LIBDIR}"
 
   # Check if version is the same
   if [ $APC_VER == $($PHP_CMD -i 2>&1 | grep -m 2 "Version" | grep -v PHP | cut -d " " -f3) ]; then
@@ -92,6 +92,7 @@ compile_apc() {
 
 restart_servers() {
   echo 'Restarting PHP...'
+  /etc/init.d/php5-fpm stop
   /etc/init.d/php5-fpm start
 }
 

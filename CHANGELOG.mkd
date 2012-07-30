@@ -3,6 +3,7 @@
 ### 7.0.2 ###
 
   * Call init scripts directly.
+  * Fix ext/update_apc.sh script.
 
 ### 7.0.1 ###
 

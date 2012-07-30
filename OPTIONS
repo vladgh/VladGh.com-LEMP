@@ -13,6 +13,16 @@ INSTALL_MYSQL='no'
 # any emails.
 INSTALL_POSTFIX='yes'
 
+### Directories ###############################################################
+
+# Destination directory (where to install the software)
+DESTINATION_DIR='/opt'
+
+# Web files directory
+WEB_DIR='/var/www'
+
+###############################################################################
+
 ### Program Versions: #########################################################
 
 # NginX Version:
@@ -33,13 +43,4 @@ SUHOSIN_VERSION='0.9.33'
 
 ###############################################################################
 
-### Directories ###############################################################
-
-# Destination directory (where to install the software)
-DESTINATION_DIR='/opt'
-
-# Web files directory
-WEB_DIR='/var/www'
-
-###############################################################################
 

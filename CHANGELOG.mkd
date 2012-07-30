@@ -1,5 +1,13 @@
 ## Release Notes: ##
 
+### 7.0.2 ###
+
+  * Configure options for NginX and PHP are now declared in OPTIONS.
+  * Call init scripts directly.
+  * Fix ext/update_apc.sh script.
+  * Fix ext/update_nginx.sh script.
+  * Fix ext/update_php.sh script.
+
 ### 7.0.1 ###
 
   * PHP Upstream Release.

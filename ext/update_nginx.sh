@@ -7,27 +7,8 @@
 #
 # ex: $ sudo ext/update_nginx.sh 1.3.2
 
-# Configure arguments:
-CONFIGURE_ARGS='--prefix=/opt/nginx
-  --conf-path=/etc/nginx/nginx.conf
-  --http-log-path=/var/log/nginx/access.log
-  --error-log-path=/var/log/nginx/error.log
-  --pid-path=/var/run/nginx.pid
-  --lock-path=/var/lock/nginx.lock
-  --with-http_stub_status_module
-  --with-http_ssl_module
-  --with-http_realip_module
-  --with-http_gzip_static_module
-  --with-ipv6
-  --without-mail_pop3_module
-  --without-mail_imap_module
-  --without-mail_smtp_module'
-
 # Get NginX Version as a argument
 ARGS="$@"
-NGINX_VER="$1"
-DATE=`date +%Y.%m.%d`
-SRCDIR=/tmp/nginx_${NGINX_VER-$DATE}
 
 # Traps CTRL-C
 trap ctrl_c INT
@@ -41,7 +22,6 @@ die() {
 }
 
 check_sanity() {
-
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
@@ -54,14 +34,19 @@ check_sanity() {
   # Check if version is sane
   echo $1 | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version number doesn't seem right; Please double check: $1"
 
-  if [ -z "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is empty
-    die "Configure arguments are missing ..."
-  fi
+  # Load OPTIONS
+  source $(dirname $(readlink -f $0))/../OPTIONS
 
+  # Load environment path
+  source /etc/environment
+
+  # Variables
+  NGINX_VER="$1"
+  DATE=`date +%Y.%m.%d`
+  SRCDIR=/tmp/nginx_${NGINX_VER-$DATE}
 }
 
 get_nginx() {
-
   # Download and extract source package
   echo 'Getting NginX'
   if [ -d $SRCDIR ]; then
@@ -82,17 +67,14 @@ get_nginx() {
   else
     die 'Could not extract the archive.'
   fi
-
 }
 
 compile_nginx() {
-
   # Configure and compile NginX with previous options
   echo 'Configuring...'
-  ./configure $CONFIGURE_ARGS
+  ./configure $NGINX_CONFIGURE_ARGS
   make -j8
   make install
-
 }
 
 backup_conf() {
@@ -112,11 +94,9 @@ recover_conf() {
 
 restart_servers() {
   echo 'Restarting NginX...'
-  for pid in $(ps -eo pid,cmd | grep '[n]ginx: master' | awk '{print $1}'); do
-    kill -INT $pid
-  done
-  sleep 2
-  invoke-rc.d nginx start
+  /etc/init.d/nginx stop
+  sleep 1
+  /etc/init.d/nginx start
 }
 
 check_sanity $ARGS

@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 7.0.2 ###
+
+  * Call init scripts directly.
+
 ### 7.0.1 ###
 
   * PHP Upstream Release.

@@ -92,11 +92,7 @@ compile_apc() {
 
 restart_servers() {
   echo 'Restarting PHP...'
-  for pid in $(ps -eo pid,cmd | grep '[p]hp-fpm: master' | awk '{print $1}'); do
-    kill -INT $pid
-  done
-  sleep 2
-  invoke-rc.d php5-fpm start
+  /etc/init.d/php5-fpm start
 }
 
 check_sanity $ARGS

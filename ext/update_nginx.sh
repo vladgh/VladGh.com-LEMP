@@ -112,11 +112,7 @@ recover_conf() {
 
 restart_servers() {
   echo 'Restarting NginX...'
-  for pid in $(ps -eo pid,cmd | grep '[n]ginx: master' | awk '{print $1}'); do
-    kill -INT $pid
-  done
-  sleep 2
-  invoke-rc.d nginx start
+  /etc/init.d/nginx restart
 }
 
 check_sanity $ARGS

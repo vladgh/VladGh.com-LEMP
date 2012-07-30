@@ -43,6 +43,7 @@ restart_servers() {
   echo 'Restarting servers...' >&3
   /etc/init.d/php5-fpm stop
   /etc/init.d/nginx stop
+  sleep 1
   /etc/init.d/php5-fpm start
   /etc/init.d/nginx start
 }

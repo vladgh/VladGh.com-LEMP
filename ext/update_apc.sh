@@ -22,7 +22,6 @@ die() {
 }
 
 check_sanity() {
-
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
@@ -41,17 +40,14 @@ check_sanity() {
   # Load environment path
   source /etc/environment
 
+  # Variables
   APC_VER="$1"
   DATE=`date +%Y.%m.%d`
   SRCDIR=/tmp/apc_${APC_VER-$DATE}
-  # Get php executable's path
-  PHP_CMD=$(type -p php)
-  # Get phpize's path
-  PHPIZE=$(type -p phpize)
-  # Get php-config's path
-  PHP_CONFIG=$(type -p php-config)
-  # Get libraries' path
-  LIBDIR=$($PHP_CMD -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://')
+  PHP_CMD=$(type -p php) # PHP executable's path
+  PHPIZE=$(type -p phpize) # Phpize path
+  PHP_CONFIG=$(type -p php-config) # Php-config's path
+  LIBDIR=$($PHP_CMD -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://') # Libraries' path
 
   # Configure arguments:
   CONFIGURE_ARGS="--enable-apc
@@ -65,7 +61,6 @@ check_sanity() {
 }
 
 get_apc() {
-
   # Download and extract source package
   echo 'Getting APC'
   [ -d $SRCDIR ] && rm -r $SRCDIR
@@ -80,19 +75,18 @@ get_apc() {
 }
 
 compile_apc() {
-
   # Configure and compile APC.
   echo 'Configuring...'
   $PHPIZE -clean
   ./configure $CONFIGURE_ARGS
   make -j8
   make install
-
 }
 
 restart_servers() {
   echo 'Restarting PHP...'
   /etc/init.d/php5-fpm stop
+  sleep 1
   /etc/init.d/php5-fpm start
 }
 

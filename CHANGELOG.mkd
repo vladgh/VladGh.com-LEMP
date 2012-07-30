@@ -2,8 +2,10 @@
 
 ### 7.0.2 ###
 
+  * Configure options for NginX are now declared in OPTIONS.
   * Call init scripts directly.
   * Fix ext/update_apc.sh script.
+  * Fix ext/update_nginx.sh script.
 
 ### 7.0.1 ###
 

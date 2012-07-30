@@ -13,26 +13,13 @@ function install_nginx() {
 
   # Compile php source
   echo 'Configuring NginX...' >&3
-  ./configure --prefix=${DESTINATION_DIR}/nginx \
---conf-path=/etc/nginx/nginx.conf \
---http-log-path=/var/log/nginx/access.log \
---error-log-path=/var/log/nginx/error.log \
---pid-path=/var/run/nginx.pid \
---lock-path=/var/lock/nginx.lock \
---with-http_stub_status_module \
---with-http_ssl_module \
---with-http_realip_module \
---with-http_gzip_static_module \
---with-ipv6 \
---without-mail_pop3_module \
---without-mail_imap_module \
---without-mail_smtp_module & progress
+  ./configure $NGINX_CONFIGURE_ARGS & progress
 
   echo 'Compiling NginX...' >&3
   make -j8 & progress
 
   echo 'Installing NginX...' >&3
-  make install
+  make install & progress
 
   # Copy configuration files
   sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"${DESTINATION_DIR}/nginx\"~" ${SRCDIR}/init_files/nginx
@@ -49,8 +36,6 @@ function install_nginx() {
   chmod +x ${DESTINATION_DIR}/nginx/sbin/*
 
   cp ${SRCDIR}/web_files/* $WEB_DIR
-
-  echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
 
   # Create log rotation script
   echo 'Creating logrotate script...' >&3

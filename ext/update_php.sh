@@ -7,55 +7,6 @@
 #
 # ex: $ sudo ext/update_php.sh 5.4.4
 
-# Configure arguments:
-CONFIGURE_ARGS='--prefix=/opt/php5
-  --with-config-file-path=/etc/php5
-  --with-config-file-scan-dir=/etc/php5/conf.d
-  --with-curl
-  --with-pear
-  --with-gd
-  --with-jpeg-dir
-  --with-png-dir
-  --with-zlib
-  --with-xpm-dir
-  --with-freetype-dir
-  --with-t1lib
-  --with-mcrypt
-  --with-mhash
-  --with-mysql
-  --with-mysqli
-  --with-pdo-mysql
-  --with-openssl
-  --with-xmlrpc
-  --with-xsl
-  --with-bz2
-  --with-gettext
-  --with-readline
-  --with-fpm-user=www-data
-  --with-fpm-group=www-data
-  --with-imap
-  --with-imap-ssl
-  --with-kerberos
-  --with-snmp
-  --disable-debug
-  --enable-fpm
-  --enable-cli
-  --enable-inline-optimization
-  --enable-exif
-  --enable-wddx
-  --enable-zip
-  --enable-bcmath
-  --enable-calendar
-  --enable-ftp
-  --enable-mbstring
-  --enable-soap
-  --enable-sockets
-  --enable-shmop
-  --enable-dba
-  --enable-sysvsem
-  --enable-sysvshm
-  --enable-sysvmsg'
-
 # Get PHP Version as a argument
 ARGS="$@"
 
@@ -71,7 +22,6 @@ die() {
 }
 
 check_sanity() {
-
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
@@ -84,17 +34,19 @@ check_sanity() {
   # Check if version is sane
   echo $1 | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version number doesn't seem right; Please double check: $1"
 
+  # Load OPTIONS
+  source $(dirname $(readlink -f $0))/../OPTIONS
+
+  # Load environment path
+  source /etc/environment
+
+  # Variables
   PHP_VER="$1"
   DATE=`date +%Y.%m.%d`
   SRCDIR=/tmp/php_${PHP_VER-$DATE}
-
-  if [ -z "$CONFIGURE_ARGS" ]; then
-    die "Configure arguments are missing ..."
-  fi
 }
 
 get_php() {
-
   # Download and extract source package
   echo 'Getting PHP'
   [ -d $SRCDIR ] && rm -r $SRCDIR
@@ -113,14 +65,12 @@ get_php() {
 }
 
 compile_php() {
-
   # Configure and compile NginX with previous options
   echo 'Configuring...'
   ./buildconf --force
-  ./configure $CONFIGURE_ARGS
+  ./configure $PHP_CONFIGURE_ARGS
   make -j8
   make install
-
 }
 
 backup_conf() {
@@ -140,7 +90,9 @@ recover_conf() {
 
 restart_servers() {
   echo 'Restarting PHP...'
-  /etc/init.d/php5-fpm restart
+  /etc/init.d/php5-fpm stop
+  sleep 1
+  /etc/init.d/php5-fpm start
 }
 
 check_sanity $ARGS

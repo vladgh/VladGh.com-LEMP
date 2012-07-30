@@ -33,54 +33,7 @@ function install_php() {
   cd ${TMPDIR}/php-${PHP_VERSION}
   ./buildconf --force
   echo 'Configuring PHP (Please be patient, this will take a while...)' >&3
-  ./configure \
---prefix=${DESTINATION_DIR}/php5 \
---with-config-file-path=/etc/php5 \
---with-config-file-scan-dir=/etc/php5/conf.d \
---with-curl \
---with-pear \
---with-gd \
---with-jpeg-dir \
---with-png-dir \
---with-zlib \
---with-xpm-dir \
---with-freetype-dir \
---with-t1lib \
---with-mcrypt \
---with-mhash \
---with-mysql \
---with-mysqli \
---with-pdo-mysql \
---with-openssl \
---with-xmlrpc \
---with-xsl \
---with-bz2 \
---with-gettext \
---with-readline \
---with-fpm-user=www-data \
---with-fpm-group=www-data \
---with-imap \
---with-imap-ssl \
---with-kerberos \
---with-snmp \
---disable-debug \
---enable-fpm \
---enable-cli \
---enable-inline-optimization \
---enable-exif \
---enable-wddx \
---enable-zip \
---enable-bcmath \
---enable-calendar \
---enable-ftp \
---enable-mbstring \
---enable-soap \
---enable-sockets \
---enable-shmop \
---enable-dba \
---enable-sysvsem \
---enable-sysvshm \
---enable-sysvmsg & progress
+  ./configure $PHP_CONFIGURE_ARGS & progress
 
   echo 'Compiling PHP (Please be patient, this will take a while...)' >&3
   make -j8 & progress

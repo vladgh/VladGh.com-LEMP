@@ -3,6 +3,7 @@
 ### 7.0.3 ###
 
   * Fix FPM init script.
+  * Minor code refactoring.
 
 ### 7.0.2 ###
 

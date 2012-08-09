@@ -18,8 +18,5 @@ function install_postfix() {
 
   echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
 
-  # Restart service
-  invoke-rc.d postfix restart
-
 }
 

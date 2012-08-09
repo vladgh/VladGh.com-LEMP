@@ -44,9 +44,10 @@ After the installer is finished (this will take a long time depending on your se
 You can go to your server's address and you will see the PHP info page.
 Also, if you go to:
 
-  * **http://example.com/apc.php** you will find the APC Cache information page;
   * **http://example.com/nginx_status** for the NginX statistics;
   * **http://example.com/status?html** for the FPM statistics.
+  * **http://example.com/status.html** for the FPM real-time status page.
+  * **http://example.com/apc.php** you will find the APC Cache information page;
 
 In order to have immediate access to new paths you should also execute `source /etc/environment`. This command reloads the new environment variables.
 

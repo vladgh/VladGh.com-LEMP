@@ -3,7 +3,7 @@
 # PHP Libraries
 PHP_LIBRARIES="libmysqlclient-dev mysql-client libcurl4-openssl-dev libgd2-xpm-dev libjpeg-dev libpng3-dev libxpm-dev libfreetype6-dev libt1-dev libmcrypt-dev libxslt1-dev bzip2 libbz2-dev libxml2-dev libevent-dev libltdl-dev libmagickwand-dev libmagickcore-dev imagemagick libreadline-dev libc-client-dev libsnmp-dev snmpd snmp"
 
-function install_php() {
+install_php() {
   # Install all PHP Libraries
   echo 'Installing PHP libraries...' >&3
   apt-get -y install $PHP_LIBRARIES & progress
@@ -42,11 +42,17 @@ function install_php() {
 
   # Copy configuration files
   echo 'Setting up PHP...' >&3
-  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"${DESTINATION_DIR}/php5\"~" ${SRCDIR}/init_files/php5-fpm
+  sed -i "s~@DESTINATION_DIR@~${DESTINATION_DIR}~" ${SRCDIR}/init_files/php5-fpm
   mkdir -p /etc/php5/conf.d /var/log/php5-fpm
   cp -f php.ini-production /etc/php5/php.ini
   cp ${SRCDIR}/conf_files/php-fpm.conf /etc/php5/php-fpm.conf
   cp ${SRCDIR}/init_files/php5-fpm /etc/init.d/php5-fpm
+
+  # Copy status page to web path
+  [ ! -d $WEB_DIR ] && mkdir $WEB_DIR
+  cp ${DESTINATION_DIR}/php5/php/fpm/status.html $WEB_DIR
+
+  # Prepare service
   chmod +x /etc/init.d/php5-fpm
   update-rc.d -f php5-fpm defaults
 

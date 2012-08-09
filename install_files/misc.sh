@@ -39,13 +39,13 @@ set_paths() {
 }
 
 restart_servers() {
-  # Restart both NginX and PHP daemons
+  # Restart both NginX, PHP and Postfix daemons
   echo 'Restarting servers...' >&3
-  /etc/init.d/php5-fpm stop
-  /etc/init.d/nginx stop
+  invoke-rc.d php5-fpm restart
   sleep 1
-  /etc/init.d/php5-fpm start
-  /etc/init.d/nginx start
+  invoke-rc.d nginx restart
+  sleep 1
+  invoke-rc.d postfix restart
 }
 
 log2file() {

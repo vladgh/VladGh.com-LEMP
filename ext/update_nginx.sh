@@ -12,7 +12,7 @@ ARGS="$@"
 
 # Traps CTRL-C
 trap ctrl_c INT
-function ctrl_c() {
+ctrl_c() {
   echo -e '\nCancelled by user'; if [ -n "$!" ]; then kill $!; fi; exit 1
 }
 

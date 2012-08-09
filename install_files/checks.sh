@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function check_download () {
+check_download () {
 # Simple function to check if the download and extraction finished successfully.
   if [ -f "$2" ] && [ -f "$3" ] ; then
     echo  -e '\E[47;34m'"${1} download and extraction was successful." >&3; tput sgr0 >&3
@@ -11,7 +11,7 @@ function check_download () {
   fi
 }
 
-function check_php () {
+check_php () {
   # Check if the PHP executable exists and has the APC and Suhosin modules compiled.
   if [[ $PHP_VERSION != 5.4* ]] && [ -x "${DESTINATION_DIR}/php5/bin/php" ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep apc) ] && [ $(${DESTINATION_DIR}/php5/bin/php -m | grep suhosin) ] ; then
     echo '===============================================================================' >&3
@@ -30,7 +30,7 @@ function check_php () {
   fi
 }
 
-function check_nginx () {
+check_nginx () {
   # Check if Nginx exists and is executable and display the version.
   if [ -x "${DESTINATION_DIR}/nginx/sbin/nginx" ] ; then
     echo '===============================================================================' >&3
@@ -44,7 +44,7 @@ function check_nginx () {
   fi
 }
 
-function check_postfix () {
+check_postfix () {
   # Check if Postfix was installed correctly.
   if [ -x '/usr/sbin/postconf' ] ; then
     echo '===============================================================================' >&3
@@ -58,7 +58,7 @@ function check_postfix () {
   fi
 }
 
-function check_root() {
+check_root() {
   # Check if you are root
   if [ $(id -u) != "0" ]; then
     echo 'Error: You must be root to run this installer.'
@@ -67,7 +67,7 @@ function check_root() {
   fi
 }
 
-function check_options() {
+check_options() {
   # Check the sanity of the options file
   # Check if enabled
   if [ $ENABLED == 'no' ]; then

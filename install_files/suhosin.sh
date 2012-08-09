@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function install_suhosin() {
+install_suhosin() {
   #Get Suhosin packages
   echo "Downloading and extracting Suhosin-$SUHOSIN_VERSION..." >&3
   wget -O ${TMPDIR}/suhosin-${SUHOSIN_VERSION}.tgz "http://download.suhosin.org/suhosin-${SUHOSIN_VERSION}.tgz" & progress

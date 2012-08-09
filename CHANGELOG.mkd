@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 7.0.3 ###
+
+  * Fix FPM init script.
+
 ### 7.0.2 ###
 
   * Configure options for NginX and PHP are now declared in OPTIONS.

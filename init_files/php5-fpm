@@ -11,7 +11,7 @@
 ### END INIT INFO
 
 
-php_fpm_BIN=/opt/php5/sbin/php-fpm
+php_fpm_BIN=@DESTINATION_DIR@/php5/sbin/php-fpm
 php_fpm_CONF=/etc/php5/php-fpm.conf
 php_fpm_PID=/var/run/php-fpm.pid
 

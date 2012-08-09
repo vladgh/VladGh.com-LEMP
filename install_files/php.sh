@@ -42,7 +42,7 @@ function install_php() {
 
   # Copy configuration files
   echo 'Setting up PHP...' >&3
-  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"${DESTINATION_DIR}/php5\"~" ${SRCDIR}/init_files/php5-fpm
+  sed -i "s~/@DESTINATION_DIR@/${DESTINATION_DIR}/" ${SRCDIR}/init_files/php5-fpm
   mkdir -p /etc/php5/conf.d /var/log/php5-fpm
   cp -f php.ini-production /etc/php5/php.ini
   cp ${SRCDIR}/conf_files/php-fpm.conf /etc/php5/php-fpm.conf

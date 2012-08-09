@@ -38,14 +38,29 @@ set_paths() {
   echo "PATH=\"$PATH\"" > /etc/environment
 }
 
+cycle_kill() {
+  PID=$1
+  RETVAL=0
+  for signal in "TERM" "INT" "HUP" "KILL"; do
+    kill -$signal $PID
+    RETVAL=$?
+    [ $RETVAL -eq 0 ] && break
+    echo "warning: kill failed: pid=$PID, signal=$signal" >&3
+    sleep 1
+  done
+  return $RETVAL
+}
+
 restart_servers() {
   # Restart both NginX and PHP daemons
   echo 'Restarting servers...' >&3
-  /etc/init.d/php5-fpm stop
-  /etc/init.d/nginx stop
+  for pid in $(ps -eo pid,cmd | egrep '(nginx|php-fpm): master' | awk '{print $1}'); do
+    cycle_kill $pid
+  done
   sleep 1
-  /etc/init.d/php5-fpm start
-  /etc/init.d/nginx start
+  invoke-rc.d --force php5-fpm start
+  sleep 1
+  invoke-rc.d --force nginx start
 }
 
 log2file() {

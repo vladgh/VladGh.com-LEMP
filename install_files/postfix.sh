@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Installing Postfix
-function install_postfix() {
+install_postfix() {
   echo 'Installing Postfix...' >&3
   env DEBIAN_FRONTEND=noninteractive apt-get -q -y install postfix mailutils libsasl2-modules postfix-pcre ca-certificates & progress
 

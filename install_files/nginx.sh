@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function install_nginx() {
+install_nginx() {
   # Create Web Directory
   [ ! -d $WEB_DIR ] && mkdir $WEB_DIR
   # Get NginX package

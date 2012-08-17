@@ -1,5 +1,9 @@
 ## Release Notes: ##
 
+### 7.0.4 ###
+
+  * NginX, PHP and APC upstream release.
+
 ### 7.0.3 ###
 
   * Fix FPM init script.

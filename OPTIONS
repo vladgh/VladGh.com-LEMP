@@ -67,8 +67,10 @@ PHP_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/php5
 --with-mcrypt
 --with-mhash
 --with-mysql
+--with-pgsql
 --with-mysqli
 --with-pdo-mysql
+--with-pdo-pgsql
 --with-openssl
 --with-xmlrpc
 --with-xsl

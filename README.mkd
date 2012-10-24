@@ -1,10 +1,15 @@
 This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin).
-Note: At this moment the Suhosin extension is not available for PHP 5.4.
+
+Note:
+  * At this moment the Suhosin extension is not available for PHP 5.4.
+
 You can install your preferred versions for any of the programs. Just edit the OPTIONS file and change them accordingly.
 
 It is highly recommended to run this installer on a fresh installed system.
 
-This is tested automatically on Ubuntu 10.04, 11.10 and 12.04, both 32 bits and 64 bits, on official Amazon EC2 Ubuntu images.
+This is tested automatically on:
+ * Ubuntu 10.04, 11.10 and 12.04, both 32 and 64 bit, on official Amazon EC2 Ubuntu images.
+ * Debian 6, both 32 and 64 bit, on RightScale Debian images.
 
 ####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
 <div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>
@@ -24,7 +29,7 @@ Start a screen session:
 
     screen
 
-I recommend running everything inside a screen session because if your connection drops you can easily come back with `screen -rad`. If you use something else (ex: byobu) you can skip this step.
+I recommend running everything inside a screen session because in case your connection drops you can easily come back with `screen -rad`. If you use something else (ex: byobu) you can skip this step.
 
 Edit the OPTIONS file and change `ENABLED='yes'`. This is were you can chose to install the MySQL Server or modify the versions for any of the programs, as well as the paths.
 
@@ -39,9 +44,10 @@ After the installer is finished (this will take a long time depending on your se
 You can go to your server's address and you will see the PHP info page.
 Also, if you go to:
 
-  * **http://example.com/apc.php** you will find the APC Cache information page;
-  * **http://example.com/nginx_status** for the NginX statistics;
-  * **http://example.com/status?html** for the FPM statistics.
+  * **http://example.com/nginx_status** - for the NginX statistics;
+  * **http://example.com/status?html**  - for the FPM statistics;
+  * **http://example.com/status.html**  - for the FPM real-time status page;
+  * **http://example.com/apc.php**      - for the APC Cache information page.
 
 In order to have immediate access to new paths you should also execute `source /etc/environment`. This command reloads the new environment variables.
 
@@ -49,11 +55,14 @@ In order to have immediate access to new paths you should also execute `source /
 In the "ext" folder you will also find some utilities:
 
 * `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
-* `update_nginx.sh` script which you can use to upgrade the current nginx.
-  * you can run it with `sudo env PATH=$PATH bash ext/update_nginx.sh 1.0.4` (as you can see there are a few things worth mentioning: you need to declare the current path to the sudo command in order to preserve it; you can only have one argument in a strict form x.x.x; )
-  * this script is doing nothing more than reconstructing you current nginx config with the new version. It gets the previous configure options automatically so if you used 3rd party modules it will not work. Also it saves the current config files and brings them back after the compilation was successful.
-* `update_php.sh` - upgrades the current php (`sudo env PATH=$PATH bash ext/update_php.sh 5.3.10`).
-* `update_apc.sh` - upgrades the current apc (`sudo env PATH=$PATH bash ext/update_apc.sh 3.1.19`).
+* `update_nginx.sh` - upgrades or modifies NginX (`sudo ext/update_nginx.sh 1.3.2`).
+* `update_php.sh`   - upgrades or modifies PHP (`sudo ext/update_php.sh 5.4.4`).
+* `update_apc.sh`   - upgrades or modifies APC (`sudo ext/update_apc.sh 3.1.10`).
+
+NOTES:
+  * The update_* scripts above can be used to upgrade the software, or change current configure arguments.
+  * You can only have one argument in a strict form x.x.x.
+  * The `CONFIGURE_ARGS` variable inside can be modified, but make sure the installation directory (`--prefix`) is the same.
 
 # CONTRIBUTING: #
 This project is still under development. Feedback and suggestions are very welcome and I encourage you to use the [Issues list](https://github.com/vladgh/VladGh.com-LEMP/issues) on Github to provide that feedback.
@@ -76,6 +85,18 @@ The formatting conventions already present in these scripts are as follows:
 # DISCLAIMER: #
 ** All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms. **
 
-## License: ##
-<div style="text-align: center;"><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">VladGh.com-LEMP Script</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://vladgh.com" property="cc:attributionName" rel="cc:attributionURL">Vlad Ghinea</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.</div>
+# License: #
+Copyright 2012 Vlad Ghinea
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 

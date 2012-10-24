@@ -2,20 +2,17 @@
 #
 ###################################################################
 # Script to change APC version.                                   #
-# February 12, 2012                                  Vlad Ghinea. #
+# July 30th, 2012                                    Vlad Ghinea. #
 ###################################################################
 #
-# Needs to be called with the version number as argument and also
-# with "sudo env PATH=$PATH" in front to preserve the paths.
-#
-# ex: $ sudo env PATH=$PATH bash update_apc.sh 3.1.9
-#
+# ex: $ sudo ext/update_apc.sh 3.1.11
+
 # Get APC Version as a argument
 ARGS="$@"
 
 # Traps CTRL-C
 trap ctrl_c INT
-function ctrl_c() {
+ctrl_c() {
   echo -e '\nCancelled by user'; if [ -n "$!" ]; then kill $!; fi; exit 1
 }
 
@@ -25,11 +22,10 @@ die() {
 }
 
 check_sanity() {
-
   # Check if the script is run as root.
   if [ $(/usr/bin/id -u) != "0" ]
   then
-    die "Must be run by root user. Use 'sudo env PATH=\$PATH bash ...'"
+    die "Must be run by root user. Use 'sudo ext/update_apc.sh ...'"
   fi
 
   # A single argument allowed
@@ -38,23 +34,25 @@ check_sanity() {
   # Check if version is sane
   echo $1 | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || die "Version number doesn't seem right; Please double check: $1"
 
+  # Load OPTIONS
+  source $(dirname $(readlink -f $0))/../OPTIONS
+
+  # Load environment path
+  source /etc/environment
+
+  # Variables
   APC_VER="$1"
   DATE=`date +%Y.%m.%d`
   SRCDIR=/tmp/apc_${APC_VER-$DATE}
-  # Get php executable's path
-  PHP_CMD=$(type -p php)
-  # Get phpize's path
-  PHPIZE=$(type -p phpize)
-  # Get php-config's path
-  PHP_CONFIG=$(type -p php-config)
-  # Get libraries' path
-  LIBDIR=$(php -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://')
+  PHP_CMD=$(type -p php) # PHP executable's path
+  PHPIZE=$(type -p phpize) # Phpize path
+  PHP_CONFIG=$(type -p php-config) # Php-config's path
+  LIBDIR=$($PHP_CMD -i | grep include_path | cut -d ' ' -f3 | sed 's/^\.\://') # Libraries' path
 
-  # Store the configure args.
-  CONFIGURE_ARGS="--enable-apc --with-php-config=${PHP_CONFIG} --with-libdir=${LIBDIR}"
-  if [ ! -n "$CONFIGURE_ARGS" ]; then   # tests to see if the argument is non empty
-    die "The paths for your previous instalation could not be loaded. You must run the command with 'sudo env PATH=\$PATH bash ...'"
-  fi
+  # Configure arguments:
+  CONFIGURE_ARGS="--enable-apc
+  --with-php-config=${PHP_CONFIG}
+  --with-libdir=${LIBDIR}"
 
   # Check if version is the same
   if [ $APC_VER == $($PHP_CMD -i 2>&1 | grep -m 2 "Version" | grep -v PHP | cut -d " " -f3) ]; then
@@ -63,7 +61,6 @@ check_sanity() {
 }
 
 get_apc() {
-
   # Download and extract source package
   echo 'Getting APC'
   [ -d $SRCDIR ] && rm -r $SRCDIR
@@ -78,23 +75,19 @@ get_apc() {
 }
 
 compile_apc() {
-
   # Configure and compile APC.
-  echo 'Configure APC with typical options...'
+  echo 'Configuring...'
   $PHPIZE -clean
   ./configure $CONFIGURE_ARGS
   make -j8
   make install
-
 }
 
 restart_servers() {
   echo 'Restarting PHP...'
-  for pid in $(ps -eo pid,cmd | grep '[p]hp-fpm: master' | awk '{print $1}'); do
-    kill -INT $pid
-  done
-  sleep 2
-  invoke-rc.d php5-fpm start
+  /etc/init.d/php5-fpm stop
+  sleep 1
+  /etc/init.d/php5-fpm start
 }
 
 check_sanity $ARGS
@@ -104,4 +97,6 @@ restart_servers
 
 # Clean Sources
 rm -r $SRCDIR
+
+exit 0
 

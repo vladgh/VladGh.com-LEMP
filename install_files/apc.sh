@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function install_apc() {
+install_apc() {
   # Get APC package
   echo "Downloading and extracting APC-${APC_VERSION}..." >&3
   wget -O ${TMPDIR}/APC-${APC_VERSION}.tgz "http://pecl.php.net/get/APC-${APC_VERSION}.tgz" & progress

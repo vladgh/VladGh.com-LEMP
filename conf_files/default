@@ -1,5 +1,8 @@
 server {
 
+  listen [::]:80 ipv6only=on; # listen for IPv6 only traffic on IPv6 sockets
+  listen 80; # listen also for IPv4 traffic on "regular" IPv4 sockets
+
   server_name _ "";
 
   access_log  /var/log/nginx/$host.access.log;
@@ -30,14 +33,14 @@ server {
   }
 
   ## Robots.txt Not Found
-  location = /robots.txt { 
-    access_log off; 
-    log_not_found off; 
+  location = /robots.txt {
+    access_log off;
+    log_not_found off;
   }
 
   location / {
     try_files $uri $uri/ index.php;
-  }  
+  }
 
   location ~ \.php$ {
     include /etc/nginx/fastcgi.conf;
@@ -47,7 +50,7 @@ server {
   ### NginX Status
   location /nginx_status {
   stub_status on;
-    access_log   off; 
+    access_log   off;
   }
 
   ### FPM Status

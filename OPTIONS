@@ -2,28 +2,16 @@
 
 # Enable the script (yes/no)?
 ENABLED='no'
+
 # Install MySQL Server (yes/no)?
+# MySQL Client is installed by default to allow
+# the connection between PHP and the MySQL server.
 INSTALL_MYSQL='no'
 
-### Program Versions: #########################################################
-
-# NginX Version:
-# Ex: NGINX_VERSION='1.2.0'
-NGINX_VERSION='1.3.2'
-
-# PHP Version:
-# Ex: PHP_VERSION='5.4.1'
-PHP_VERSION='5.4.4'
-
-# APC Version:
-# Ex: APC_VERSION='3.1.10'
-APC_VERSION='3.1.10'
-
-# Suhosin Version:
-# Ex: SUHOSIN_VERSION='0.9.33'
-SUHOSIN_VERSION='0.9.33'
-
-###############################################################################
+# Install Postfix (yes/no)?
+# Postfix will be installed as a null (send-only) client. It will not receive
+# any emails.
+INSTALL_POSTFIX='yes'
 
 ### Directories ###############################################################
 
@@ -32,6 +20,99 @@ DESTINATION_DIR='/opt'
 
 # Web files directory
 WEB_DIR='/var/www'
+
+###############################################################################
+
+### Program Versions: #########################################################
+
+# NginX Version:
+# Ex: NGINX_VERSION='1.2.4'
+NGINX_VERSION='1.3.7'
+
+# NginX Configure arguments:
+NGINX_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/nginx
+--conf-path=/etc/nginx/nginx.conf
+--http-log-path=/var/log/nginx/access.log
+--error-log-path=/var/log/nginx/error.log
+--pid-path=/var/run/nginx.pid
+--lock-path=/var/lock/nginx.lock
+--with-http_stub_status_module
+--with-http_ssl_module
+--with-http_realip_module
+--with-http_gzip_static_module
+--with-ipv6
+--without-mail_pop3_module
+--without-mail_imap_module
+--without-mail_smtp_module"
+
+###############################################################################
+
+# PHP Version:
+# Ex: PHP_VERSION='5.3.18'
+PHP_VERSION='5.4.8'
+
+# PHP Configure arguments:
+PHP_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/php5
+--with-config-file-path=/etc/php5
+--with-config-file-scan-dir=/etc/php5/conf.d
+--with-curl
+--with-pear
+--with-gd
+--with-jpeg-dir
+--with-png-dir
+--with-zlib
+--with-xpm-dir
+--with-freetype-dir
+--with-t1lib
+--with-mcrypt
+--with-mhash
+--with-mysql
+--with-pgsql
+--with-mysqli
+--with-pdo-mysql
+--with-pdo-pgsql
+--with-openssl
+--with-xmlrpc
+--with-xsl
+--with-bz2
+--with-gettext
+--with-readline
+--with-fpm-user=www-data
+--with-fpm-group=www-data
+--with-imap
+--with-imap-ssl
+--with-kerberos
+--with-snmp
+--disable-debug
+--enable-fpm
+--enable-cli
+--enable-inline-optimization
+--enable-exif
+--enable-wddx
+--enable-zip
+--enable-bcmath
+--enable-calendar
+--enable-ftp
+--enable-mbstring
+--enable-soap
+--enable-sockets
+--enable-shmop
+--enable-dba
+--enable-sysvsem
+--enable-sysvshm
+--enable-sysvmsg"
+
+###############################################################################
+
+# APC Version:
+# Ex: APC_VERSION='3.1.9'
+APC_VERSION='3.1.13'
+
+###############################################################################
+
+# Suhosin Version:
+# Ex: SUHOSIN_VERSION='0.9.33'
+SUHOSIN_VERSION='0.9.33'
 
 ###############################################################################
 

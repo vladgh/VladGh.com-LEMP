@@ -26,7 +26,7 @@ WEB_DIR='/var/www'
 ### Program Versions: #########################################################
 
 # NginX Version:
-# Ex: NGINX_VERSION='1.2.4'
+# Ex: NGINX_VERSION='1.2.5'
 NGINX_VERSION='1.3.8'
 
 # NginX Configure arguments:

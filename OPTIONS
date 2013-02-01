@@ -106,7 +106,7 @@ PHP_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/php5
 
 # APC Version:
 # Ex: APC_VERSION='3.1.9'
-APC_VERSION='3.1.14'
+APC_VERSION='3.1.13'
 
 ###############################################################################
 

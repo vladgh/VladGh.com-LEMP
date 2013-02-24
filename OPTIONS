@@ -48,8 +48,8 @@ NGINX_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/nginx
 ###############################################################################
 
 # PHP Version:
-# Ex: PHP_VERSION='5.3.21'
-PHP_VERSION='5.4.11'
+# Ex: PHP_VERSION='5.3.22'
+PHP_VERSION='5.4.12'
 
 # PHP Configure arguments:
 PHP_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/php5

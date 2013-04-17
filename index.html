@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>LEMP by vladgh</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>LEMP</h1>
+        <h2>Latest NginX, MySQL, PHP</h2>
+        <a href="https://github.com/vladgh/VladGh.com-LEMP" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p>This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin).</p>
+
+<p>Note:</p>
+
+<ul>
+<li>At this moment the Suhosin extension is not available for PHP 5.4.</li>
+</ul><p>You can install your preferred versions for any of the programs. Just edit the OPTIONS file and change them accordingly.</p>
+
+<p>It is highly recommended to run this installer on a fresh installed system.</p>
+
+<p>This is tested automatically on:</p>
+
+<ul>
+<li>Ubuntu 10.04, 11.10 and 12.04, both 32 and 64 bit, on official Amazon EC2 Ubuntu images.</li>
+<li>Debian 6, both 32 and 64 bit, on RightScale Debian images.</li>
+</ul><h4>If you find this interesting and you want to keep the development active, please click on the button below to donate:</h4>
+
+<div><a href="http://www.pledgie.com/campaigns/16676"><img alt="Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !" src="http://www.pledgie.com/campaigns/16676.png?skin_name=chrome" border="0"></a></div>
+
+<h1>HOW TO:</h1>
+
+<p>Make sure you have Git installed on your Ubuntu System:</p>
+
+<pre><code>sudo apt-get install git-core screen
+</code></pre>
+
+<p>Clone this repository, and get the latest stable version of this script:</p>
+
+<pre><code>git clone git://github.com/vladgh/VladGh.com-LEMP.git
+cd VladGh.com-LEMP
+</code></pre>
+
+<p>Start a screen session:</p>
+
+<pre><code>screen
+</code></pre>
+
+<p>I recommend running everything inside a screen session because in case your connection drops you can easily come back with <code>screen -rad</code>. If you use something else (ex: byobu) you can skip this step.</p>
+
+<p>Edit the OPTIONS file and change <code>ENABLED='yes'</code>. This is were you can chose to install the MySQL Server or modify the versions for any of the programs, as well as the paths.</p>
+
+<p>Run the installer:</p>
+
+<pre><code>sudo ./install.sh
+</code></pre>
+
+<p>After the installer is finished (this will take a long time depending on your server specifications), you MUST set your mysql root password:</p>
+
+<pre><code>sudo mysqladmin -u root password 'MYPASSWORD'
+</code></pre>
+
+<p>You can go to your server's address and you will see the PHP info page.
+Also, if you go to:</p>
+
+<ul>
+<li>
+<strong><a href="http://example.com/nginx_status">http://example.com/nginx_status</a></strong> - for the NginX statistics;</li>
+<li>
+<strong><a href="http://example.com/status?html">http://example.com/status?html</a></strong>  - for the FPM statistics;</li>
+<li>
+<strong><a href="http://example.com/status.html">http://example.com/status.html</a></strong>  - for the FPM real-time status page;</li>
+<li>
+<strong><a href="http://example.com/apc.php">http://example.com/apc.php</a></strong>      - for the APC Cache information page.</li>
+</ul><p>In order to have immediate access to new paths you should also execute <code>source /etc/environment</code>. This command reloads the new environment variables.</p>
+
+<h1>Utilities:</h1>
+
+<p>In the "ext" folder you will also find some utilities:</p>
+
+<ul>
+<li>
+<code>nxensite</code> and <code>nxdissite</code> commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).</li>
+<li>
+<code>update_nginx.sh</code> - upgrades or modifies NginX (<code>sudo ext/update_nginx.sh 1.3.2</code>).</li>
+<li>
+<code>update_php.sh</code>   - upgrades or modifies PHP (<code>sudo ext/update_php.sh 5.4.4</code>).</li>
+<li>
+<code>update_apc.sh</code>   - upgrades or modifies APC (<code>sudo ext/update_apc.sh 3.1.10</code>).</li>
+</ul><p>NOTES:</p>
+
+<ul>
+<li>The update_* scripts above can be used to upgrade the software, or change current configure arguments.</li>
+<li>You can only have one argument in a strict form x.x.x.</li>
+<li>The <code>CONFIGURE_ARGS</code> variable inside can be modified, but make sure the installation directory (<code>--prefix</code>) is the same.</li>
+</ul><h1>CONTRIBUTING:</h1>
+
+<p>This project is still under development. Feedback and suggestions are very welcome and I encourage you to use the <a href="https://github.com/vladgh/VladGh.com-LEMP/issues">Issues list</a> on Github to provide that feedback.</p>
+
+<p>Feel free to fork this repository and to commit your additions. When done, open a pull request to your feature branch.</p>
+
+<p>The formatting conventions already present in these scripts are as follows:</p>
+
+<ul>
+<li>Unix (LF), not dos (CRLF) line endings.</li>
+<li>Two space indentation (<a href="http://en.wikipedia.org/wiki/Indent_style#GNU_style">GNU Style</a>).</li>
+<li>Eliminate all trailing whitespace.</li>
+<li>Aim to wrap code at 80 characters, but favor functionality over wrapping.</li>
+<li>Preserve existing formatting; i.e. do not reformat code for its own sake.</li>
+</ul><h4>If you find this interesting and you want to keep the development active, please click on the button below to donate:</h4>
+
+<div><a href="http://www.pledgie.com/campaigns/16676"><img alt="Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !" src="http://www.pledgie.com/campaigns/16676.png?skin_name=chrome" border="0"></a></div>
+
+<h4>If you want to report an issue you can use the tracker available at <a href="https://github.com/vladgh/VladGh.com-LEMP/issues">https://github.com/vladgh/VladGh.com-LEMP/issues</a>.</h4>
+
+<h1>DISCLAIMER:</h1>
+
+<p>** All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms. **</p>
+
+<h1>License:</h1>
+
+<p>Copyright 2012 Vlad Ghinea</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/vladgh/VladGh.com-LEMP/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/vladgh/VladGh.com-LEMP/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/vladgh/VladGh.com-LEMP"></a> is maintained by <a href="https://github.com/vladgh">vladgh</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-4205403-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>

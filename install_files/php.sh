@@ -63,7 +63,6 @@ install_php() {
   chown -R www-data:www-data /var/log/php5-fpm & progress
 
   # Create log rotation script
-  echo 'Creating logrotate script...' >&3
   echo '/var/log/php5-fpm/*.log {
 weekly
 missingok
@@ -78,6 +77,5 @@ postrotate
 endscript
 }' > /etc/logrotate.d/php5-fpm
 
-  echo -e '\E[47;34m\b\b\b\b'"Done" >&3; tput sgr0 >&3
 }
 

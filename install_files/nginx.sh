@@ -22,7 +22,7 @@ install_nginx() {
   make install & progress
 
   # Copy configuration files
-  sed -i "s~^INSTALL_DIR=.$~INSTALL_DIR=\"${DESTINATION_DIR}/nginx\"~" ${SRCDIR}/init_files/nginx
+  sed -i "s~@DESTINATION_DIR@~${DESTINATION_DIR}~" ${SRCDIR}/init_files/nginx
   cp ${SRCDIR}/init_files/nginx /etc/init.d/nginx
   chmod +x /etc/init.d/nginx
   update-rc.d -f nginx defaults
@@ -38,7 +38,6 @@ install_nginx() {
   cp ${SRCDIR}/web_files/* $WEB_DIR
 
   # Create log rotation script
-  echo 'Creating logrotate script...' >&3
   chown -R www-data:www-data /var/log/nginx
   echo '/var/log/nginx/*.log {
   weekly

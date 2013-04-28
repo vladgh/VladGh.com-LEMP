@@ -1,17 +1,20 @@
-This package represents a script to install the latest NginX, MySQL and PHP (with APC and Suhosin).
+This script installs the latest NginX, MySQL and PHP (with APC and
+Memcache extensions).
 
-Note:
-  * At this moment the Suhosin extension is not available for PHP 5.4.
+Optionally you can install the Memcached Server and Postfix.
 
-You can install your preferred versions for any of the programs. Just edit the OPTIONS file and change them accordingly.
+You can install your preferred versions for any of the programs.
+Just edit the OPTIONS file and change them accordingly.
 
 It is highly recommended to run this installer on a fresh installed system.
 
-This is tested automatically on:
- * Ubuntu 10.04, 11.10 and 12.04, both 32 and 64 bit, on official Amazon EC2 Ubuntu images.
- * Debian 6, both 32 and 64 bit, on RightScale Debian images.
+This is tested automatically on the following distributions (i386 & amd64):
+ * Ubuntu Server 12.04 (Precise Pangolin)
+ * Ubuntu Server 12.10 (Quantal Queztal)
+ * Debian Server 6.0.7 (Squeeze) (amd64 only)
 
-####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
+####If you find this interesting and you want to keep the development active,
+please click on the button below to donate:###
 <div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>
 
 # HOW TO: #
@@ -29,15 +32,20 @@ Start a screen session:
 
     screen
 
-I recommend running everything inside a screen session because in case your connection drops you can easily come back with `screen -rad`. If you use something else (ex: byobu) you can skip this step.
+I recommend running everything inside a screen session because in case your
+connection drops you can easily come back with `screen -rad`. If you use
+something else (ex: byobu) you can skip this step.
 
-Edit the OPTIONS file and change `ENABLED='yes'`. This is were you can chose to install the MySQL Server or modify the versions for any of the programs, as well as the paths.
+Take a look at the OPTIONS file. This is were you can choose to install the
+MySQL Server or modify the versions for any of the programs, as well as the
+paths.
 
 Run the installer:
 
     sudo ./install.sh
 
-After the installer is finished (this will take a long time depending on your server specifications), you MUST set your mysql root password:
+After the installer is finished (this will take a long time depending on your
+server specifications), you MUST set your mysql root password:
 
     sudo mysqladmin -u root password 'MYPASSWORD'
 
@@ -49,25 +57,33 @@ Also, if you go to:
   * **http://example.com/status.html**  - for the FPM real-time status page;
   * **http://example.com/apc.php**      - for the APC Cache information page.
 
-In order to have immediate access to new paths you should also execute `source /etc/environment`. This command reloads the new environment variables.
+In order to have immediate access to new paths you should also execute
+`source /etc/environment`. This command reloads the new environment variables.
 
 # Utilities: #
 In the "ext" folder you will also find some utilities:
 
-* `nxensite` and `nxdissite` commands to enable or disable sites in NginX (similar to a2ensite and a2dissite in Apache).
+* `nxensite` and `nxdissite` commands to enable or disable sites in NginX
+(similar to a2ensite and a2dissite in Apache).
 * `update_nginx.sh` - upgrades or modifies NginX (`sudo ext/update_nginx.sh 1.3.2`).
 * `update_php.sh`   - upgrades or modifies PHP (`sudo ext/update_php.sh 5.4.4`).
 * `update_apc.sh`   - upgrades or modifies APC (`sudo ext/update_apc.sh 3.1.10`).
 
 NOTES:
-  * The update_* scripts above can be used to upgrade the software, or change current configure arguments.
+  * The update_* scripts above can be used to upgrade the software, or change
+  current configure arguments.
   * You can only have one argument in a strict form x.x.x.
-  * The `CONFIGURE_ARGS` variable inside can be modified, but make sure the installation directory (`--prefix`) is the same.
+  * The `CONFIGURE_ARGS` variable inside can be modified, but make sure the
+  installation directory (`--prefix`) is the same.
 
 # CONTRIBUTING: #
-This project is still under development. Feedback and suggestions are very welcome and I encourage you to use the [Issues list](https://github.com/vladgh/VladGh.com-LEMP/issues) on Github to provide that feedback.
+This project is still under development. Feedback and suggestions are very
+welcomed and I encourage you to use the
+[Issues list](https://github.com/vladgh/VladGh.com-LEMP/issues) on Github to
+provide that feedback.
 
-Feel free to fork this repository and to commit your additions. When done, open a pull request to your feature branch.
+Feel free to fork this repository and to commit your additions. When done,
+open a pull request to your feature branch.
 
 The formatting conventions already present in these scripts are as follows:
 
@@ -77,13 +93,18 @@ The formatting conventions already present in these scripts are as follows:
 * Aim to wrap code at 80 characters, but favor functionality over wrapping.
 * Preserve existing formatting; i.e. do not reformat code for its own sake.
 
-####If you find this interesting and you want to keep the development active, please click on the button below to donate:###
+####If you find this interesting and you want to keep the development active,
+please click on the button below to donate:###
 <div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>
 
-#### If you want to report an issue you can use the tracker available at [https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ####
+#### If you want to report an issue you can use the tracker available at
+[https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ####
 
 # DISCLAIMER: #
-** All content provided here including the scripts is provided without any warranty. You use it at your own risk. I can not be held responsible for any damage that may occur because of it. By using the scripts I provide here you accept this terms. **
+** All content provided here including the scripts is provided without any
+warranty. You use it at your own risk. I can not be held responsible for any
+damage that may occur because of it. By using the scripts I provide here you
+accept this terms. **
 
 # License: #
 Copyright 2012 Vlad Ghinea

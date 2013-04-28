@@ -1,5 +1,15 @@
 ## Release Notes: ##
 
+### 7.1.0 ###
+
+  * Add option to install Memcached Server
+  * Add memcached pecl extensions into PHP
+  * Remove "ENABLED" from OPTIONS
+  * APC is now installed via PECL repository
+  * The update_apc script is removed (in favour of `pecl upgrade`)
+  * Suhosin is now removed completely
+  * Updated init scripts for NginX and PHP
+
 ### 7.0.5 ###
 
   * PostgreSQL, regular and PDO support (Closes #34).

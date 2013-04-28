@@ -1,73 +1,112 @@
-#! /bin/sh
+#!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          nginx
-# Required-Start:    $remote_fs $syslog
-# Required-Stop:     $remote_fs $syslog
+# Required-Start:    $network $remote_fs $local_fs
+# Required-Stop:     $network $remote_fs $local_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: nginx init.d script for Ubuntu.
-# Description:       nginx init.d script for Ubuntu.
+# Short-Description: Stop/start nginx
 ### END INIT INFO
 
-# Import init-functions
+# Author: Sergey Budnevitch <sb@nginx.com>
+
+INSTALL_DIR='@DESTINATION_DIR@/nginx'
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC=nginx
+NAME=nginx
+CONFIG_FILE=/etc/nginx/nginx.conf
+DAEMON="${INSTALL_DIR}/sbin/${NAME}"
+DAEMON_OPTS="-c $CONFIG_FILE"
+PIDFILE=/var/run/${NAME}.pid
+SCRIPTNAME=/etc/init.d/${NAME}
+
+[ -x $DAEMON ] || exit 0
+
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+. /lib/init/vars.sh
+
 . /lib/lsb/init-functions
 
-INSTALL_DIR="/opt/nginx"
 
-### Location of nginx binary. Change path as neccessary
-DAEMON="$INSTALL_DIR/sbin/nginx"
-### Location of configuration file. Change path as neccessary
-CONFIG_FILE=/etc/nginx/nginx.conf
+do_start()
+{
+  # Check if the ULIMIT is set in /etc/default/nginx
+  if [ -n "$ULIMIT" ]; then
+    # Set the ulimits
+    ulimit $ULIMIT
+  fi
+  start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- \
+    $DAEMON_OPTS \
+    || return 2
+}
 
-DAEMON_OPTS="-c $CONFIG_FILE"
-NAME=nginx
-DESC="Web Server"
-PIDFILE=/var/run/$NAME.pid
-SCRIPTNAME=/etc/init.d/$NAME
+do_stop()
+{
+  # Return
+  #   0 if daemon has been stopped
+  #   1 if daemon was already stopped
+  #   2 if daemon could not be stopped
+  #   other if a failure occurred
+  start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE --name $NAME
+  RETVAL="$?"
+  rm -f $PIDFILE
+  return "$RETVAL"
+}
 
-test -x $DAEMON || exit 0
-
-set -e
+do_reload() {
+  #
+  start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --name $NAME
+  return 0
+}
 
 case "$1" in
   start)
-    log_daemon_msg "Starting $DESC" $NAME
-    if ! start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS ; then
-      log_end_msg 1
-    else
-      log_end_msg 0
-    fi
+    log_daemon_msg "Starting $DESC " "$NAME"
+    do_start
+    case "$?" in
+    0|1) log_end_msg 0 ;;
+    2) log_end_msg 1 ;;
+  esac
   ;;
   stop)
-    log_daemon_msg "Stopping $DESC" $NAME
-    if start-stop-daemon --quiet --stop --oknodo --retry 30 --pidfile $PIDFILE --exec $DAEMON; then
-      rm -f $PIDFILE
-      log_end_msg 0
-    else
-      log_end_msg 1
-    fi
+  log_daemon_msg "Stopping $DESC" "$NAME"
+  do_stop
+  case "$?" in
+    0|1) log_end_msg 0 ;;
+    2) log_end_msg 1 ;;
+  esac
   ;;
-  reload)
-    log_daemon_msg "Reloading $DESC configuration" $NAME
-    if start-stop-daemon --stop --signal 2 --oknodo --retry 30 --quiet --pidfile $PIDFILE --exec $DAEMON; then
-    if start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_OPTS ; then
-      log_end_msg 0
-    else
-      log_end_msg 1
-    fi
-    else
-      log_end_msg 1
-    fi
+  status)
+       status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+       ;;
+  reload|force-reload)
+  log_daemon_msg "Reloading $DESC" "$NAME"
+  do_reload
+  log_end_msg $?
   ;;
   restart|force-reload)
-    $0 stop
-    sleep 1
-    $0 start
+  log_daemon_msg "Restarting $DESC" "$NAME"
+  do_stop
+  case "$?" in
+    0|1)
+    do_start
+    case "$?" in
+      0) log_end_msg 0 ;;
+      1) log_end_msg 1 ;; # Old process is still running
+      *) log_end_msg 1 ;; # Failed to start
+    esac
+    ;;
+    *)
+      # Failed to stop
+    log_end_msg 1
+    ;;
+  esac
   ;;
   *)
-  echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
-  exit 1
+  echo "Usage: $SCRIPTNAME {start|stop|status|restart|reload|force-reload}" >&2
+  exit 3
   ;;
 esac
 
-exit 0
+:

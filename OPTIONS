@@ -29,7 +29,7 @@ WEB_DIR='/var/www'
 
 # NginX Version:
 # Ex: NGINX_VERSION='1.2.7'
-NGINX_VERSION='1.4.0'
+NGINX_VERSION='1.4.1'
 
 # NginX Configure arguments:
 NGINX_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/nginx

@@ -107,7 +107,7 @@ damage that may occur because of it. By using the scripts I provide here you
 accept this terms. **
 
 # License: #
-Copyright 2012 Vlad Ghinea
+Copyright 2013 Vlad Ghinea
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

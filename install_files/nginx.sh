@@ -21,14 +21,16 @@ install_nginx() {
   echo 'Installing NginX...' >&3
   make install & progress
 
-  # Copy configuration files
+  # Set-up init scripts
   sed -i "s~@DESTINATION_DIR@~${DESTINATION_DIR}~" ${SRCDIR}/init_files/nginx
   cp ${SRCDIR}/init_files/nginx /etc/init.d/nginx
   chmod +x /etc/init.d/nginx
   update-rc.d -f nginx defaults
-  cp ${SRCDIR}/conf_files/nginx.conf /etc/nginx/nginx.conf
-  mkdir -p /etc/nginx/sites-available /etc/nginx/sites-enabled
-  cp ${SRCDIR}/conf_files/default /etc/nginx/sites-available/default
+
+  # Copy configuration files
+  [ -d /etc/nginx ] && mv /etc/nginx /etc/nginx-backup
+  cp -r ${SRCDIR}/conf_files/nginx /etc/nginx
+  mkdir -p /etc/nginx/sites-enabled
   ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
   cp ${SRCDIR}/ext/nxensite ${DESTINATION_DIR}/nginx/sbin/nxensite

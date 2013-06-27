@@ -1,6 +1,8 @@
 This script installs the latest NginX, MySQL and PHP (with APC and
 Memcache extensions).
 
+*Note APC is not yet available for PHP 5.5+.
+
 Optionally you can install the Memcached Server and Postfix.
 
 You can install your preferred versions for any of the programs.
@@ -10,7 +12,7 @@ It is highly recommended to run this installer on a fresh installed system.
 
 This is tested automatically on the following distributions (i386 & amd64):
  * Ubuntu Server 12.04 (Precise Pangolin)
- * Ubuntu Server 12.10 (Quantal Queztal)
+ * Ubuntu Server 13.04 (Raring Ringtail)
  * Debian Server 6.0.7 (Squeeze) (amd64 only)
 
 ####If you find this interesting and you want to keep the development active,

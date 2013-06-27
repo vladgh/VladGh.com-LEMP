@@ -1,0 +1,56 @@
+# www to non-www redirect -- duplicate content is BAD:
+# https://github.com/h5bp/html5-boilerplate/blob/5370479476dceae7cc3ea105946536d6bc0ee468/.htaccess#L362
+# Choose between www and non-www, listen on the *wrong* one and redirect to
+# the right one -- http://wiki.nginx.org/Pitfalls#Server_Name
+#server {
+  # don't forget to tell on which port this server listens
+  #listen 80;
+
+  # listen on the www host
+  #server_name www.example.com;
+
+  # and redirect to the non-www host (declared below)
+  #return 301 $scheme://example.com$request_uri;
+#}
+
+server {
+  listen [::]:80 ipv6only=on; # listen for IPv6 only traffic on IPv6 sockets
+  listen 80; # listen also for IPv4 traffic on "regular" IPv4 sockets
+
+  # A catch all hostname
+  server_name _ "";
+
+  # Path for static files
+  root    /var/www;
+  index   index.php index.html;
+
+  #Specify a charset
+  charset utf-8;
+
+  # Custom 404 page
+  error_page 404 /404.html;
+
+  # Include the component config parts for h5bp
+  include conf/h5bp.conf;
+
+  # Pass PHP files to FPM
+  location ~ \.php$ {
+    include fastcgi.conf;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+  }
+
+  # NginX Status
+  location /nginx_status {
+    stub_status on;
+    access_log   off;
+  }
+
+  # FPM Status
+  location ~ ^/(status|ping)$ {
+    include fastcgi.conf;
+    fastcgi_pass unix:/var/run/php5-fpm.sock;
+    access_log      off;
+  }
+
+}
+

@@ -36,10 +36,14 @@ echo 'This script will install the following:' >&3
 echo '===============================================================================' >&3
 echo "  - Nginx ${NGINX_VERSION};" >&3
 echo "  - PHP ${PHP_VERSION};" >&3
-echo "  - APC & Memcache PECL Extensions;" >&3
-[ $INSTALL_MYSQL == 'yes' ] && echo "  - MySQL (packaged version);" >&3
-[ $INSTALL_MEMCACHED_SERVER == 'yes' ] && echo "  - Memcached Server (packaged version);" >&3
-[ $INSTALL_POSTFIX == 'yes' ] && echo "  - Postfix (packaged version);" >&3
+if [[ $PHP_VERSION = 5.5.* ]]; then
+  echo "  - Memcache PECL Extension;" >&3
+else
+  echo "  - APC & Memcache PECL Extensions;" >&3
+fi
+[ $INSTALL_MYSQL = 'yes' ] && echo "  - MySQL (packaged version);" >&3
+[ $INSTALL_MEMCACHED_SERVER = 'yes' ] && echo "  - Memcached Server (packaged version);" >&3
+[ $INSTALL_POSTFIX = 'yes' ] && echo "  - Postfix (packaged version);" >&3
 echo '===============================================================================' >&3
 echo 'For more information please visit:' >&3
 echo 'https://github.com/vladgh/VladGh.com-LEMP' >&3
@@ -52,7 +56,7 @@ install_mysql
 
 # PHP
 install_php
-install_apc
+[[ $PHP_VERSION = 5.5.* ]] || install_apc
 install_memcached
 check_php
 
@@ -61,7 +65,7 @@ install_nginx
 check_nginx
 
 # Postfix
-if [ $INSTALL_POSTFIX == 'yes' ]; then
+if [ $INSTALL_POSTFIX = 'yes' ]; then
   install_postfix
   check_postfix
 fi
@@ -79,10 +83,10 @@ if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
   echo 'All the components were successfully installed.' >&3
   echo 'You should be able to see some stats when you visit the following URLs:' >&3
   echo "- http://example.com/index.php (PHP Status page)" >&3
-  echo "- http://example.com/apc.php (APC Status page)" >&3
+  [[ $PHP_VERSION = 5.5.* ]] || echo "- http://example.com/apc.php (APC Status page)" >&3
   echo "- http://example.com/nginx_status (NginX Status page)" >&3
   echo "- http://example.com/status?html (FPM Status page)" >&3
-  if [ $INSTALL_MYSQL == 'yes' ]; then
+  if [ $INSTALL_MYSQL = 'yes' ]; then
     tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
     echo 'DO NOT FORGET TO SET THE MYSQL ROOT PASSWORD:' >&3;
     tput smul >&3;

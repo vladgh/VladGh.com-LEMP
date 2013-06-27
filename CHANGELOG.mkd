@@ -1,5 +1,12 @@
 ## Release Notes: ##
 
+### 7.2.0 ###
+
+  * Add support for PHP 5.5+ (without APC as it is not yet compatible).
+  * Replace NginX configuration with H5BP's one (Closes #47).
+  * Improve restart process (Closes #45).
+  * Ubuntu 13.04 Raring Ringtail tests.
+
 ### 7.1.0 ###
 
   * Add option to install Memcached Server

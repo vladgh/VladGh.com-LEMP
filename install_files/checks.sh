@@ -14,7 +14,7 @@ check_download () {
 check_php () {
   # Check if the PHP executable exists and has the APC and Suhosin modules compiled.
   if [ -x "${DESTINATION_DIR}/php5/bin/php" ] && \
-    [ $(${DESTINATION_DIR}/php5/bin/php -m | grep apc) ] && \
+    ( [[ $PHP_VERSION = 5.5.* ]] || [ $(${DESTINATION_DIR}/php5/bin/php -m | grep apc) ] )&& \
     [ $(${DESTINATION_DIR}/php5/bin/php -m | grep memcache) ]; then
     echo '===============================================================================' >&3
     echo "PHP ${PHP_VERSION} was successfully installed." >&3

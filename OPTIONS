@@ -28,8 +28,8 @@ WEB_DIR='/var/www'
 ### Program Versions: #########################################################
 
 # NginX Version:
-# Ex: NGINX_VERSION='1.4.1'
-NGINX_VERSION='1.5.2'
+# Ex: NGINX_VERSION='1.4.3'
+NGINX_VERSION='1.5.3'
 
 # NginX Configure arguments:
 NGINX_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/nginx
@@ -51,7 +51,7 @@ NGINX_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/nginx
 
 # PHP Version:
 # Ex: PHP_VERSION='5.4.17'
-PHP_VERSION='5.5.0'
+PHP_VERSION='5.5.1'
 
 # PHP Configure arguments:
 PHP_CONFIGURE_ARGS="--prefix=${DESTINATION_DIR}/php5

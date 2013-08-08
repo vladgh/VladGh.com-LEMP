@@ -44,7 +44,7 @@ paths.
 
 Run the installer:
 
-    sudo ./install.sh
+    sudo bash install.sh
 
 After the installer is finished (this will take a long time depending on your
 server specifications), you MUST set your mysql root password:

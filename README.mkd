@@ -65,7 +65,8 @@ In order to have immediate access to new paths you should also execute
 # Utilities: #
 In the "ext" folder you will also find some utilities:
 
-* `nxensite` and `nxdissite` commands to enable or disable sites in NginX
+* `nxmksite` to generate a basic, but functional, vhost.
+* `nxensite` and `nxdissite` commands to enable or disable sites in NginX.
 (similar to a2ensite and a2dissite in Apache).
 * `update_nginx.sh` - upgrades or modifies NginX (`sudo ext/update_nginx.sh 1.3.2`).
 * `update_php.sh`   - upgrades or modifies PHP (`sudo ext/update_php.sh 5.4.4`).

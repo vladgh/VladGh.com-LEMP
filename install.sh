@@ -54,6 +54,9 @@ prepare_system
 # MySQL
 install_mysql
 
+# Install phpMyAdmin
+install_phpmyadmin
+
 # PHP
 install_php
 [[ $PHP_VERSION = 5.5.* ]] || install_apc
@@ -91,6 +94,15 @@ if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
     echo 'DO NOT FORGET TO SET THE MYSQL ROOT PASSWORD:' >&3;
     tput smul >&3;
     echo '"EX: sudo mysqladmin -u root password MYPASSWORD"' >&3
+    tput smul >&3;
+    echo 'IF THE ABOVE FAILS, TRY YOUR ROOT PASSWORD' >&3
+    tput sgr0 >&3
+  fi
+  if [ $INSTALL_PHPMYADMIN == 'yes' ]; then
+    tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
+    echo 'PHPMYADMIN STILL NEEDS CONFIGURATION:' >&3;
+    tput smul >&3;
+    echo '"EX: dpkg-reconfigure phpmyadmin"' >&3
     tput sgr0 >&3
   fi
   exit 0

@@ -33,9 +33,16 @@ install_nginx() {
   mkdir -p /etc/nginx/sites-enabled
   ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 
+  # Copy over some helper scripts.
   cp ${SRCDIR}/ext/nxensite ${DESTINATION_DIR}/nginx/sbin/nxensite
   cp ${SRCDIR}/ext/nxdissite ${DESTINATION_DIR}/nginx/sbin/nxdissite
+  cp ${SRCDIR}/ext/nxmksite ${DESTINATION_DIR}/nginx/sbin/nxmksite
   chmod +x ${DESTINATION_DIR}/nginx/sbin/*
+
+  # Make the helper scripts accessable on the path.
+  ln -s ${DESTINATION_DIR}/nginx/sbin/nxensite /usr/sbin/nxensite
+  ln -s ${DESTINATION_DIR}/nginx/sbin/nxdissite /usr/sbin/nxdissite
+  ln -s ${DESTINATION_DIR}/nginx/sbin/nxmksite /usr/sbin/nxmksite
 
   cp ${SRCDIR}/web_files/* $WEB_DIR
 

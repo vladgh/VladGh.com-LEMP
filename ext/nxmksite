@@ -10,6 +10,7 @@ SERVER_PROG_LANG='php'
 SERVER_WEBROOT='/var/www'
 SERVER_CHARSET='utf-8'
 VHOST_CONFIG_PATH='/etc/nginx/sites-available'
+CONF_PHPMYADMIN=false
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!#
 # YO! IF YOU WANT TO ADD A  #
@@ -24,7 +25,7 @@ SUPPORTED_SERVER_PROG_LANGS=("php")
 #          GETOPTS          #
 #############################
 
-while getopts ":n:p:l:r:" opt; do
+while getopts ":n:p:l:m" opt; do
 	case $opt in
 		# Set the name of the vhost
 		n)
@@ -55,6 +56,10 @@ while getopts ":n:p:l:r:" opt; do
 				printf '%s\n' "Unsupported programming language"
 				exit 1
 			fi
+			;;
+		# Signal that we want to configure phpMyAdmin
+		m)
+			CONF_PHPMYADMIN=true
 			;;
 		\?)
 			echo "Invalid option: -$OPTARG" >&2
@@ -96,20 +101,40 @@ IMAGES='	# More rules for static content.
 		log_not_found off;
 	}'
 
+PHPMYADMIN='	# Make the phpMyAdmin control panel accessable at domain.tld/phpmyadmin
+	location /phpmyadmin {
+		root /usr/share/;
+		location ~ ^/phpmyadmin/(.+\.php)$ {
+			try_files $uri =404;
+			root /usr/share/;
+			include fastcgi.conf;
+			fastcgi_pass unix:/var/run/php5-fpm.sock;
+		}
+		location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
+			root /usr/share/;
+		}
+	}
+	location /phpMyAdmin {
+		rewrite ^/* /phpmyadmin last;
+	}'
+
 END_SERVER_BLOCK='}'
 
 #############################
 #      WRITE TO FILE        #
 #############################
 
-touch $VHOST_CONFIG_PATH/$SERVER_NAME.conf
-printf '%s\n\n' "$BEGIN_SERVER_BLOCK" >> $VHOST_CONFIG_PATH/$SERVER_NAME.conf
-printf '%s\n\n' "$H5BP" >> $VHOST_CONFIG_PATH/$SERVER_NAME.conf
+touch $VHOST_CONFIG_PATH/$SERVER_NAME
+printf '%s\n\n' "$BEGIN_SERVER_BLOCK" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+printf '%s\n\n' "$H5BP" >> $VHOST_CONFIG_PATH/$SERVER_NAME
 if [ $SERVER_PROG_LANG == "php" ]; then
-	printf '%s\n\n' "$HANDLE_PHP_FPM" >> $VHOST_CONFIG_PATH/$SERVER_NAME.conf
+	printf '%s\n\n' "$HANDLE_PHP_FPM" >> $VHOST_CONFIG_PATH/$SERVER_NAME
 fi
-printf '%s\n\n' "$IMAGES" >> $VHOST_CONFIG_PATH/$SERVER_NAME.conf
-printf '%s\n\n' "$END_SERVER_BLOCK" >> $VHOST_CONFIG_PATH/$SERVER_NAME.conf
+if [ $CONF_PHPMYADMIN==true ]; then
+	printf '%s\n\n' "$PHPMYADMIN" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+fi
+printf '%s\n\n' "$IMAGES" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+printf '%s\n\n' "$END_SERVER_BLOCK" >> $VHOST_CONFIG_PATH/$SERVER_NAME
 
 #############################
 #     MAKE THE WEBROOT      #

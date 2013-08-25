@@ -1,0 +1,91 @@
+#!/bin/bash
+
+#############################
+#      DEFAULT SETTINGS     #
+#############################
+
+SERVER_PORT='80'
+SERVER_NAME='""'
+SERVER_PROG_LANG='php'
+SERVER_WEBROOT='/var/www'
+SERVER_CHARSET='utf-8'
+VHOST_CONFIG_PATH='/etc/nginx/sites-available'
+
+SUPPORTED_SERVER_PROG_LANGS=("php")
+
+#############################
+#          GETOPTS          #
+#############################
+
+while getopts ":n:p:l:r:" opt; do
+	case $opt in
+		# Set the name of the vhost
+.		n)
+			if [-d "$SERVER_WEBROOT/$OPTARG"] then
+				printf "Vhost already exists. (Webroot exists)"
+				exit 1
+			fi
+			if [-e "$VHOST_CONFIG_PATH/$OPTARG"] then
+				printf "Vhost already exists. (Vhost conf exists)"
+				exit 1
+			fi
+			SERVER_NAME=$OPTARG
+			;;
+		# Set the port the vhost listens on.
+		p)
+			if [[$OPTARG =~ ^[0-9]+$]]; then
+				SERVER_PORT=$OPTARG
+			else
+				printf "Invalid port."
+				exit 1
+			fi
+			;;
+		# Set the vhost's programming language.
+		l)
+			if [[$SUPPORTED_SERVER_PROG_LANGS =~ $OPTARG]] then
+				SERVER_PROG_LANG=$OPTARG
+			else
+				printf "Unsupported programming language."
+				exit 1
+			fi
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+			;;
+	esac
+done
+
+#############################
+#       CONFIG STANZAS      #
+#############################
+
+BEGIN_SERVER_BLOCK='server {
+	listen [::]:'$SERVER_PORT' ipv6only=on;
+	listen '$SERVER_PORT';
+	server_name '$SERVER_NAME';
+	root '$SERVER_WEBROOT';'
+
+H5BP='	#Include the component config parts for h5bp
+	include conf/h5bp.conf;'
+
+HANDLE_PHP_FPM='	#Pass PHP files to FPM
+	location ~ \.php$ {
+		include fastcgi.conf;
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+	}'
+
+CHARSET='	charset '$SERVER_CHARSET';'
+
+STATIC='	# This is cool because no cgi is touched for static content
+	location / {
+		try_files $uri @rewrite;
+	}'
+
+END_SERVER_BLOCK='}'
+
+#############################
+#      WRITE TO FILE        #
+#############################
+
+printf '%s\n' "$BEGIN_SERVER_BLOCK" >> $SERVER_NAME.conf
+printf '%s\n' "$END_SERVER_BLOCK" >> $SERVER_NAME.conf

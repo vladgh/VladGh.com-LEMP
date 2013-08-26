@@ -3,10 +3,10 @@
 # Install MySQL Server (yes/no)?
 # MySQL Client is installed by default to allow
 # the connection between PHP and any MySQL server.
-INSTALL_MYSQL='yes'
+INSTALL_MYSQL='no'
 
 # Install phpMyAdmin (yes/no)?
-INSTALL_PHPMYADMIN='yes'
+INSTALL_PHPMYADMIN='no'
 
 # Memcached Server (yes/no)?
 # The PECL extension for PHP is installed by default to allow

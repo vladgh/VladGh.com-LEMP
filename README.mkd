@@ -14,6 +14,7 @@ This is tested automatically on the following distributions (i386 & amd64):
  * Ubuntu Server 12.04 (Precise Pangolin)
  * Ubuntu Server 13.04 (Raring Ringtail)
  * Debian Server 6.0.7 (Squeeze) (amd64 only)
+ * Debian Server 7.1 (Wheezy) (amd64 only)
 
 ####If you find this interesting and you want to keep the development active,
 please click on the button below to donate:###

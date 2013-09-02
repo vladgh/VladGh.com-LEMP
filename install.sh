@@ -42,6 +42,7 @@ else
   echo "  - APC & Memcache PECL Extensions;" >&3
 fi
 [ $INSTALL_MYSQL = 'yes' ] && echo "  - MySQL (packaged version);" >&3
+[ $INSTALL_PHPMYADMIN = 'yes' ] && echo "  - phpMyAdmin ${PHPMYADMIN_VERSION};" >&3
 [ $INSTALL_MEMCACHED_SERVER = 'yes' ] && echo "  - Memcached Server (packaged version);" >&3
 [ $INSTALL_POSTFIX = 'yes' ] && echo "  - Postfix (packaged version);" >&3
 echo '===============================================================================' >&3
@@ -102,7 +103,7 @@ if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
     tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
     echo 'PHPMYADMIN STILL NEEDS CONFIGURATION:' >&3;
     tput smul >&3;
-    echo '"EX: dpkg-reconfigure phpmyadmin"' >&3
+    echo '"GOTO: http://domain.tld/phpmyadmin/setup"' >&3
     tput sgr0 >&3
   fi
   exit 0

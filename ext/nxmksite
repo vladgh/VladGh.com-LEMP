@@ -27,6 +27,15 @@ SUPPORTED_SERVER_PROG_LANGS=("php")
 
 while getopts ":n:p:l:m" opt; do
 	case $opt in
+		# Le assistance
+		h)
+			printf '%s\n' 'Generate a basic vhost file for NginX.
+			-n vhost name (EG sub.domain.tld)
+			-p server port (default 80)
+			-l vhost programming language (default PHP)
+			-m configure phpMyAdmin (option)'
+			exit 0
+			;;
 		# Set the name of the vhost
 		n)
 			if [ -e "$VHOST_CONFIG_PATH/$OPTARG" ]; then
@@ -103,15 +112,15 @@ IMAGES='	# More rules for static content.
 
 PHPMYADMIN='	# Make the phpMyAdmin control panel accessable at domain.tld/phpmyadmin
 	location /phpmyadmin {
-		root /usr/share/;
+		root /opt;
 		location ~ ^/phpmyadmin/(.+\.php)$ {
 			try_files $uri =404;
-			root /usr/share/;
+			root /opt;
 			include fastcgi.conf;
 			fastcgi_pass unix:/var/run/php5-fpm.sock;
 		}
 		location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
-			root /usr/share/;
+			root /opt;
 		}
 	}
 	location /phpMyAdmin {

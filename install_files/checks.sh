@@ -68,5 +68,10 @@ check_options() {
   # Check the sanity of the options file
   echo $NGINX_VERSION | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || ( echo "NginX version number doesn't seem right; Please double check: ${NGINX_VERSION}" && exit 1 )
   echo $PHP_VERSION | grep -E -q '^[0-9]+\.[0-9]+\.[0-9]+$' || ( echo "PHP version number doesn't seem right; Please double check: ${PHP_VERSION}" && exit 1 )
+ 
+  if [ $INSTALL_MARIADB == 'yes' && $INSTALL_MYSQL == 'yes' ]; then
+    tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
+    echo 'ERROR: Please select either MySQL or MariaDB. Not both.' >&3;
+    exit 1
+  fi
 }
-

@@ -42,6 +42,8 @@ else
   echo "  - APC & Memcache PECL Extensions;" >&3
 fi
 [ $INSTALL_MYSQL = 'yes' ] && echo "  - MySQL (packaged version);" >&3
+[ $INSTALL_MARIADB = 'yes' ] && echo "  - MariaDB (packaged version);" >&3
+[ $INSTALL_PHPMYADMIN = 'yes' ] && echo "  - phpMyAdmin ${PHPMYADMIN_VERSION};" >&3
 [ $INSTALL_MEMCACHED_SERVER = 'yes' ] && echo "  - Memcached Server (packaged version);" >&3
 [ $INSTALL_POSTFIX = 'yes' ] && echo "  - Postfix (packaged version);" >&3
 echo '===============================================================================' >&3
@@ -50,9 +52,16 @@ echo 'https://github.com/vladgh/VladGh.com-LEMP' >&3
 echo '===============================================================================' >&3
 
 prepare_system
+identify_system
 
 # MySQL
 install_mysql
+
+# MariaDB
+install_mariadb
+
+# Install phpMyAdmin
+install_phpmyadmin
 
 # PHP
 install_php
@@ -86,11 +95,20 @@ if [ -e "/var/run/nginx.pid" ] && [ -e "/var/run/php-fpm.pid" ] ; then
   [[ $PHP_VERSION = 5.5.* ]] || echo "- http://example.com/apc.php (APC Status page)" >&3
   echo "- http://example.com/nginx_status (NginX Status page)" >&3
   echo "- http://example.com/status?html (FPM Status page)" >&3
-  if [ $INSTALL_MYSQL = 'yes' ]; then
+  if [ $INSTALL_MYSQL = 'yes' || $INSTALL_MYARIADB = 'yes']; then
     tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
     echo 'DO NOT FORGET TO SET THE MYSQL ROOT PASSWORD:' >&3;
     tput smul >&3;
     echo '"EX: sudo mysqladmin -u root password MYPASSWORD"' >&3
+    tput smul >&3;
+    echo 'IF THE ABOVE FAILS, TRY YOUR ROOT PASSWORD' >&3
+    tput sgr0 >&3
+  fi
+  if [ $INSTALL_PHPMYADMIN == 'yes' ]; then
+    tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
+    echo 'PHPMYADMIN STILL NEEDS CONFIGURATION:' >&3;
+    tput smul >&3;
+    echo '"GOTO: http://domain.tld/phpmyadmin/setup"' >&3
     tput sgr0 >&3
   fi
   exit 0

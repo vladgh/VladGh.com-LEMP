@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Install MariaDB Server (yes/no)?
+# MariaDB (MySQL) Client is installed by default to allow
+# the connection between PHP and any MariaDB server.
+INSTALL_MARIADB='no'
+
+# MariaDB Version:
+# Ex: MARIADB_VERSION='5.3'
+MARIADB_VERSION='5.5'
+
 # Install MySQL Server (yes/no)?
 # MySQL Client is installed by default to allow
 # the connection between PHP and any MySQL server.

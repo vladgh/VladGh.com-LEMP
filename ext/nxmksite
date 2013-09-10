@@ -1,0 +1,152 @@
+#!/bin/bash
+
+#############################
+#      DEFAULT SETTINGS     #
+#############################
+
+SERVER_PORT='80'
+SERVER_NAME=''
+SERVER_PROG_LANG='php'
+SERVER_WEBROOT='/var/www'
+SERVER_CHARSET='utf-8'
+VHOST_CONFIG_PATH='/etc/nginx/sites-available'
+CONF_PHPMYADMIN=false
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+# YO! IF YOU WANT TO ADD A  #
+# NEW LANGUAGE TO THIS TOOL #
+# EDIT THE INDEX DIRECTIVES #
+# IN THE HTTP SECTION OF    #
+# NGINX.CONF TOO!           #
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+SUPPORTED_SERVER_PROG_LANGS=("php")
+
+#############################
+#          GETOPTS          #
+#############################
+
+while getopts ":n:p:l:m" opt; do
+	case $opt in
+		# Le assistance
+		h)
+			printf '%s\n' 'Generate a basic vhost file for NginX.
+			-n vhost name (EG sub.domain.tld)
+			-p server port (default 80)
+			-l vhost programming language (default PHP)
+			-m configure phpMyAdmin (option)'
+			exit 0
+			;;
+		# Set the name of the vhost
+		n)
+			if [ -e "$VHOST_CONFIG_PATH/$OPTARG" ]; then
+				printf '%s\n' "Vhost configuration already exists."
+				exit 1
+			fi
+			if [ -z $OPTARG ]; then
+				printf '%s\n' "Server name cannot be empty"
+				exit 1
+			fi
+			SERVER_NAME=$OPTARG
+			;;
+		# Set the port the vhost listens on.
+		p)
+			if [ [ $OPTARG =~ ^[0-9]+$ ] ]; then
+				SERVER_PORT=$OPTARG
+			else
+				printf '%s\n' "Invalid port."
+				exit 1
+			fi
+			;;
+		# Set the vhost's programming language.
+		l)
+			if [ [ $SUPPORTED_SERVER_PROG_LANGS =~ $OPTARG ] ]; then
+				SERVER_PROG_LANG=$OPTARG
+			else
+				printf '%s\n' "Unsupported programming language"
+				exit 1
+			fi
+			;;
+		# Signal that we want to configure phpMyAdmin
+		m)
+			CONF_PHPMYADMIN=true
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+			;;
+	esac
+done
+
+#############################
+#         VALIDATION        #
+#############################
+
+if [ -z $SERVER_NAME ]; then
+	printf '%s\n' "Server name cannot be empty"
+	exit 1
+fi
+
+#############################
+#       CONFIG STANZAS      #
+#############################
+
+BEGIN_SERVER_BLOCK='server {
+	listen '$SERVER_PORT';
+	server_name '$SERVER_NAME';
+	root '$SERVER_WEBROOT'/'$SERVER_NAME';
+	charset '$SERVER_CHARSET';'
+
+H5BP='	# Include the component config parts for h5bp
+	include conf/h5bp.conf;'
+
+HANDLE_PHP_FPM='	# Pass PHP files to FPM
+	location ~ \.php$ {
+		include fastcgi.conf;
+		fastcgi_pass unix:/var/run/php5-fpm.sock;
+	}'
+
+IMAGES='	# More rules for static content.
+	location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+		expires max;
+		log_not_found off;
+	}'
+
+PHPMYADMIN='	# Make the phpMyAdmin control panel accessable at domain.tld/phpmyadmin
+	location /phpmyadmin {
+		root /opt;
+		location ~ ^/phpmyadmin/(.+\.php)$ {
+			try_files $uri =404;
+			root /opt;
+			include fastcgi.conf;
+			fastcgi_pass unix:/var/run/php5-fpm.sock;
+		}
+		location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
+			root /opt;
+		}
+	}
+	location /phpMyAdmin {
+		rewrite ^/* /phpmyadmin last;
+	}'
+
+END_SERVER_BLOCK='}'
+
+#############################
+#      WRITE TO FILE        #
+#############################
+
+touch $VHOST_CONFIG_PATH/$SERVER_NAME
+printf '%s\n\n' "$BEGIN_SERVER_BLOCK" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+printf '%s\n\n' "$H5BP" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+if [ $SERVER_PROG_LANG == "php" ]; then
+	printf '%s\n\n' "$HANDLE_PHP_FPM" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+fi
+if [ $CONF_PHPMYADMIN==true ]; then
+	printf '%s\n\n' "$PHPMYADMIN" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+fi
+printf '%s\n\n' "$IMAGES" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+printf '%s\n\n' "$END_SERVER_BLOCK" >> $VHOST_CONFIG_PATH/$SERVER_NAME
+
+#############################
+#     MAKE THE WEBROOT      #
+#############################
+
+mkdir $SERVER_WEBROOT/$SERVER_NAME

@@ -14,7 +14,7 @@ install_php() {
 
   # Get PHP package
   echo "Downloading and extracting PHP-${PHP_VERSION}..." >&3
-  wget -O ${TMPDIR}/php-${PHP_VERSION}.tar.gz "http://us.php.net/distributions/php-${PHP_VERSION}.tar.gz" & progress
+  wget -O ${TMPDIR}/php-${PHP_VERSION}.tar.gz "http://us1.php.net/distributions/php-${PHP_VERSION}.tar.gz" & progress
   cd $TMPDIR
   tar xzvf php-${PHP_VERSION}.tar.gz
   check_download "PHP5" "${TMPDIR}/php-${PHP_VERSION}.tar.gz" "${TMPDIR}/php-${PHP_VERSION}/configure"

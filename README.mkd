@@ -104,6 +104,8 @@ please click on the button below to donate:###
 #### If you want to report an issue you can use the tracker available at
 [https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ####
 
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vladgh/vladgh.com-lemp/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 # DISCLAIMER: #
 ** All content provided here including the scripts is provided without any
 warranty. You use it at your own risk. I can not be held responsible for any

@@ -1,3 +1,7 @@
+### <span style="color:red;">This repository will not be maintained anymore!</span>
+<span style="color:red;">For the past few years tools like puppet, docker, etc. have made the process of compiling from sources obsolete, IMO. Thank you all for using and contributing to this script. It will be left here for a while, so please feel free so fork this repository and to improve it as you see fit.
+Thank you.</span>
+
 This script installs the latest NginX, MySQL and PHP (with APC and
 Memcache extensions).
 
@@ -15,10 +19,6 @@ This is tested automatically on the following distributions (i386 & amd64):
  * Ubuntu Server 13.04 (Raring Ringtail)
  * Debian Server 6.0.7 (Squeeze) (amd64 only)
  * Debian Server 7.1 (Wheezy) (amd64 only)
-
-####If you find this interesting and you want to keep the development active,
-please click on the button below to donate:###
-<div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>
 
 # HOW TO: #
 
@@ -97,14 +97,8 @@ The formatting conventions already present in these scripts are as follows:
 * Aim to wrap code at 80 characters, but favor functionality over wrapping.
 * Preserve existing formatting; i.e. do not reformat code for its own sake.
 
-####If you find this interesting and you want to keep the development active,
-please click on the button below to donate:###
-<div style="text-align: center;"><a href='http://www.pledgie.com/campaigns/16676'><img alt='Click here to lend your support to: LEMP Stack and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/16676.png?skin_name=chrome' border='0' /></div>
-
 #### If you want to report an issue you can use the tracker available at
-[https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues). ####
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vladgh/vladgh.com-lemp/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues).
 
 # DISCLAIMER: #
 ** All content provided here including the scripts is provided without any
@@ -126,4 +120,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-

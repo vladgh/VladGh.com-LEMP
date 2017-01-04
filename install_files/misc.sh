@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Essential Packages
-ESSENTIAL_PACKAGES="lsb-release htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev curl make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc re2c"
+ESSENTIAL_PACKAGES="lsb-release htop vim-nox binutils cpp flex gcc libarchive-zip-perl libc6-dev m4 libpcre3 libpcre3-dev libssl-dev libpopt-dev curl wget make perl perl-modules openssl unzip zip autoconf2.13 gnu-standards automake libtool bison build-essential zlib1g-dev ntp ntpdate autotools-dev g++ bc subversion psmisc re2c"
 
 # Simple progress indicator at the end of line (followed by "Done" when command is completed)
 progress() {
@@ -62,6 +62,6 @@ identify_system() {
 
   if [ $DISTRO != 'debian' || $DISTRO != 'ubuntu' ]; then
    tput bold >&3; tput setb 4 >&3; tput setf 7 >&3
-   echo 'ERROR: This tool is only compatible with Debian based distros. (Debian/Ubuntu)' >&3; 
+   echo 'ERROR: This tool is only compatible with Debian based distros. (Debian/Ubuntu)' >&3;
   fi
 }

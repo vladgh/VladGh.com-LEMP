@@ -1,6 +1,4 @@
-### <span style="color:red;">This repository will not be maintained anymore!</span>
-<span style="color:red;">For the past few years tools like puppet, docker, etc. have made the process of compiling from sources obsolete, IMO. Thank you all for using and contributing to this script. It will be left here for a while, so please feel free so fork this repository and to improve it as you see fit.
-Thank you.</span>
+# Vlad's LEMP install script
 
 This script installs the latest NginX, MySQL and PHP (with APC and
 Memcache extensions).
@@ -20,8 +18,7 @@ This is tested automatically on the following distributions (i386 & amd64):
  * Debian Server 6.0.7 (Squeeze) (amd64 only)
  * Debian Server 7.1 (Wheezy) (amd64 only)
 
-# HOW TO: #
-
+## Usage
 Make sure you have Git installed on your Ubuntu System:
 
     sudo apt-get install git-core screen
@@ -63,7 +60,7 @@ Also, if you go to:
 In order to have immediate access to new paths you should also execute
 `source /etc/environment`. This command reloads the new environment variables.
 
-# Utilities: #
+## Utilities
 In the "ext" folder you will also find some utilities:
 
 * `nxmksite` to generate a basic, but functional, vhost.
@@ -80,43 +77,16 @@ NOTES:
   * The `CONFIGURE_ARGS` variable inside can be modified, but make sure the
   installation directory (`--prefix`) is the same.
 
-# CONTRIBUTING: #
-This project is still under development. Feedback and suggestions are very
-welcomed and I encourage you to use the
-[Issues list](https://github.com/vladgh/VladGh.com-LEMP/issues) on Github to
-provide that feedback.
+## Bugs
+Please report any bugs to https://github.com/vladgh/VladGh.com-LEMP/issues
 
-Feel free to fork this repository and to commit your additions. When done,
-open a pull request to your feature branch.
+## Contribute
+1. Open an issue to discuss proposed changes
+2. Fork the repository
+3. Create your feature branch: `git checkout -b my-new-feature`
+4. Commit your changes: `git commit -am 'Add some feature'`
+5. Push to the branch: `git push origin my-new-feature`
+6. Submit a pull request :D
 
-The formatting conventions already present in these scripts are as follows:
-
-* Unix (LF), not dos (CRLF) line endings.
-* Two space indentation ([GNU Style](http://en.wikipedia.org/wiki/Indent_style#GNU_style)).
-* Eliminate all trailing whitespace.
-* Aim to wrap code at 80 characters, but favor functionality over wrapping.
-* Preserve existing formatting; i.e. do not reformat code for its own sake.
-
-#### If you want to report an issue you can use the tracker available at
-[https://github.com/vladgh/VladGh.com-LEMP/issues](https://github.com/vladgh/VladGh.com-LEMP/issues).
-
-# DISCLAIMER: #
-** All content provided here including the scripts is provided without any
-warranty. You use it at your own risk. I can not be held responsible for any
-damage that may occur because of it. By using the scripts I provide here you
-accept this terms. **
-
-# License: #
-Copyright 2013 Vlad Ghinea
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+## License
+Licensed under the Apache License, Version 2.0.
